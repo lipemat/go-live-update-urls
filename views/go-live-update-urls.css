@@ -1,0 +1,46 @@
+/**
+ * Main Admin screen css
+ * 
+ * @author Mat Lipe
+ * 
+ * @uses may be overridden in your theme by putting a copy of this file inside a go-live-update-urls folder
+ */
+
+
+
+#gluu{
+    background: black;
+    padding: 25px;
+    width: 520px;
+    border-radius: 20px;
+    color: white;
+    -moz-box-shadow: 0 0 5px 5px #888;
+-webkit-box-shadow: 0 0 5px 5px#888;
+box-shadow: 0 0 5px 5px #888;
+margin: 40px 0 0 40px;
+}
+
+#gluu .error{
+    color: #000000;
+}
+
+#gluu h2{
+    color: white;
+    text-shadow: blue 0 1px 0;
+}
+
+#gluu .form-table b{
+    font-size: 16px;
+    color: white;
+    text-shadow: blue 0 1px 0;
+}
+
+#gluu input[type="text"]{
+    font-weight: bold;
+    padding: 6px;
+}
+
+#gluu .updated{
+    color: black;
+}
+    
