@@ -34,6 +34,8 @@ The admin screen is extendable for developers familiar with using filters or tem
 
 Additonal Seralized Safe tables may be adding using the 'gluu-seralized-tables' filter checkboxes to tap into this will be coming in a future release.
 
+To contribute send pull requests:
+https://github.com/lipemat/go-live-update-urls/
 
 == Installation ==
 
