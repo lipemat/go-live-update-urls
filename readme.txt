@@ -32,16 +32,18 @@ Updates Entire Site including:
 
 The admin screen is extendable for developers familiar with using filters or template overrides. 
 
-AdditionalSerializedd Safe tables may be adding using the 'gluu-seralized-tables' filter.
+Additional Serialized Safe tables may be adding using the 'gluu-seralized-tables' filter.
 
 To contribute send pull requests:
 https://github.com/lipemat/go-live-update-urls/
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+Use the standard WordPress plugins search and installer.
+Activate the plugin.
+Use the plugin under the Tools menu in the WordPress admin
 
-e.g.
+Manual Installation
 
 1. Upload the `go-live-upload-urls` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
