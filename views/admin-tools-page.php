@@ -10,14 +10,13 @@
 ?>
 
 <div id="gluu" class="wrap">
-    <?php screen_icon('options-general'); ?>
     <h2>Go Live Update Urls</h2>
 
     <h4> This will replace all occurrences "in the entire database" of the old URL with the New URL.
     <br />
     Uncheck any tables that you would not like to update. </h4>
-    <div class="updated fade"><h4> Please Uncheck any Tables which may contain seralized data. The only tables which are currently seralized data safe when using this plugin is <?php echo implode(', ', array_keys( $this->getSerializedTables() )) ; ?>.</h4></div>
-    <strong><em>Like any other database updating tool, you should always perfrom a backup before running.</em></strong>
+    <div class="updated fade"><h4> Please Uncheck any Tables which may contain serialized data. The only tables which are currently serialized data safe when using this plugin is <?php echo implode(', ', array_keys( $this->getSerializedTables() )) ; ?>.</h4></div>
+    <strong><em>Like any other database updating tool, you should always perform a backup before running.</em></strong>
     <p>
         <input type="button" class="button secondary" value="uncheck all" id="uncheck-button"/>
     </p>

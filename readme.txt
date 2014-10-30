@@ -15,7 +15,7 @@ Works on both multisite and single site installs.
 Some of the features this plugin offers:
 
 * Database table by table selection in case of issues
-* Supports seralized data in the options table 
+* Supports serialized data in the options table
 * Very easy to use admin page - which may be found under Tools
 
 Updates Entire Site including:
@@ -32,7 +32,7 @@ Updates Entire Site including:
 
 The admin screen is extendable for developers familiar with using filters or template overrides. 
 
-Additonal Seralized Safe tables may be adding using the 'gluu-seralized-tables' filter checkboxes to tap into this will be coming in a future release.
+AdditionalSerializedd Safe tables may be adding using the 'gluu-seralized-tables' filter.
 
 To contribute send pull requests:
 https://github.com/lipemat/go-live-update-urls/
@@ -55,17 +55,17 @@ Under the Tools menu in the dashboard there will be a "Go Live" link.
 
 = Why does updating the domain break some plugins? =
 
-Some plugins will store the data in the database seralized which does not allow for easy updating of the data. You may uncheck tables used by such plugins to avoid breakage and then update the urls manually for those plugins. There are future plans to allow for seralized safe updating via table by table selection but currently the only table that is safe is the options table
+Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may uncheck tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, and rg_form_meta table as serialization safe.
 
 = How do I know which tables I should not update? =
 
-Most tables will be just fine to update. You may make a backup of your database, run this on all tables and if you run into trouble, restore your database, uncheck tables in sections, and rerun this until you find the culpurit. If you find a particular table gives you trouble, let me know and I will add it to the urgent list for seralized safe updating.
+Most tables will be just fine to update. You may make a backup of your database, run this on all tables and if you run into trouble, restore your database, uncheck tables in sections, and rerun this until you find the culpurit. If you find a particular table gives you trouble, let me know and I will add it to the urgent list for serialized safe updating.
 
 
 
 == Screenshots ==
 
-1. Screenshot of a tyical settings page. The verbage will change slightly depending on your database structure
+1. Screenshot of a typical settings page. Theverbiagee will change slightly depending on your database structure
 
 == Changelog ==
 
@@ -75,14 +75,14 @@ Most tables will be just fine to update. You may make a backup of your database,
 * Enhanced Security
 
 = 2.3 =
-* Added Post Meta to Seralized Safe to coincide with Simple Links Version 2.0
+* Added Post Meta to Serialized Safe to coincide with Simple Links Version 2.0
 
 = 2.2 =
-* Added Gravity Forms Support to Seralized Safe 
-* Added a filter for additional seralized safe tables
+* Added Gravity Forms Support to Serialized Safe
+* Added a filter for additional serialized safe tables
 
 = 2.0 =
-* Made updating the options table seralized safe *
+* Made updating the options tableserialized safe *
 * Add extending ability of views and css *
 * Moved the Admin page to the Tools Section *
 * Improved the structure to allow for future changes *
