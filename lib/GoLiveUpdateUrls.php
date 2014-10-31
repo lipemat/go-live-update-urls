@@ -1,15 +1,12 @@
 <?php
-
-
 /**
  * Methods for the Go Live Update Urls Plugin
  *
  * @author Mat Lipe
  * @since  2.2
  *
- * @since  2.26.14
- *
- * @TODO   Cleanup the Names and formatting
+ * @TODO split into mutliple classes and cleanup
+ *       Once get some funding
  */
 class GoLiveUpdateUrls {
 
@@ -19,9 +16,24 @@ class GoLiveUpdateUrls {
 
 	var $double_subdomain = false; //keep track if going to a subdomain
 
-	//Keys are table names, values are table columns
-	//set in self::__construct()
+	/*
+	 * seralized_tables
+	 *
+	 * keys are table names
+	 * values are table columns
+	 *
+	 * @var array
+	 */
 	public $seralized_tables = array();
+
+	/**
+	 * tables
+	 *
+	 * Tables to update, set during self::maybe_make_updates()
+	 *
+	 * @var array
+	 */
+	public $tables = array();
 
 
 	/**
@@ -32,6 +44,12 @@ class GoLiveUpdateUrls {
 	function __construct(){
 		global $wpdb;
 		$pf = $wpdb->prefix;
+
+		//If the Form has been submitted make the updates
+		if( !empty( $_POST[ 'gluu-submit' ] ) ){
+			add_action( 'init', array( $this, 'maybe_run_updates' ) );
+		}
+
 
 		add_action( 'admin_notices', array( $this, 'pro_notice' ) );
 
@@ -47,13 +65,65 @@ class GoLiveUpdateUrls {
 			$wpdb->postmeta      => 'meta_value', //post meta data - since 2.3.0
 			$pf . 'rg_form_meta' => 'display_meta', //gravity forms
 			$wpdb->usermeta      => 'meta_value', //user meta since 2.5.0
-			$wpdb->commentmeta   => 'meta_value' //comment meta since 2.5.0
+			$wpdb->commentmeta   => 'meta_value', //comment meta since 2.5.0
+			$wpdb->sitemeta      => 'meta_value' //site meta since 2.5.0
 		);
 
 	}
 
 
+	public function maybe_run_updates(){
+
+		check_admin_referer( plugin_basename( __FILE__ ), 'gluu-manage-options' );
+
+		if( !wp_verify_nonce( $_POST[ 'gluu-manage-options' ], plugin_basename( __FILE__ ) ) ){
+			wp_die( __('Ouch! That hurt! You should not be here!', 'gluu' ) );
+		}
+
+		$this->oldurl = trim( strip_tags( $_POST[ 'oldurl' ] ) );
+		$this->newurl = trim( strip_tags( $_POST[ 'newurl' ] ) );
+
+		$this->tables = $_POST;
+
+		do_action( 'gluu-before-make-update', $this );
+
+		if( $this->makeTheUpdates( $this->tables ) ){
+			add_action( 'admin_notices', array( $this, 'success' ) );
+		} else {
+			add_action( 'admin_notices', array( $this, 'epic_fail' ) );
+		}
+
+	}
+
+
+	public function success(){
+		?>
+		<div id="message" class="updated fade">
+			<p>
+				<strong><?php _e( 'URLs have been updated.', 'gluu' ); ?></strong>
+			</p>
+		</div>
+		<?php
+	}
+
+
+	public function epic_fail(){
+		?>
+		<div id="message" class="error fade">
+			<p>
+				<strong><?php _e( 'You must fill out both boxes to make the update!.', 'gluu' ); ?></strong>
+			</p>
+		</div>
+		<?php
+
+	}
+
+
 	public function pro_notice(){
+
+		if( class_exists( 'Gluu_Pro' ) ){
+			return;
+		}
 		?>
 		<div id="message" class="error">
 			<p>
@@ -78,13 +148,8 @@ class GoLiveUpdateUrls {
 	 * @return array( %table_name% => %table_column% )
 	 */
 	function getSerializedTables(){
-		static $tables = false;
-		if( $tables ){
-			return $tables;
-		}
 
 		return $tables = apply_filters( 'gluu-seralized-tables', $this->seralized_tables );
-
 	}
 
 
@@ -123,24 +188,6 @@ class GoLiveUpdateUrls {
 	 */
 	function adminToolsPage(){
 		global $table_prefix;
-
-		//If the Form has been submitted make the updates
-		if( isset( $_POST[ 'gluu-submit' ] ) ){
-
-			check_admin_referer( plugin_basename( __FILE__ ), 'gluu-manage-options' );
-
-			if( !wp_verify_nonce( $_POST[ 'gluu-manage-options' ], plugin_basename( __FILE__ ) ) ){
-				wp_die( 'Ouch! That hurt! You should not be here!' );
-			}
-			$this->oldurl = trim( strip_tags( $_POST[ 'oldurl' ] ) );
-			$this->newurl = trim( strip_tags( $_POST[ 'newurl' ] ) );
-
-			if( $this->makeTheUpdates() ){
-				echo '<div id="message" class="updated fade"><p><strong>URLs have been updated.</p></strong></div>';
-			} else {
-				echo '<div class="error"><p><strong>You must fill out both boxes to make the update!</p></strong></div>';
-			}
-		}
 
 		$nonce = wp_nonce_field( plugin_basename( __FILE__ ), 'gluu-manage-options', true, false );
 
@@ -269,11 +316,18 @@ class GoLiveUpdateUrls {
 		$seralized_tables = $this->getSerializedTables();
 
 		//Go throuch each table sent to be updated
-		foreach( $_POST as $v => $i ){
+		foreach( $this->tables as $v => $i ){
 
 			//Send the options table through the seralized safe Update
 			if( in_array( $v, array_keys( $seralized_tables ) ) ){
-				$this->UpdateSeralizedTable( $v, $seralized_tables[ $v ] );
+				//in case tables have multiple text columns
+				if( is_array( $seralized_tables[ $v ] ) ){
+					foreach( $seralized_tables[ $v ] as $column ){
+						$this->UpdateSeralizedTable( $v, $column );
+					}
+				} else {
+					$this->UpdateSeralizedTable( $v, $seralized_tables[ $v ] );
+				}
 			}
 
 			if( $v != 'submit' && $v != 'oldurl' && $v != 'newurl' ){
@@ -313,12 +367,19 @@ class GoLiveUpdateUrls {
 	 * @param string $table  the table to go through
 	 * @param string $column to column in the table to go through
 	 *
-	 * @since 2.26.14
 	 *
 	 */
 	function UpdateSeralizedTable( $table, $column = false ){
 		global $wpdb;
-		$pk                 = $wpdb->get_results( "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'" );
+		$pk = $wpdb->get_results( "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'" );
+		if( empty( $pk[ 0 ] ) ){
+			$pk = $wpdb->get_results( "SHOW KEYS FROM $table" );
+			if( empty( $pk[ 0 ] ) ){
+				//fail
+				return;
+			}
+		}
+
 		$primary_key_column = $pk[ 0 ]->Column_name;
 
 		//Get all the Seralized Rows and Replace them properly
