@@ -124,6 +124,11 @@ class GoLiveUpdateUrls {
 		if( class_exists( 'Gluu_Pro' ) ){
 			return;
 		}
+
+		$screen = get_current_screen();
+		if( "tools_page_GoLiveUpdateUrls" != $screen->id ){
+			return;
+		}
 		?>
 		<div id="message" class="error">
 			<p>
