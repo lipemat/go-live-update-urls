@@ -63,7 +63,6 @@ class GoLiveUpdateUrls {
 		$this->seralized_tables = array(
 			$wpdb->options       => 'option_value', //wordpres options
 			$wpdb->postmeta      => 'meta_value', //post meta data - since 2.3.0
-			$pf . 'rg_form_meta' => 'display_meta', //gravity forms
 			$wpdb->usermeta      => 'meta_value', //user meta since 2.5.0
 			$wpdb->commentmeta   => 'meta_value', //comment meta since 2.5.0
 			$wpdb->sitemeta      => 'meta_value' //site meta since 2.5.0
