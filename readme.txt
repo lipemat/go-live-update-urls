@@ -3,8 +3,8 @@ Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40lipeimagination%2einfo&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 3.1
-Tested up to: 4.2.2
-Stable tag: 2.5.4
+Tested up to: 4.3.0
+Stable tag: 3.0.0
 
 == Description ==
 
@@ -75,6 +75,11 @@ Most tables will be just fine to update. You may make a backup of your database,
 1. Screenshot of a typical settings page. Theverbiagee will change slightly depending on your database structure
 
 == Changelog ==
+= 3.0.0 =
+* Greatly improve security
+* Improve code organization
+* Remove misleading UI messages
+* Clears cache when finished
 
 = 2.4 =
 * Added multisite support
