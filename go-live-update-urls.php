@@ -15,5 +15,11 @@ define( 'GLUU_URL_VIEWS_DIR', plugins_url('go-live-update-urls').'/views/' );
 
 require('lib/GoLiveUpdateUrls.php');
 
+#-- Translate
+add_action('plugins_loaded', 'gluu_translate' );
+function gluu_translate(){
+	load_plugin_textdomain( 'gluu', false, 'go-live-update-urls/languages' );
+}
+
 
 $GoLiveUpdateUrls = new GoLiveUpdateUrls();

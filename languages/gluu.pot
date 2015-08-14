@@ -1,0 +1,86 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Go Live Update URLS\n"
+"POT-Creation-Date: 2015-08-14 17:00-0400\n"
+"PO-Revision-Date: 2015-08-14 17:00-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: go-live-update-urls.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: lib/GoLiveUpdateUrls.php:79
+msgid "Ouch! That hurt! You should not be here!"
+msgstr ""
+
+#: lib/GoLiveUpdateUrls.php:102
+msgid "URLs have been updated."
+msgstr ""
+
+#: lib/GoLiveUpdateUrls.php:113
+msgid "You must fill out both boxes to make the update!."
+msgstr ""
+
+#: lib/GoLiveUpdateUrls.php:134
+msgid "Want a smarter, easier to use plugin with better support?"
+msgstr ""
+
+#: lib/GoLiveUpdateUrls.php:137
+msgid "Go Pro!"
+msgstr ""
+
+#: views/admin-tools-page.php:15
+msgid ""
+"This will replace all occurrences \"in the entire database\" of the old URL "
+"with the New URL."
+msgstr ""
+
+#: views/admin-tools-page.php:20
+#, php-format
+msgid ""
+"Please Uncheck any Tables which may contain serialized data. The only tables "
+"which are currently serialized data safe when using this plugin are %s"
+msgstr ""
+
+#: views/admin-tools-page.php:29
+msgid ""
+"Like any other database updating tool, you should always perform a backup "
+"before running."
+msgstr ""
+
+#: views/admin-tools-page.php:36
+msgid "Uncheck any tables that you would not like to update."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Go Live Update URLS"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://matlipe.com/go-live-update-urls/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"This Plugin Updates all the URLs in the database to point to the new URL "
+"when making your site live or changing domains."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mat Lipe"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://matlipe.com/"
+msgstr ""
