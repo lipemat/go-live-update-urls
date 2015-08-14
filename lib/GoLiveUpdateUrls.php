@@ -68,6 +68,11 @@ class GoLiveUpdateUrls {
 			$wpdb->sitemeta      => 'meta_value' //site meta since 2.5.0
 		);
 
+        //we are not going to update user meta if we are not on main blog
+        if( is_multisite() && $wpdb->blogid != 1 ){
+            unset( $this->seralized_tables[ $wpdb->usermeta ] );
+        }
+
 	}
 
 
