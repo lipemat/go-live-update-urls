@@ -24,7 +24,7 @@ class GoLiveUpdateUrls {
 	 *
 	 * @var array
 	 */
-	public $seralized_tables = array();
+	public  $seralized_tables = array();
 
 	/**
 	 * tables
@@ -77,7 +77,6 @@ class GoLiveUpdateUrls {
 
 
 	public function maybe_run_updates(){
-
 		check_admin_referer( plugin_basename( __FILE__ ), 'gluu-manage-options' );
 
 		if( !wp_verify_nonce( $_POST[ 'gluu-manage-options' ], plugin_basename( __FILE__ ) ) ){
@@ -91,7 +90,7 @@ class GoLiveUpdateUrls {
 
 		do_action( 'gluu-before-make-update', $this );
 
-		if( $this->makeTheUpdates( $this->tables ) ){
+		if( $this->makeTheUpdates() ){
 			add_action( 'admin_notices', array( $this, 'success' ) );
 		} else {
 			add_action( 'admin_notices', array( $this, 'epic_fail' ) );
@@ -205,7 +204,7 @@ class GoLiveUpdateUrls {
 
 
 	/**
-	 * Allows for Overwritting files in the child theme
+	 * Allows for Overwriting files in the child theme
 	 *
 	 * @since 2.0
 	 *
@@ -276,16 +275,15 @@ class GoLiveUpdateUrls {
 		$god_query = "SELECT TABLE_NAME FROM information_schema.TABLES where TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->prefix . "%'";
 
 		//Done this way because like wp_% will return all other tables as well such as wp_2
+        //so we exclude all the possibles e.g. wp_2, wp_3, wp_4 up to 9
 		$not_like = null;
-		if( is_multisite() ){
-			if( $wpdb->blogid == 1 ){
-				for( $i = 1; $i <= 9; $i ++ ){
-					$not_like .= "'" . $wpdb->prefix . $i . "',";
-				}
-				$not_like = substr( $not_like, 0, - 1 );
-				$god_query .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . $not_like . ')';
-			}
-		}
+        if( is_multisite() && $wpdb->blogid == 1 ){
+            for( $i = 1; $i <= 9; $i ++ ){
+                $not_like .= "'" . $wpdb->prefix . $i . "',";
+            }
+            $not_like = substr( $not_like, 0, - 1 );
+            $god_query .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . $not_like . ')';
+        }
 
 		return $wpdb->get_results( $god_query );
 	}
@@ -295,76 +293,69 @@ class GoLiveUpdateUrls {
 	 * Updates the datbase
 	 *
 	 * @uses  the oldurl and newurl set above
-	 * @since 10.22.13
 	 *
 
 	 */
-	function makeTheUpdates(){
+    function makeTheUpdates(){
+        global $wpdb;
 
-		//in case of large tables
-		@set_time_limit( 0 );
-		@ini_set( 'memory_limit', '256M' );
-		@ini_set( 'max_input_time', '-1' );
+        @set_time_limit( 0 );
+        @ini_set( 'memory_limit', '256M' );
+        @ini_set( 'max_input_time', '-1' );
 
-		global $wpdb;
+        if( empty( $this->oldurl ) || empty( $this->newurl ) ){
+            return false;
+        }
 
-		$oldurl = $this->oldurl;
-		$newurl = $this->newurl;
+        // If the new domain is the old one with a new sub-domain like www
+        if( strpos( $this->newurl, $this->oldurl ) !== false ){
+            list( $subdomain ) = explode( '.', $this->newurl );
+            $this->double_subdomain = $subdomain . '.' . $this->newurl;
+        }
 
-		//If a box was empty
-		if( $oldurl == '' || $newurl == '' ){
-			return false;
-		}
+        $serialized_tables = $this->getSerializedTables();
 
-		// If the new domain is the old one with a new subdomain like www
-		if( strpos( $newurl, $oldurl ) !== false ){
-			list( $subdomain ) = explode( '.', $newurl );
-			$this->double_subdomain = $subdomain . '.' . $newurl;  //Create a match to what the broken one will be
-		}
+        //Go through each table sent to be updated
+        foreach( array_keys( $this->tables ) as $table ){
+            if( in_array( $table, array_keys( $serialized_tables ) ) ){
+                if( is_array( $serialized_tables[ $table ] ) ){
+                    foreach( $serialized_tables[ $table ] as $column ){
+                        $this->UpdateSeralizedTable( $table, $column );
+                    }
+                } else {
+                    $this->UpdateSeralizedTable( $table, $serialized_tables[ $table ] );
+                }
+            }
 
-		$seralized_tables = $this->getSerializedTables();
+            if( $table != 'submit' && $table != 'oldurl' && $table != 'newurl' ){
 
-		//Go throuch each table sent to be updated
-		foreach( $this->tables as $v => $i ){
+                $column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME='" . $table . "'";
+                $columns      = $wpdb->get_col( $column_query );
 
-			//Send the options table through the seralized safe Update
-			if( in_array( $v, array_keys( $seralized_tables ) ) ){
-				//in case tables have multiple text columns
-				if( is_array( $seralized_tables[ $v ] ) ){
-					foreach( $seralized_tables[ $v ] as $column ){
-						$this->UpdateSeralizedTable( $v, $column );
-					}
-				} else {
-					$this->UpdateSeralizedTable( $v, $seralized_tables[ $v ] );
-				}
-			}
+                foreach( $columns as $_column ){
+                    $update_query = "UPDATE " . $table . " SET " . $_column . " = replace(" . $_column . ", %s, %s)";
+                    $wpdb->query( $wpdb->prepare( $update_query, array( $this->oldurl, $this->newurl ) ) );
 
-			if( $v != 'submit' && $v != 'oldurl' && $v != 'newurl' ){
+                    //Fix the dub dubs if this was the old domain with a new sub
+                    if( $this->double_subdomain ){
+                        $wpdb->query( $wpdb->prepare( $update_query, array(
+                                $this->double_subdomain,
+                                $this->newurl
+                        ) ) );
+                        //Fix the emails breaking by being appended the new subdomain
+                        $wpdb->query( $wpdb->prepare( $update_query, array(
+                                "@" . $this->newurl,
+                                "@" . $this->oldurl
+                        ) ) );
+                    }
+                }
+            }
+        }
 
-				$god_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS where TABLE_SCHEMA='" . $wpdb->dbname . "' and TABLE_NAME='" . $v . "'";
-				$all       = $wpdb->get_results( $god_query );
-				foreach( $all as $t ){
-					$update_query = "UPDATE " . $v . " SET " . $t->COLUMN_NAME . " = replace(" . $t->COLUMN_NAME . ", '" . $oldurl . "','" . $newurl . "')";
-					//Run the query
-					$wpdb->query( $update_query );
+        wp_cache_flush();
 
-					//Fix the dub dubs if this was the old domain with a new sub
-					if( $this->double_subdomain ){
-						$update_query = "UPDATE " . $v . " SET " . $t->COLUMN_NAME . " = replace(" . $t->COLUMN_NAME . ", '" . $this->double_subdomain . "','" . $newurl . "')";
-						//Run the query
-						$wpdb->query( $update_query );
-
-						//Fix the emails breaking by being appended the new subdomain
-						$update_query = "UPDATE " . $v . " SET " . $t->COLUMN_NAME . " = replace(" . $t->COLUMN_NAME . ", '@" . $newurl . "','@" . $oldurl . "')";
-						$wpdb->query( $update_query );
-					}
-
-				}
-			}
-		}
-
-		return true;
-	}
+        return true;
+    }
 
 
 	/**
