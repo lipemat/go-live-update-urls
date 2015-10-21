@@ -3,8 +3,8 @@ Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40lipeimagination%2einfo&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 3.1
-Tested up to: 4.3.0
-Stable tag: 3.0.0
+Tested up to: 4.3.1
+Stable tag: 3.0.1
 
 == Description ==
 
@@ -12,7 +12,6 @@ Goes through entire site and replaces all instances of and old url with a new on
 
 <h3>Want a smarter, easier to use plugin with better support?</h3>
 <strong><big><a href="https://matlipe.com/product/go-live-update-urls-pro/">Go Pro!</a></big></strong>
-
 
 
 Works on both multi-site and single site installs.
