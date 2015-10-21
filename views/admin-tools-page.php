@@ -12,12 +12,12 @@
 <div id="gluu" class="wrap">
 	<h2>Go Live Update Urls</h2>
 
-	<h4><?php _e( 'This will replace all occurrences "in the entire database" of the old URL with the New URL.', 'gluu' ); ?></h4>
+	<h4><?php _e( 'This will replace all occurrences "in the entire database" of the old URL with the New URL.', 'go-live-update-urls' ); ?></h4>
 
-	<div class="updated fade">
+	<div class="error fade">
 		<p>
 			<?php
-			$message = sprintf( __( "Please Uncheck any Tables which may contain serialized data. The only tables which are currently serialized data safe when using this plugin are %s", 'gluu' ), "(" . implode( ', ', array_keys( $this->getSerializedTables() ) ) . ")" );
+			$message = sprintf( __( "Please un-check any tables which may contain serialized data. The only tables which are currently serialized data safe when using this plugin are %s", 'go-live-update-urls' ), "(" . implode( ', ', array_keys( $this->getSerializedTables() ) ) . ")" );
 
 			echo apply_filters( 'gluu-top-message', $message, $this->getSerializedTables() );
 			?>
@@ -26,14 +26,14 @@
 
 	<strong>
 		<em style="color:red">
-			<?php _e( "Like any other database updating tool, you should always perform a backup before running.", 'gluu' ); ?>
+			<?php _e( "Like any other database updating tool, you should always perform a backup before running.", 'go-live-update-urls' ); ?>
 		</em>
 	</strong>
 
 
 	<h4>
 		<?php
-		echo apply_filters( 'gluu-uncheck-message', __(  'Uncheck any tables that you would not like to update.', 'gluu' ) );
+		echo apply_filters( 'gluu-uncheck-message', __(  'Un-check any tables that you would not like to update.', 'go-live-update-urls' ) );
 		?>
 	</h4>
 

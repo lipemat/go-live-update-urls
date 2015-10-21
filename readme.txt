@@ -11,11 +11,11 @@ Stable tag: 3.0.0
 Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site.
 
 <h3>Want a smarter, easier to use plugin with better support?</h3>
-<strong><big><a href="http://matlipe.com/product/go-live-update-urls-pro/">Go Pro!</a></big></strong>
+<strong><big><a href="https://matlipe.com/product/go-live-update-urls-pro/">Go Pro!</a></big></strong>
 
 
 
-Works on both multisite and single site installs.
+Works on both multi-site and single site installs.
 
 Some of the features this plugin offers:
 
@@ -62,17 +62,16 @@ Under the Tools menu in the dashboard there will be a "Go Live" link.
 
 = Why does updating the domain break some plugins? =
 
-Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may uncheck tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, and rg_form_meta table as serialization safe.
+Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may un-check tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, usermeta, commentmeta, and sitemeta tables are serialization safe.
 
 = How do I know which tables I should not update? =
 
-Most tables will be just fine to update. You may make a backup of your database, run this on all tables and if you run into trouble, restore your database, uncheck tables in sections, and rerun this until you find the culpurit. If you find a particular table gives you trouble, let me know and I will add it to the urgent list for serialized safe updating.
-
+Most tables will be just fine to update. You may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the Pro version of this plugin which works with any table.
 
 
 == Screenshots ==
 
-1. Screenshot of a typical settings page. Theverbiagee will change slightly depending on your database structure
+1. Screenshot of a typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
 = 3.0.0 =
@@ -82,8 +81,8 @@ Most tables will be just fine to update. You may make a backup of your database,
 * Clears cache when finished
 
 = 2.4 =
-* Added multisite support
-* Added an uncheck all tables button
+* Added multi-site support
+* Added an un-check all tables button
 * Enhanced Security
 
 = 2.3 =
@@ -94,7 +93,7 @@ Most tables will be just fine to update. You may make a backup of your database,
 * Added a filter for additional serialized safe tables
 
 = 2.0 =
-* Made updating the options tableserialized safe *
+* Made updating the options table serialized safe *
 * Add extending ability of views and css *
 * Moved the Admin page to the Tools Section *
 * Improved the structure to allow for future changes *
@@ -117,17 +116,17 @@ Most tables will be just fine to update. You may make a backup of your database,
 == Upgrade Notice ==
 
 = 2.4 =
-This Version works properly on mulitsite
+This Version works properly on mulit-site
 Enhanced Security - you should probably update
 
 = 1.5 -
-This Version will automatically keep email addresses intact when switch to a subdomain like www
+This Version will automatically keep email addresses intact when switch to a sub-domain like www
 
 = 1.3 =
 This Version will allow you to switch to www without having to run it twice
 
 = 1.2.1 =
-This Version will uncheck your options table by default for the wp_options as well as other table prefixes.
+This Version will un-check your options table by default for the wp_options as well as other table prefixes.
 
 = 1.2 =
 This Version will add the wp_options to the available tables and uncheck the table by default.

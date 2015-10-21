@@ -5,7 +5,7 @@
  * @author Mat Lipe
  * @since  2.2
  *
- * @TODO split into mutliple classes and cleanup
+ * @TODO split into multiple classes and cleanup
  *       Once get some funding
  */
 class GoLiveUpdateUrls {
@@ -80,7 +80,7 @@ class GoLiveUpdateUrls {
 		check_admin_referer( plugin_basename( __FILE__ ), 'gluu-manage-options' );
 
 		if( !wp_verify_nonce( $_POST[ 'gluu-manage-options' ], plugin_basename( __FILE__ ) ) ){
-			wp_die( __('Ouch! That hurt! You should not be here!', 'gluu' ) );
+			wp_die( __('Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
 		$this->oldurl = trim( strip_tags( $_POST[ 'oldurl' ] ) );
@@ -103,7 +103,7 @@ class GoLiveUpdateUrls {
 		?>
 		<div id="message" class="updated fade">
 			<p>
-				<strong><?php _e( 'URLs have been updated.', 'gluu' ); ?></strong>
+				<strong><?php _e( 'URLs have been updated.', 'go-live-update-urls' ); ?></strong>
 			</p>
 		</div>
 		<?php
@@ -114,7 +114,7 @@ class GoLiveUpdateUrls {
 		?>
 		<div id="message" class="error fade">
 			<p>
-				<strong><?php _e( 'You must fill out both boxes to make the update!.', 'gluu' ); ?></strong>
+				<strong><?php _e( 'You must fill out both boxes to make the update!.', 'go-live-update-urls' ); ?></strong>
 			</p>
 		</div>
 		<?php
@@ -133,12 +133,12 @@ class GoLiveUpdateUrls {
 			return;
 		}
 		?>
-		<div id="message" class="error">
+		<div id="message" class="notice updated">
 			<p>
-				<?php _e( 'Want a smarter, easier to use plugin with better support?', 'gluu' ); ?>
+				<?php _e( 'Want a smarter, easier to use plugin with better support?', 'go-live-update-urls' ); ?>
 				<br>
 				<a target="blank" href="http://matlipe.com/product/go-live-update-urls-pro/">
-					<?php _e( 'Go Pro!', 'gluu' ); ?>
+					<?php _e( 'Go Pro!', 'go-live-update-urls' ); ?>
 				</a>
 			</p>
 		</div>
@@ -147,7 +147,7 @@ class GoLiveUpdateUrls {
 
 
 	/**
-	 * Retrieve filtered list of seralize safe database tables
+	 * Retrieve filtered list of serialized safe database tables
 	 *
 	 * @since   2.4.0
 	 *
