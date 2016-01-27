@@ -3,8 +3,8 @@ Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40lipeimagination%2einfo&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 3.1
-Tested up to: 4.4.0
-Stable tag: 3.0.2
+Tested up to: 4.4.1
+Stable tag: 3.1.0
 
 == Description ==
 
@@ -19,7 +19,7 @@ Works on both multi-site and single site installs.
 Some of the features this plugin offers:
 
 * Database table by table selection in case of issues
-* Supports serialized data in the options table
+* Supports serialized data in options and meta tables
 * Very easy to use admin page - which may be found under Tools
 
 Updates Entire Site including:
@@ -34,9 +34,9 @@ Updates Entire Site including:
 * Site settings
 * And much more
 
-The admin screen is extendable for developers familiar with using filters or template overrides. 
+The admin screen is extend-able for developers familiar with using filters or template overrides.
 
-Additional Serialized Safe tables may be adding using the 'gluu-seralized-tables' filter.
+Additional Serialized Safe tables may be adding using the 'go-live-update-urls-serialized-tables' filter.
 
 To contribute send pull requests:
 https://github.com/lipemat/go-live-update-urls/
@@ -73,7 +73,10 @@ Most tables will be just fine to update. You may make a backup of your database,
 1. Screenshot of a typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
-= 3.0.0 =
+= 3.1 =
+* Add support for serialized term meta
+
+= 3.0 =
 * Greatly improve security
 * Improve code organization
 * Remove misleading UI messages
@@ -113,6 +116,8 @@ Most tables will be just fine to update. You may make a backup of your database,
 * Removed the wp-options table from the tables to be updated.
 
 == Upgrade Notice ==
+= 3.1 =
+Upgrade to support WP 4.4's term meta.
 
 = 2.4 =
 This Version works properly on mulit-site
