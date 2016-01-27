@@ -39,11 +39,9 @@ class GoLiveUpdateUrls {
 	/**
 	 * @since 2.2
 	 *
-	 * @since 10.22.13
 	 */
 	function __construct(){
 		global $wpdb;
-		$pf = $wpdb->prefix;
 
 		//If the Form has been submitted make the updates
 		if( !empty( $_POST[ 'gluu-submit' ] ) ){
@@ -61,12 +59,17 @@ class GoLiveUpdateUrls {
 
 		//default tables with seralized data
 		$this->seralized_tables = array(
-			$wpdb->options       => 'option_value', //wordpres options
-			$wpdb->postmeta      => 'meta_value', //post meta data - since 2.3.0
+			$wpdb->options       => 'option_value', //WP options
+			$wpdb->postmeta      => 'meta_value', //post meta - since 2.3.0
 			$wpdb->usermeta      => 'meta_value', //user meta since 2.5.0
 			$wpdb->commentmeta   => 'meta_value', //comment meta since 2.5.0
 			$wpdb->sitemeta      => 'meta_value' //site meta since 2.5.0
 		);
+
+		//term meta since WP 4.4
+		if( isset( $wpdb->termmeta ) ){
+			$this->seralized_tables[ $wpdb->termmeta ] = 'meta_value';
+		}
 
         //we are not going to update user meta if we are not on main blog
         if( is_multisite() && $wpdb->blogid != 1 ){
@@ -123,7 +126,6 @@ class GoLiveUpdateUrls {
 
 
 	public function pro_notice(){
-
 		if( class_exists( 'Gluu_Pro' ) ){
 			return;
 		}
