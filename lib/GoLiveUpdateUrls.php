@@ -40,24 +40,9 @@ class GoLiveUpdateUrls {
 	 * @since 2.2
 	 *
 	 */
-	function __construct(){
+	private function __construct(){
 		global $wpdb;
-
-		//If the Form has been submitted make the updates
-		if( !empty( $_POST[ 'gluu-submit' ] ) ){
-			add_action( 'init', array( $this, 'maybe_run_updates' ) );
-		}
-
-
-		add_action( 'admin_notices', array( $this, 'pro_notice' ) );
-
-		//Add the settings to the admin menu
-		add_action( 'admin_menu', array( $this, 'gluu_add_url_options' ) );
-
-		//Add the CSS
-		add_action( 'admin_head', array( $this, 'css' ) );
-
-		//default tables with seralized data
+		//default tables with serialized data
 		$this->seralized_tables = array(
 			$wpdb->options       => 'option_value', //WP options
 			$wpdb->postmeta      => 'meta_value', //post meta - since 2.3.0
@@ -77,6 +62,20 @@ class GoLiveUpdateUrls {
 			}
 		}
 
+		$this->hooks();
+
+	}
+
+
+	private function hooks(){
+		//If the Form has been submitted make the updates
+		if( !empty( $_POST[ 'gluu-submit' ] ) ){
+			add_action( 'init', array( $this, 'maybe_run_updates' ) );
+		}
+
+		add_action( 'admin_notices', array( $this, 'pro_notice' ) );
+		add_action( 'admin_menu', array( $this, 'gluu_add_url_options' ) );
+		add_action( 'admin_head', array( $this, 'css' ) );
 	}
 
 
@@ -458,5 +457,40 @@ class GoLiveUpdateUrls {
 		return $data;
 	}
 
+
+
+	//********** SINGLETON FUNCTIONS **********/
+
+	/**
+	 * Instance of this class for use as singleton
+	 */
+	private static $instance;
+
+
+	/**
+	 * Create the instance of the class
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function init(){
+		self::$instance = self::get_instance();
+	}
+
+
+	/**
+	 * Get (and instantiate, if necessary) the instance of the
+	 * class
+	 *
+	 * @static
+	 * @return self
+	 */
+	public static function get_instance(){
+		if( !is_a( self::$instance, __CLASS__ ) ){
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 }

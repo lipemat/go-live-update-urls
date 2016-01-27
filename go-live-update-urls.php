@@ -18,8 +18,9 @@ require('lib/GoLiveUpdateUrls.php');
 #-- Translate
 add_action('plugins_loaded', 'gluu_translate' );
 function gluu_translate(){
+	global $GoLiveUpdateUrls; //backward compatibility
+
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
+	$GoLiveUpdateUrls = GoLiveUpdateUrls::get_instance();
 }
 
-
-$GoLiveUpdateUrls = new GoLiveUpdateUrls();
