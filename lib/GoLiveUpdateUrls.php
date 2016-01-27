@@ -153,13 +153,18 @@ class GoLiveUpdateUrls {
 	 *
 	 * @since   2.4.0
 	 *
-	 * @filters apply_filters( 'gluu-seralized-tables', $this->seralized_tables ); - effects makeCheckBoxes as well
+	 * @filters go-live-update-urls-serialized-tables - affects tables treated as serialized and checkbox
 	 *
 	 * @return array( %table_name% => %table_column% )
 	 */
 	function getSerializedTables(){
+		//@deprecated
+		$tables = apply_filters( 'gluu-seralized-tables', $this->seralized_tables );
 
-		return $tables = apply_filters( 'gluu-seralized-tables', $this->seralized_tables );
+		//use this filter
+		$tables = apply_filters( 'go-live-update-urls-serialized-tables', $tables );
+
+		return $tables;
 	}
 
 
