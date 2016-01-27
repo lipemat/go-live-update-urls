@@ -61,9 +61,7 @@ class GoLiveUpdateUrls {
 		$this->seralized_tables = array(
 			$wpdb->options       => 'option_value', //WP options
 			$wpdb->postmeta      => 'meta_value', //post meta - since 2.3.0
-			$wpdb->usermeta      => 'meta_value', //user meta since 2.5.0
 			$wpdb->commentmeta   => 'meta_value', //comment meta since 2.5.0
-			$wpdb->sitemeta      => 'meta_value' //site meta since 2.5.0
 		);
 
 		//term meta since WP 4.4
@@ -72,9 +70,12 @@ class GoLiveUpdateUrls {
 		}
 
         //we are not going to update user meta if we are not on main blog
-        if( is_multisite() && $wpdb->blogid != 1 ){
-            unset( $this->seralized_tables[ $wpdb->usermeta ] );
-        }
+		if( is_multisite() ){
+			$this->seralized_tables[ $wpdb->sitemeta ] = 'meta_value';
+			if( 1 === (int)$wpdb->blogid ){
+				$this->seralized_tables[ $wpdb->usermeta ] = 'meta_value';
+			}
+		}
 
 	}
 
