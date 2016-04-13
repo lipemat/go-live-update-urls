@@ -17,14 +17,14 @@ class GoLiveUpdateUrls {
 	var $double_subdomain = false; //keep track if going to a subdomain
 
 	/*
-	 * seralized_tables
+	 * serialized_tables
 	 *
 	 * keys are table names
 	 * values are table columns
 	 *
 	 * @var array
 	 */
-	public  $seralized_tables = array();
+	public  $serialized_tables = array();
 
 	/**
 	 * tables
@@ -34,37 +34,6 @@ class GoLiveUpdateUrls {
 	 * @var array
 	 */
 	public $tables = array();
-
-
-	/**
-	 * @since 2.2
-	 *
-	 */
-	private function __construct(){
-		global $wpdb;
-		//default tables with serialized data
-		$this->seralized_tables = array(
-			$wpdb->options       => 'option_value', //WP options
-			$wpdb->postmeta      => 'meta_value', //post meta - since 2.3.0
-			$wpdb->commentmeta   => 'meta_value', //comment meta since 2.5.0
-		);
-
-		//term meta since WP 4.4
-		if( isset( $wpdb->termmeta ) ){
-			$this->seralized_tables[ $wpdb->termmeta ] = 'meta_value';
-		}
-
-        //we are not going to update user meta if we are not on main blog
-		if( is_multisite() ){
-			$this->seralized_tables[ $wpdb->sitemeta ] = 'meta_value';
-			if( 1 === (int)$wpdb->blogid ){
-				$this->seralized_tables[ $wpdb->usermeta ] = 'meta_value';
-			}
-		}
-
-		$this->hooks();
-
-	}
 
 
 	private function hooks(){
@@ -158,8 +127,31 @@ class GoLiveUpdateUrls {
 	 * @return array( %table_name% => %table_column% )
 	 */
 	function getSerializedTables(){
+		if( empty( $this->serialized_tables ) ){
+			global $wpdb;
+			//default tables with serialized data
+			$this->serialized_tables = array(
+				$wpdb->options     => 'option_value', //WP options
+				$wpdb->postmeta    => 'meta_value', //post meta - since 2.3.0
+				$wpdb->commentmeta => 'meta_value', //comment meta since 2.5.0
+			);
+
+			//term meta since WP 4.4
+			if( isset( $wpdb->termmeta ) ){
+				$this->serialized_tables[ $wpdb->termmeta ] = 'meta_value';
+			}
+
+			//we are not going to update user meta if we are not on main blog
+			if( is_multisite() ){
+				$this->serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
+				if( 1 === (int) $wpdb->blogid ){
+					$this->serialized_tables[ $wpdb->usermeta ] = 'meta_value';
+				}
+			}
+		}
+
 		//@deprecated
-		$tables = apply_filters( 'gluu-seralized-tables', $this->seralized_tables );
+		$tables = apply_filters( 'gluu-seralized-tables', $this->serialized_tables );
 
 		//use this filter
 		$tables = apply_filters( 'go-live-update-urls-serialized-tables', $tables );
@@ -474,7 +466,7 @@ class GoLiveUpdateUrls {
 	 * @return void
 	 */
 	public static function init(){
-		self::$instance = self::get_instance();
+		self::get_instance()->hooks();
 	}
 
 
