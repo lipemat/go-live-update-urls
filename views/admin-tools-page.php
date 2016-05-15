@@ -14,7 +14,7 @@ $gluu = GoLiveUpdateUrls::get_instance();
 	<h2>Go Live Update Urls</h2>
 
 	<p class="description">
-		<?php _e( 'This will replace all occurrences "in the entire database" of the Old URL with the New URL.', 'go-live-update-urls' ); ?>
+		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>}', '{/strong}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
 	</p>
 
 	<strong>
@@ -34,7 +34,7 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				<?php _e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
 			</h2>
 			<p class="description">
-				<?php _e( 'These tables are probably safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?>
+				<?php _e( 'These tables are safe to update with the basic version of this plugin (the version you are currently using).', 'go-live-update-urls' ); ?>
 			</p>
 			<p>
 				<input
@@ -48,6 +48,9 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			<?php
 			echo $gluu->makeCheckBoxes( $gluu->get_core_tables(), "wp-core" );
 		}
+		?>
+		<hr />
+		<?php
 
 		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
 			?>
@@ -73,13 +76,6 @@ $gluu = GoLiveUpdateUrls::get_instance();
 
 		?>
 		<hr />
-		<p>
-			<strong>
-			<?php
-			echo apply_filters( 'gluu-uncheck-message', __(  'Un-check any above tables that you would not like to update.', 'go-live-update-urls' ) );
-			?>
-			</strong>
-		</p>
 		<table class="form-table">
 			<tr>
 				<th scope="row" style="width:150px;">
@@ -98,6 +94,13 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				</td>
 			</tr>
 		</table>
-		<?php submit_button( __( 'Make it Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
+		<p class="description">
+			<strong>
+				<?php
+				echo apply_filters( 'gluu-uncheck-message', __(  'Only the checked tables will be updated.', 'go-live-update-urls' ) );
+				?>
+			</strong>
+		</p>
+		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
 	</form>
 </div>
