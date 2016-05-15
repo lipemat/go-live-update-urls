@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main Admin screen view
  *
@@ -7,77 +6,98 @@
  *
  * @uses   may be overridden in your theme by putting a copy of this file inside a go-live-update-urls folder
  */
-?>
 
+$gluu = GoLiveUpdateUrls::get_instance();
+
+?>
 <div id="gluu" class="wrap">
 	<h2>Go Live Update Urls</h2>
 
-	<h4><?php _e( 'This will replace all occurrences "in the entire database" of the old URL with the New URL.', 'go-live-update-urls' ); ?></h4>
-
-	<div class="error fade">
-		<p>
-			<?php
-			$message = sprintf( __( "Please un-check any tables which may contain serialized data. The only tables which are currently serialized data safe when using this plugin are %s", 'go-live-update-urls' ), "(" . implode( ', ', array_keys( $this->getSerializedTables() ) ) . ")" );
-
-			echo apply_filters( 'gluu-top-message', $message, $this->getSerializedTables() );
-			?>
-		</p>
-	</div>
+	<p class="description">
+		<?php _e( 'This will replace all occurrences "in the entire database" of the Old URL with the New URL.', 'go-live-update-urls' ); ?>
+	</p>
 
 	<strong>
 		<em style="color:red">
 			<?php _e( "Like any other database updating tool, you should always perform a backup before running.", 'go-live-update-urls' ); ?>
 		</em>
 	</strong>
+	<hr />
 
-
-	<h4>
-		<?php
-		echo apply_filters( 'gluu-uncheck-message', __(  'Un-check any tables that you would not like to update.', 'go-live-update-urls' ) );
-		?>
-	</h4>
-
-
-	<p>
-		<input type="button" class="button secondary" value="uncheck all" id="uncheck-button"/>
-	</p>
 	<form method="post" id="gluu-checkbox-form">
-		<?php //Make the boxes to select tables
+		<?php
+		wp_nonce_field( GoLiveUpdateUrls::NONCE, GoLiveUpdateUrls::NONCE );
+		
 		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
-			echo $this->makeCheckBoxes();
+			?>
+			<h2>
+				<?php _e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
+			</h2>
+			<p class="description">
+				<?php _e( 'These tables are probably safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?>
+			</p>
+			<p>
+				<input
+					type="button"
+					class="button-secondary checked gluu-tables-button"
+					data-list="wp-core"
+					value="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
+					data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
+					data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>" />
+			</p>
+			<?php
+			echo $gluu->makeCheckBoxes( $gluu->get_core_tables(), "wp-core" );
 		}
+
+		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
+			?>
+			<h2>
+				<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
+			</h2>
+			<p class="description" style="color:red">
+				<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/">', '</a>' ); ?></strong>
+			</p>
+			<p>
+				<input
+					type="button"
+					class="button-secondary gluu-tables-button"
+					data-list="custom-plugins"
+					value="<?php _e( 'check all', 'go-live-update-urls' ); ?>"
+					data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
+					data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>" />
+			</p>
+			<?php
+			echo $gluu->makeCheckBoxes( $gluu->get_custom_plugin_tables(), "custom-plugins", false );
+
+		}
+
 		?>
+		<hr />
+		<p>
+			<strong>
+			<?php
+			echo apply_filters( 'gluu-uncheck-message', __(  'Un-check any above tables that you would not like to update.', 'go-live-update-urls' ) );
+			?>
+			</strong>
+		</p>
 		<table class="form-table">
 			<tr>
-				<th scope="row" style="width:150px;"><b>Old URL</b></th>
+				<th scope="row" style="width:150px;">
+					<b><?php _e( 'Old URL', 'go-live-update-urls' ); ?></b>
+				</th>
 				<td>
-					<input name="oldurl" type="text" id="oldurl" value="" style="width:300px;"/>
+					<input name="oldurl" type="text" id="oldurl" value="" style="width:300px;" title="<?php _e( 'Old URL', 'go-live-update-urls' ); ?>"/>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="width:150px;"><b>New URL</b></th>
+				<th scope="row" style="width:150px;">
+					<b><?php _e( 'New URL', 'go-live-update-urls' ); ?></b>
+				</th>
 				<td>
-					<input name="newurl" type="text" id="newurl" value="" style="width:300px;"/>
+					<input name="newurl" type="text" id="newurl" value="" style="width:300px;" title="<?php _e( 'New URL', 'go-live-update-urls' ); ?>"/>
 				</td>
 			</tr>
 		</table>
-		<p class="submit">
-			<?php submit_button( 'Make it Happen', 'primary', 'gluu-submit' ); ?>
-		</p>
-		<?php
-		echo $nonce;
-		?>
-
+		<?php submit_button( __( 'Make it Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
 	</form>
 </div>
-<script type="text/javascript">
-	jQuery( '#uncheck-button' ).click( function(){
-		if( jQuery( this ).val() == 'uncheck all' ){
-			jQuery( '#gluu-checkbox-form input[type="checkbox"]' ).attr( 'checked', false );
-			jQuery( this ).val( 'check all' );
-		} else {
-			jQuery( '#gluu-checkbox-form input[type="checkbox"]' ).attr( 'checked', true );
-			jQuery( this ).val( 'uncheck all' );
-		}
-	} );
-</script>

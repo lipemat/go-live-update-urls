@@ -5,16 +5,16 @@
  * @author Mat Lipe
  * @since  2.2
  *
- * @TODO split into multiple classes and cleanup
- *       Once get some funding
  */
 class GoLiveUpdateUrls {
+	const NONCE = 'gluu-update-tables';
+	const TABLE_INPUT_NAME = 'gluu_table';
 
-	var $oldurl = false;
+	public $oldurl = false;
 
-	var $newurl = false;
+	public $newurl = false;
 
-	var $double_subdomain = false; //keep track if going to a subdomain
+	public $double_subdomain = false; //keep track if going to a subdomain
 
 	/*
 	 * serialized_tables
@@ -42,22 +42,19 @@ class GoLiveUpdateUrls {
 			add_action( 'init', array( $this, 'maybe_run_updates' ) );
 		}
 
-		add_action( 'admin_notices', array( $this, 'pro_notice' ) );
 		add_action( 'admin_menu', array( $this, 'gluu_add_url_options' ) );
 	}
 
 
 	public function maybe_run_updates(){
-		check_admin_referer( plugin_basename( __FILE__ ), 'gluu-manage-options' );
-
-		if( !wp_verify_nonce( $_POST[ 'gluu-manage-options' ], plugin_basename( __FILE__ ) ) ){
+		if( !wp_verify_nonce( $_POST[ self::NONCE ], self::NONCE ) ){
 			wp_die( __('Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
 		$this->oldurl = trim( strip_tags( $_POST[ 'oldurl' ] ) );
 		$this->newurl = trim( strip_tags( $_POST[ 'newurl' ] ) );
 
-		$this->tables = $_POST;
+		$this->tables = $_POST[ self::TABLE_INPUT_NAME ];
 
 		do_action( 'gluu-before-make-update', $this );
 
@@ -74,7 +71,7 @@ class GoLiveUpdateUrls {
 		?>
 		<div id="message" class="updated fade">
 			<p>
-				<strong><?php _e( 'URLs have been updated.', 'go-live-update-urls' ); ?></strong>
+				<strong><?php _e( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ); ?></strong>
 			</p>
 		</div>
 		<?php
@@ -90,29 +87,6 @@ class GoLiveUpdateUrls {
 		</div>
 		<?php
 
-	}
-
-
-	public function pro_notice(){
-		if( class_exists( 'Gluu_Pro' ) ){
-			return;
-		}
-
-		$screen = get_current_screen();
-		if( "tools_page_GoLiveUpdateUrls" != $screen->id ){
-			return;
-		}
-		?>
-		<div id="message" class="notice updated">
-			<p>
-				<?php _e( 'Want a smarter, easier to use plugin with better support?', 'go-live-update-urls' ); ?>
-				<br>
-				<a target="blank" href="http://matlipe.com/product/go-live-update-urls-pro/">
-					<?php _e( 'Go Pro!', 'go-live-update-urls' ); ?>
-				</a>
-			</p>
-		</div>
-	<?php
 	}
 
 
@@ -179,9 +153,8 @@ class GoLiveUpdateUrls {
 	 *
 	 */
 	function adminToolsPage(){
-		global $table_prefix;
 
-		$nonce = wp_nonce_field( plugin_basename( __FILE__ ), 'gluu-manage-options', true, false );
+		wp_enqueue_script( 'gluu-admin-page', self::plugin_url( 'resources/js/admin-page.js'), array( 'jquery'), GLUU_VERSION );
 
 		require( $this->fileHyercy( 'admin-tools-page.php' ) );
 	}
@@ -211,35 +184,95 @@ class GoLiveUpdateUrls {
 	 *
 	 * @since  2.2
 	 *
-	 * @since  10.23.13
-	 * @uses   by the view admin-tools-page.php
+	 * @param array  $tables
+	 * @param string $list - uses by js to separate lists
+	 * @param bool   $checked
 	 *
-	 * @filter 'gluu_table_checkboxes' with 2 param
-	 *     * $output - the html formatted checkboxes
-	 *     * $tables - the complete tables object
+	 * @return string;
 	 *
 	 */
-	function makeCheckBoxes(){
+	function makeCheckBoxes( $tables, $list, $checked = true ){
 
-		$tables = self::get_all_tables();
+		$output = '<ul id="gluu-checkboxes" data-list="' . $list . '">';
 
-		$output = '<ul id="gluu-checkboxes">';
+		$serialized_tables = $this->getSerializedTables();
 
-		$seralized_tables = $this->getSerializedTables();
-
-		foreach( $tables as $v ){
-			if( in_array( $v->TABLE_NAME, array_keys( $seralized_tables ) ) ){
-				$output .= sprintf( '<li><input name="%s" type="checkbox" value="%s" checked /> %s - <strong><em>Seralized Safe</strong></em></li>', $v->TABLE_NAME, $v->TABLE_NAME, $v->TABLE_NAME );
-			} else {
-				$output .= sprintf( '<li><input name="%s" type="checkbox" value="%s" checked /> %s</li>', $v->TABLE_NAME, $v->TABLE_NAME, $v->TABLE_NAME );
+		foreach( $tables as $_table ){
+			$output .= sprintf( '<li><input name="%s[%s]" type="checkbox" value="%s" class="gluu-wp-core-table" %s/> %s', self::TABLE_INPUT_NAME, $_table, $_table, checked( $checked, true, false), $_table );
+			if( in_array( $_table, array_keys( $serialized_tables ) ) ){
+				$output .= sprintf( ' - <strong><em>%s</strong></em>', __( 'Serialized Safe', 'go-live-update-urls' ) );
 			}
+			$output .= '</li>';
 		}
 
 		$output .= '</ul>';
 
-		return apply_filters( 'gluu_table_checkboxes', $output, $tables );
+		return $output;
+
+	}
 
 
+	/**
+	 * Get the list of tables that were not create by WP core
+	 *
+	 * @return array
+	 */
+	public function get_custom_plugin_tables(){
+		$core_tables = $this->get_core_tables();
+		$all_tables  = wp_list_pluck( self::get_all_tables(), 'TABLE_NAME' );
+		$all_tables  = array_flip( $all_tables );
+		foreach( $core_tables as $_table ){
+			unset( $all_tables[ $_table ] );
+		}
+
+		return apply_filters( 'go_live_update_urls_plugin_tables' , array_keys( $all_tables ) );
+	}
+
+
+	/**
+	 * Get the list of WP core tables
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function get_core_tables(){
+		global $wpdb;
+
+		//Pre WP 4.4
+		if( !isset( $wpdb->termmeta ) ){
+			$wpdb->termmeta = false;
+		}
+
+		$tables = array(
+			$wpdb->posts,
+			$wpdb->comments,
+			$wpdb->links,
+			$wpdb->options,
+			$wpdb->postmeta,
+			$wpdb->terms,
+			$wpdb->term_taxonomy,
+			$wpdb->term_relationships,
+			$wpdb->termmeta,
+			$wpdb->commentmeta,
+			$wpdb->users,
+			$wpdb->usermeta,
+		);
+
+		if( isset( $wpdb->termmeta ) ){
+			$tables[] = $wpdb->termmeta;
+		}
+		if( is_multisite() ){
+			$tables[] = $wpdb->blogs;
+			$tables[] = $wpdb->signups;
+			$tables[] = $wpdb->site;
+			$tables[] = $wpdb->sitemeta;
+			$tables[] = $wpdb->sitecategories;
+			$tables[] = $wpdb->registration_log;
+			$tables[] = $wpdb->blog_versions;
+		}
+
+		return apply_filters( 'go_live_update_urls_core_tables', $tables );
 	}
 
 
@@ -283,13 +316,13 @@ class GoLiveUpdateUrls {
     function makeTheUpdates(){
         global $wpdb;
 
+	    if( empty( $this->oldurl ) || empty( $this->newurl ) ){
+		    return false;
+	    }
+
         @set_time_limit( 0 );
         @ini_set( 'memory_limit', '256M' );
         @ini_set( 'max_input_time', '-1' );
-
-        if( empty( $this->oldurl ) || empty( $this->newurl ) ){
-            return false;
-        }
 
         // If the new domain is the old one with a new sub-domain like www
         if( strpos( $this->newurl, $this->oldurl ) !== false ){
@@ -311,29 +344,27 @@ class GoLiveUpdateUrls {
                 }
             }
 
-            if( $table != 'submit' && $table != 'oldurl' && $table != 'newurl' ){
+	        $column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME='" . $table . "'";
+	        $columns      = $wpdb->get_col( $column_query );
 
-                $column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME='" . $table . "'";
-                $columns      = $wpdb->get_col( $column_query );
+	        foreach( $columns as $_column ){
+		        $update_query = "UPDATE " . $table . " SET " . $_column . " = replace(" . $_column . ", %s, %s)";
+		        $wpdb->query( $wpdb->prepare( $update_query, array( $this->oldurl, $this->newurl ) ) );
 
-                foreach( $columns as $_column ){
-                    $update_query = "UPDATE " . $table . " SET " . $_column . " = replace(" . $_column . ", %s, %s)";
-                    $wpdb->query( $wpdb->prepare( $update_query, array( $this->oldurl, $this->newurl ) ) );
+		        //Fix the dub dubs if this was the old domain with a new sub
+		        if( $this->double_subdomain ){
+			        $wpdb->query( $wpdb->prepare( $update_query, array(
+				        $this->double_subdomain,
+				        $this->newurl,
+			        ) ) );
+			        //Fix the emails breaking by being appended the new subdomain
+			        $wpdb->query( $wpdb->prepare( $update_query, array(
+				        "@" . $this->newurl,
+				        "@" . $this->oldurl,
+			        ) ) );
+		        }
+	        }
 
-                    //Fix the dub dubs if this was the old domain with a new sub
-                    if( $this->double_subdomain ){
-                        $wpdb->query( $wpdb->prepare( $update_query, array(
-                                $this->double_subdomain,
-                                $this->newurl
-                        ) ) );
-                        //Fix the emails breaking by being appended the new subdomain
-                        $wpdb->query( $wpdb->prepare( $update_query, array(
-                                "@" . $this->newurl,
-                                "@" . $this->oldurl
-                        ) ) );
-                    }
-                }
-            }
         }
 
         wp_cache_flush();
@@ -434,6 +465,56 @@ class GoLiveUpdateUrls {
 		return $data;
 	}
 
+	/**************** static ****************************/
+
+	/**
+	 * Used along with self::plugin_path() to return path to this plugins files
+	 *
+	 * @var string
+	 */
+	private static $plugin_path = false;
+
+	/**
+	 * To keep track of this plugins root dir
+	 * Used along with self::plugin_url() to return url to plugin files
+	 *
+	 * @var string
+	 */
+	private static $plugin_url;
+
+
+	/**
+	 * Retrieve the path this plugins dir
+	 *
+	 * @param string [$append] - optional path file or name to add
+	 *
+	 * @return string
+	 */
+	public static function plugin_path( $append = '' ){
+
+		if( !self::$plugin_path ){
+			self::$plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) );
+		}
+
+		return self::$plugin_path . $append;
+	}
+
+
+	/**
+	 * Retrieve the url this plugins dir
+	 *
+	 * @param string [$append] - optional path file or name to add
+	 *
+	 * @return string
+	 */
+	public static function plugin_url( $append = '' ){
+
+		if( !self::$plugin_url ){
+			self::$plugin_url = trailingslashit( plugins_url( basename( self::plugin_path() ),  dirname( dirname( __FILE__ ) ) ) );
+		}
+
+		return self::$plugin_url . $append;
+	}
 
 
 	//********** SINGLETON FUNCTIONS **********/
