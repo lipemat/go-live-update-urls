@@ -13,7 +13,7 @@ define( 'GLUU_VERSION', "4.0.0" );
 define( 'GLUU_VIEWS_DIR', plugin_dir_path(__FILE__) . 'views/' );
 define( 'GLUU_URL_VIEWS_DIR', plugins_url('go-live-update-urls').'/views/' );
 
-require( 'src/GoLiveUpdateUrls.php' );
+require( plugin_dir_path( __FILE__ )  . '/src/GoLiveUpdateUrls.php' );
 
 add_action('plugins_loaded', 'gluu_load' );
 function gluu_load(){
