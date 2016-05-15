@@ -28,6 +28,8 @@ $gluu = GoLiveUpdateUrls::get_instance();
 		<?php
 		wp_nonce_field( GoLiveUpdateUrls::NONCE, GoLiveUpdateUrls::NONCE );
 
+		do_action( 'gluu_before_checkboxes', $gluu );
+
 		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
 			?>
 			<h2>
@@ -47,13 +49,10 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			</p>
 			<?php
 			echo $gluu->makeCheckBoxes( $gluu->get_core_tables(), "wp-core" );
-		}
-		?>
-		<hr />
-		<?php
-
-		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
 			?>
+
+			<hr />
+
 			<h2>
 				<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
 			</h2>
@@ -71,8 +70,9 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			</p>
 			<?php
 			echo $gluu->makeCheckBoxes( $gluu->get_custom_plugin_tables(), "custom-plugins", false );
-
 		}
+
+		do_action( 'gluu_after_checkboxes', $gluu );
 
 		?>
 		<hr />
