@@ -27,7 +27,7 @@ $gluu = GoLiveUpdateUrls::get_instance();
 	<form method="post" id="gluu-checkbox-form">
 		<?php
 		wp_nonce_field( GoLiveUpdateUrls::NONCE, GoLiveUpdateUrls::NONCE );
-		
+
 		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
 			?>
 			<h2>
@@ -55,7 +55,7 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
 			</h2>
 			<p class="description" style="color:red">
-				<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/">', '</a>' ); ?></strong>
+				<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
 			</p>
 			<p>
 				<input
