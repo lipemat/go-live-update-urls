@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2015-10-21 14:55-0400\n"
-"PO-Revision-Date: 2015-10-21 14:55-0400\n"
+"POT-Creation-Date: 2016-05-15 10:48-0400\n"
+"PO-Revision-Date: 2016-05-15 10:47-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,47 +20,82 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: lib/GoLiveUpdateUrls.php:83
+#: src/GoLiveUpdateUrls.php:51
 msgid "Ouch! That hurt! You should not be here!"
 msgstr ""
 
-#: lib/GoLiveUpdateUrls.php:106
-msgid "URLs have been updated."
+#: src/GoLiveUpdateUrls.php:74
+msgid "The URLS in the checked tables have been updated."
 msgstr ""
 
-#: lib/GoLiveUpdateUrls.php:117
+#: src/GoLiveUpdateUrls.php:85
 msgid "You must fill out both boxes to make the update!."
 msgstr ""
 
-#: lib/GoLiveUpdateUrls.php:138
-msgid "Want a smarter, easier to use plugin with better support?"
+#: src/GoLiveUpdateUrls.php:203
+msgid "Serialized Safe"
 msgstr ""
 
-#: lib/GoLiveUpdateUrls.php:141
-msgid "Go Pro!"
-msgstr ""
-
-#: views/admin-tools-page.php:15
+#: views/admin-tools-page.php:17
+#, php-format
+msgctxt "{<strong>}"
 msgid ""
-"This will replace all occurrences \"in the entire database\" of the old URL "
+"This will replace all occurrences %sin the entire database%s of the Old URL "
 "with the New URL."
 msgstr ""
 
-#: views/admin-tools-page.php:20
-#, php-format
-msgid ""
-"Please un-check any tables which may contain serialized data. The only "
-"tables which are currently serialized data safe when using this plugin are %s"
-msgstr ""
-
-#: views/admin-tools-page.php:29
+#: views/admin-tools-page.php:22
 msgid ""
 "Like any other database updating tool, you should always perform a backup "
 "before running."
 msgstr ""
 
-#: views/admin-tools-page.php:36
-msgid "Un-check any tables that you would not like to update."
+#: views/admin-tools-page.php:34
+msgid "WordPress Core Tables"
+msgstr ""
+
+#: views/admin-tools-page.php:37
+msgid ""
+"These tables are safe to update with the basic version of this plugin (the "
+"version you are currently using)."
+msgstr ""
+
+#: views/admin-tools-page.php:44 views/admin-tools-page.php:45
+#: views/admin-tools-page.php:69
+msgid "un-check all"
+msgstr ""
+
+#: views/admin-tools-page.php:46 views/admin-tools-page.php:68
+#: views/admin-tools-page.php:70
+msgid "check all"
+msgstr ""
+
+#: views/admin-tools-page.php:58
+msgid "Tables Created By Plugins"
+msgstr ""
+
+#: views/admin-tools-page.php:61
+#, php-format
+msgctxt "{<br />}{<a>}{</a>}"
+msgid ""
+"These tables are probably NOT SAFE to update with the basic version of this "
+"plugin. %sTo support tables created by plugins use the %sPro Version%s."
+msgstr ""
+
+#: views/admin-tools-page.php:82 views/admin-tools-page.php:85
+msgid "Old URL"
+msgstr ""
+
+#: views/admin-tools-page.php:90 views/admin-tools-page.php:93
+msgid "New URL"
+msgstr ""
+
+#: views/admin-tools-page.php:100
+msgid "Only the checked tables will be updated."
+msgstr ""
+
+#: views/admin-tools-page.php:104
+msgid "Make It Happen"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -73,8 +108,8 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"This Plugin Updates all the URLs in the database to point to the new URL "
-"when making your site live or changing domains."
+"Updates all the URLs in the database to point to the new URL when making "
+"your site live or changing domains."
 msgstr ""
 
 #. Author of the plugin/theme
