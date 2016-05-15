@@ -13,14 +13,16 @@ define( 'GLUU_VERSION', "3.1.2" );
 define( 'GLUU_VIEWS_DIR', plugin_dir_path(__FILE__) . 'views/' );
 define( 'GLUU_URL_VIEWS_DIR', plugins_url('go-live-update-urls').'/views/' );
 
-require( 'lib/GoLiveUpdateUrls.php' );
 
 add_action('plugins_loaded', 'gluu_load' );
 function gluu_load(){
+	require( 'src/GoLiveUpdateUrls.php' );
+
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
 	GoLiveUpdateUrls::init();
 
-	global $GoLiveUpdateUrls; //backward compatibility
+	//backward compatibility
+	global $GoLiveUpdateUrls;
 	$GoLiveUpdateUrls = GoLiveUpdateUrls::get_instance();
 }

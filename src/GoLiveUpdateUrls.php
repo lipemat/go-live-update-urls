@@ -44,7 +44,6 @@ class GoLiveUpdateUrls {
 
 		add_action( 'admin_notices', array( $this, 'pro_notice' ) );
 		add_action( 'admin_menu', array( $this, 'gluu_add_url_options' ) );
-		add_action( 'admin_head', array( $this, 'css' ) );
 	}
 
 
@@ -159,21 +158,7 @@ class GoLiveUpdateUrls {
 		return $tables;
 	}
 
-
-	/**
-	 * For adding Css to the admin
-	 *
-	 * @since 2.0
-	 */
-	function css(){
-		?>
-		<style type="text/css"><?php
-		include( $this->fileHyercy( 'go-live-update-urls.css' ) );
-		?></style><?php
-
-	}
-
-
+	
 	/**
 	 * Menu Under Tools Menu
 	 *
