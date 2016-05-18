@@ -54,7 +54,12 @@ class GoLiveUpdateUrls {
 		$this->oldurl = trim( strip_tags( $_POST[ 'oldurl' ] ) );
 		$this->newurl = trim( strip_tags( $_POST[ 'newurl' ] ) );
 
-		$this->tables = $_POST[ self::TABLE_INPUT_NAME ];
+		//backward compatibility with Pro
+		if( empty( $_POST[ self::TABLE_INPUT_NAME ] ) ){
+			$this->tables = $_POST;
+		} else {
+			$this->tables = $_POST[ self::TABLE_INPUT_NAME ];
+		}
 
 		do_action( 'gluu-before-make-update', $this );
 
@@ -337,6 +342,11 @@ class GoLiveUpdateUrls {
 
         //Go through each table sent to be updated
         foreach( array_keys( $this->tables ) as $table ){
+	        //backward compatibility with pro
+	        if( $table == 'submit' && $table == 'oldurl' && $table == 'newurl' ){
+		        continue;
+	        }
+
             if( in_array( $table, array_keys( $serialized_tables ) ) ){
                 if( is_array( $serialized_tables[ $table ] ) ){
                     foreach( $serialized_tables[ $table ] as $column ){
