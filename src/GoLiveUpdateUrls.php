@@ -68,10 +68,13 @@ class GoLiveUpdateUrls {
 
 
 	public function success(){
+		$message = apply_filters( 'go-live-update-urls-success-message', __( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ) );
 		?>
 		<div id="message" class="updated fade">
 			<p>
-				<strong><?php _e( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ); ?></strong>
+				<strong>
+					<?php echo $message; ?>
+				</strong>
 			</p>
 		</div>
 		<?php
