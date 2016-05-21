@@ -49,27 +49,30 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			</p>
 			<?php
 			echo $gluu->makeCheckBoxes( $gluu->get_core_tables(), "wp-core" );
-			?>
 
-			<hr />
+			$custom_tables = $gluu->get_custom_plugin_tables();
+			if( !empty( $custom_tables ) ){
+				?>
+				<hr/>
 
-			<h2>
-				<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
-			</h2>
-			<p class="description" style="color:red">
-				<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
-			</p>
-			<p>
-				<input
-					type="button"
-					class="button-secondary gluu-tables-button"
-					data-list="custom-plugins"
-					value="<?php _e( 'check all', 'go-live-update-urls' ); ?>"
-					data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
-					data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>" />
-			</p>
-			<?php
-			echo $gluu->makeCheckBoxes( $gluu->get_custom_plugin_tables(), "custom-plugins", false );
+				<h2>
+					<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
+				</h2>
+				<p class="description" style="color:red">
+					<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+				</p>
+				<p>
+					<input
+						type="button"
+						class="button-secondary gluu-tables-button"
+						data-list="custom-plugins"
+						value="<?php _e( 'check all', 'go-live-update-urls' ); ?>"
+						data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
+						data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>"/>
+				</p>
+				<?php
+				echo $gluu->makeCheckBoxes( $custom_tables, "custom-plugins", false );
+			}
 		}
 
 		do_action( 'gluu_after_checkboxes', $gluu );
