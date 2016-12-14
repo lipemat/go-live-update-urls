@@ -2,9 +2,9 @@
 Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40lipeimagination%2einfo&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
-Requires at least: 3.1
-Tested up to: 4.6.1
-Stable tag: 4.0.2
+Requires at least: 4.4.0
+Tested up to: 4.7.0
+Stable tag: 4.1.0
 
 == Description ==
 
@@ -65,14 +65,20 @@ Some plugins will store the data in the database serialized which does not allow
 
 = How do I know which tables I should not update? =
 
-Most tables will be just fine to update. You may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the Pro version of this plugin which works with any table.
-
+Most tables will be just fine to update. This plugin will tell you which ones not to update.
+If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the Pro version of this plugin which works with any table.
 
 == Screenshots ==
 
 1. Screenshot of a typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 4.1.0 =
+* Drop PHP 5.2 support in favor of PHP 5.3
+* Support updating JSON urls
+* Support Revolution Sliders
+* Add custom updaters support
+
 = 4.0.0 =
 * Restructure admin page to separate WP Core from custom tables
 * Remove custom styles in admin
