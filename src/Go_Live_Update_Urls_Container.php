@@ -22,8 +22,6 @@ class Go_Live_Update_Urls_Container {
 		}
 		$this->php_5_3 = version_compare( $version, '5.3', '>=' );
 		if( !$this->php_5_3 ){
-			require_once( dirname( __FILE__ ) . '/' . 'Go_Live_Update_Urls_PHP_5_2_Mock_Class.php' );
-
 			add_action( 'gluu_before_checkboxes', array( $this, 'php_version_notice' ) );
 		}
 	}
@@ -44,12 +42,14 @@ class Go_Live_Update_Urls_Container {
 	/**
 	 *
 	 *
-	 * @return Go_Live_Update_Urls\Updaters\Register
+	 * @return Go_Live_Update_Urls\Updaters\Register|Go_Live_Update_Urls_PHP_5_2_Mock_Class
 	 */
 	public function get_updaters(){
 		if( $this->php_5_3 ){
-			return \Go_Live_Update_Urls\Updaters\Register::get_instance();
+		    //must use string because PHP 5.2 won't parse
+			return call_user_func( array( '\Go_Live_Update_Urls\Updaters\Register', 'get_instance' ) );
 		} else {
+			require_once( dirname( __FILE__ ) . '/' . 'Go_Live_Update_Urls_PHP_5_2_Mock_Class.php' );
 			return new Go_Live_Update_Urls_PHP_5_2_Mock_Class();
 		}
 
