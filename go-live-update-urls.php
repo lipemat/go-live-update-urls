@@ -22,10 +22,13 @@ function go_live_update_urls_autoload( $class ){
 spl_autoload_register( 'go_live_update_urls_autoload' );
 
 require( plugin_dir_path( __FILE__ )  . '/src/GoLiveUpdateUrls.php' );
+require( plugin_dir_path( __FILE__ )  . '/src/Go_Live_Update_Urls_Container.php' );
+
 
 function go_live_update_urls_load(){
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
+	Go_Live_Update_Urls_Container::init();
 	GoLiveUpdateUrls::init();
 }
 

@@ -332,7 +332,7 @@ class GoLiveUpdateUrls {
         @ini_set( 'memory_limit', '256M' );
         @ini_set( 'max_input_time', '-1' );
 
-        $updaters = \Go_Live_Update_Urls\Updaters\Register::get_instance()->get_updaters();
+        $updaters = (array)Go_Live_Update_Urls_Container::get_instance()->get_updaters()->get_updaters();
 
         // If the new domain is the old one with a new sub-domain like www
         if( strpos( $this->newurl, $this->oldurl ) !== false ){
@@ -371,13 +371,15 @@ class GoLiveUpdateUrls {
 		        //Run each updater
                 //@todo convert all the steps to their own updater class
 		        foreach( $updaters as $_updater_class ){
-		            /** @var \Go_Live_Update_Urls\Updaters\_Updater $_updater */
-		            $_updater = new $_updater_class( $table, $_column, $this->oldurl, $this->newurl );
-		            $_updater->update_data();
-		            //run each updater through double subdomain if applicable
-		            if( $this->double_subdomain ){
-			            $_updater = new $_updater_class( $table, $_column, $this->double_subdomain, $this->newurl );
+		            if( class_exists( $_updater_class ) ){
+			            /** @var \Go_Live_Update_Urls\Updaters\_Updater $_updater */
+			            $_updater = new $_updater_class( $table, $_column, $this->oldurl, $this->newurl );
 			            $_updater->update_data();
+			            //run each updater through double sub-domain if applicable
+			            if( $this->double_subdomain ){
+				            $_updater = new $_updater_class( $table, $_column, $this->double_subdomain, $this->newurl );
+				            $_updater->update_data();
+			            }
 		            }
 		        }
 
