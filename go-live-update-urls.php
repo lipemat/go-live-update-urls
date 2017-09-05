@@ -5,10 +5,10 @@ Plugin URI: https://matlipe.com/go-live-update-urls/
 Description: Updates all the URLs in the database to point to the new URL when making your site live or changing domains.
 Author: Mat Lipe
 Author URI: https://matlipe.com/
-Version: 4.1.3
+Version: 4.1.4
 Text Domain: go-live-update-urls
 */
-define( 'GLUU_VERSION', "4.1.3" );
+define( 'GLUU_VERSION', "4.1.4" );
 define( 'GLUU_VIEWS_DIR', plugin_dir_path(__FILE__) . 'views/' );
 
 function go_live_update_urls_autoload( $class ){
