@@ -14,12 +14,12 @@ $gluu = GoLiveUpdateUrls::get_instance();
 	<h2>Go Live Update Urls</h2>
 
 	<p class="description">
-		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>}', '{/strong}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
+		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
 	</p>
 
 	<strong>
 		<em style="color:red">
-			<?php _e( "Like any other database updating tool, you should always perform a backup before running.", 'go-live-update-urls' ); ?>
+			<?php _e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
 		</em>
 	</strong>
 	<hr />
