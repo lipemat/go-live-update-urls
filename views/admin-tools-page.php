@@ -104,9 +104,15 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				?>
 			</strong>
 		</p>
-        <p class="description" style="color:#23282d">
-            <strong><?php printf( _x( 'To test this change before running it, use the  %sPro Version%s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
-        </p>
+        <?php
+        if( !defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ){
+	        ?>
+            <p class="description" style="color:#23282d">
+                <strong><?php printf( _x( 'To test this change before running it, use %sPro Version 2.0.0+%s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+            </p>
+	        <?php
+        }
+        ?>
 		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
 	</form>
 </div>
