@@ -35,8 +35,8 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			<h2>
 				<?php _e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
 			</h2>
-			<p class="description">
-				<?php _e( 'These tables are safe to update with the basic version of this plugin (the version you are currently using).', 'go-live-update-urls' ); ?>
+			<p class="description" style="color:green">
+				<strong><?php _e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?></strong>
 			</p>
 			<p>
 				<input
@@ -104,6 +104,9 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				?>
 			</strong>
 		</p>
+        <p class="description" style="color:#23282d">
+            <strong><?php printf( _x( 'To test this change before running it, use the  %sPro Version%s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+        </p>
 		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
 	</form>
 </div>

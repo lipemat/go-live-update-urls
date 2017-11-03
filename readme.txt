@@ -10,8 +10,8 @@ Stable tag: 4.1.4
 
 Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site.
 
-<h3>Want a smarter, easier to use plugin with better support?</h3>
-<strong><big><a href="https://matlipe.com/product/go-live-update-urls-pro/">Go Pro!</a></big></strong>
+<h3>Want a smarter, easier to use plugin with url testing and priority support?</h3>
+<strong><big><a href="https://matlipe.com/product/go-live-update-urls-pro/">Go Pro! Lots of great new stuff in version 2.0.0!</a></big></strong>
 
 
 Works on both multi-site and single site installs.
