@@ -8,22 +8,19 @@ Stable tag: 4.1.4
 
 == Description ==
 
-Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site.
+Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.0<a> just dropped with lots of great new stuff!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.0</a> just dropped with lots of great new stuff!</blockquote>
 
-Works on both multi-site and single site installs.
 
-Some of the features this plugin offers:
-
-* Database table by table selection in case of issues
+<h4>Features</h4>
+* Database table by table selection
 * Supports serialized data in options and meta tables
 * Very easy to use admin page - which may be found under Tools
 
-Updates Entire Site including:
-
+<h4>Updates Entire Site including</h4>
 * Posts
 * Pages
 * Image urls
@@ -45,13 +42,8 @@ Updates Entire Site including:
 * Automatically fixes common mistakes when entering URL. **NEW**
 * More features coming soon...
 
-
-The admin screen is extend-able for developers familiar with using filters or template overrides.
-
-Additional Serialized Safe tables may be adding using the 'go-live-update-urls-serialized-tables' filter.
-
-To contribute send pull requests:
-https://github.com/lipemat/go-live-update-urls/
+<h4>Contribute</h4>
+Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
 == Installation ==
 
@@ -73,12 +65,12 @@ Under the Tools menu in the dashboard there will be a "Go Live" link.
 
 = Why does updating the domain break some plugins? =
 
-Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may un-check tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, usermeta, commentmeta, and sitemeta tables are serialization safe.
+Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may un-check tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, usermeta, commentmeta, and sitemeta tables are serialization safe. The <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> supports updating these tables created by plugins.
 
 = How do I know which tables I should not update? =
 
 Most tables will be just fine to update. This plugin will tell you which ones not to update.
-If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the Pro version of this plugin which works with any table.
+If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
 
 == Screenshots ==
 
