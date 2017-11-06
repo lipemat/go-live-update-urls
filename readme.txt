@@ -8,7 +8,7 @@ Stable tag: 4.1.5
 
 == Description ==
 
-Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
+Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
