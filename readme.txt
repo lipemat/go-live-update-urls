@@ -10,9 +10,9 @@ Stable tag: 4.1.4
 
 Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site.
 
-<h3>Want a smarter, easier to use plugin with url testing and priority support?</h3>
-<strong><big><a href="https://matlipe.com/product/go-live-update-urls-pro/">Go Pro! Lots of great new stuff in version 2.0.0!</a></big></strong>
+<strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.0<a> just dropped with lots of great new stuff!</blockquote>
 
 Works on both multi-site and single site installs.
 
@@ -33,6 +33,18 @@ Updates Entire Site including:
 * Widgets and widget data
 * Site settings
 * And much more
+
+<h4>Pro Features</h4>
+* Supports updating database tables created by plugins without fear of breaking.
+* Database tables are organized into understandable sections.
+* Support serialized data across any table.
+* Priority support.
+* Improved user interface.
+* Test URL changes before running them. **NEW**
+* URL testing report provided for peace of mind. **NEW**
+* Automatically fixes common mistakes when entering URL. **NEW**
+* More features coming soon...
+
 
 The admin screen is extend-able for developers familiar with using filters or template overrides.
 
