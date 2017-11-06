@@ -160,11 +160,10 @@ class GoLiveUpdateUrls {
 	 * @since 2.0
 	 *
 	 */
-	function adminToolsPage(){
+	public function adminToolsPage(){
+		wp_enqueue_script( 'gluu-admin-page', self::plugin_url( 'resources/js/admin-page.js'), array( 'jquery'), GO_LIVE_UPDATE_URLS_VERSION );
 
-		wp_enqueue_script( 'gluu-admin-page', self::plugin_url( 'resources/js/admin-page.js'), array( 'jquery'), GLUU_VERSION );
-
-		require( $this->fileHyercy( 'admin-tools-page.php' ) );
+		require $this->fileHyercy( 'admin-tools-page.php' );
 	}
 
 

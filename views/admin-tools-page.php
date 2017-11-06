@@ -14,12 +14,12 @@ $gluu = GoLiveUpdateUrls::get_instance();
 	<h2>Go Live Update Urls</h2>
 
 	<p class="description">
-		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>}', '{/strong}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
+		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
 	</p>
 
 	<strong>
 		<em style="color:red">
-			<?php _e( "Like any other database updating tool, you should always perform a backup before running.", 'go-live-update-urls' ); ?>
+			<?php _e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
 		</em>
 	</strong>
 	<hr />
@@ -35,8 +35,8 @@ $gluu = GoLiveUpdateUrls::get_instance();
 			<h2>
 				<?php _e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
 			</h2>
-			<p class="description">
-				<?php _e( 'These tables are safe to update with the basic version of this plugin (the version you are currently using).', 'go-live-update-urls' ); ?>
+			<p class="description" style="color:green">
+				<strong><?php _e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?></strong>
 			</p>
 			<p>
 				<input
@@ -104,6 +104,15 @@ $gluu = GoLiveUpdateUrls::get_instance();
 				?>
 			</strong>
 		</p>
+        <?php
+        if( !defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ){
+	        ?>
+            <p class="description" style="color:#23282d">
+                <strong><?php printf( _x( 'To test this change before running it, use %sPro Version 2.0.0+%s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+            </p>
+	        <?php
+        }
+        ?>
 		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
 	</form>
 </div>
