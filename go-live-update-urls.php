@@ -8,12 +8,15 @@ Author URI: https://matlipe.com/
 Version: 4.1.4
 Text Domain: go-live-update-urls
 */
-define( 'GLUU_VERSION', "4.1.4" );
+
+//@todo remove deprecated GLUU_VERSION on 6/6/18
+define( 'GLUU_VERSION', '4.1.4' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '4.1.4' );
 define( 'GLUU_VIEWS_DIR', plugin_dir_path(__FILE__) . 'views/' );
 
 function go_live_update_urls_autoload( $class ){
 	$parts = explode( '\\', $class );
-	if( $parts[ 0 ] == 'Go_Live_Update_Urls' ){
+	if( $parts[ 0 ] === 'Go_Live_Update_Urls' ){
 		if( file_exists( dirname( __FILE__ ) . '/src/' . implode( DIRECTORY_SEPARATOR, $parts ) . '.php' ) ){
 			require( dirname( __FILE__ ) . '/src/' . implode( DIRECTORY_SEPARATOR, $parts ) . '.php' );
 		}
