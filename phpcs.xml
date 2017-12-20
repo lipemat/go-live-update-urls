@@ -4,7 +4,7 @@
     <!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
     <!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
 
-    <description>Starting Point Ruleset.</description>
+    <description>Go Live Update URLS Ruleset.</description>
 
     <!-- Exclude paths -->
     <exclude-pattern>*/dev/*</exclude-pattern>
@@ -15,7 +15,7 @@
     <config name="minimum_supported_wp_version" value="4.7" />
 
     <!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-    <config name="testVersion" value="7.1-"/>
+    <config name="testVersion" value="5.2-"/>
 
     <!-- Rules -->
     <rule ref="PHPCompatibility"/>
@@ -37,7 +37,7 @@
     </rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="lipe" />
+            <property name="text_domain" type="array" value="go-live-update-urls" />
         </properties>
     </rule>
 </ruleset>
