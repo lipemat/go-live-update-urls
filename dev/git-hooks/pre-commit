@@ -8,7 +8,7 @@
 #
 #####################################################################################
 PHP='D:/xampp/php-5.2/php'
-PHPUNIT='E:/OneDrive/scripts/phpunit/phpunit-3.6.sh'
+PHP7='D:/xampp/php-7.2/php'
 ### Could be any level, could use dirname(realpath('$0'), 3); but have to change for each usage. Will only work from root of submodule unless change to dirname()
 PROJECT="."
 
@@ -33,10 +33,21 @@ if [ "$#" -eq 1 ]; then
 fi
 SFILES=${SFILES:-$STAGED_FILES_CMD}
 
-# Run php lint.
-echo "Checking PHP Lint..."
+# Run php lint (PHP5).
+echo "Checking PHP5 Lint..."
 for FILE in $SFILES; do
   $PHP -l -d display_errors=0 $PROJECT/$FILE
+  if [ $? != 0 ]; then
+    echo "Fix the error before commit."
+    exit 1
+  fi
+  FILES="$FILES $PROJECT/$FILE"
+done
+
+# Run php lint (PHP7).
+echo "Checking PHP7 Lint..."
+for FILE in $SFILES; do
+  $PHP7 -l -d display_errors=0 $PROJECT/$FILE
   if [ $? != 0 ]; then
     echo "Fix the error before commit."
     exit 1
