@@ -9,6 +9,8 @@
 #####################################################################################
 PHP='D:/xampp/php-5.2/php'
 PHP7='D:/xampp/php-7.2/php'
+PHPUNIT='E:/OneDrive/scripts/phpunit/phpunit-3.6.sh'
+PHPUNIT7='E:/OneDrive/scripts/phpunit/phpunit-6.5.3.phar'
 ### Could be any level, could use dirname(realpath('$0'), 3); but have to change for each usage. Will only work from root of submodule unless change to dirname()
 PROJECT="."
 
@@ -17,11 +19,31 @@ PROJECT=${PROJECT//\\//}
 
 STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \\\\.php`
 
-# Run codesniffer
+# Check for phpcs config
 if [ ! -f $PROJECT/phpcs.xml ] && [ ! -f $PROJECT/phpcs.xml.dist ]; then
   echo "$PROJECT/phpcs.xml or $PROJECT/phpcs.xml.dist not found!"
   exit 1;
 fi
+
+# Run phpunit (PHP5).
+## Use SSH script instead of a PHP call so no $PHP
+echo "Running PHP Unit (PHP5)."
+$PHPUNIT --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
+if [ $? != 0 ]; then
+  echo "Fix the error before commit!"
+  exit 1
+fi
+
+# Run phpunit (PHP7).
+echo "Running PHP Unit (PHP7)."
+$PHP7 $PHPUNIT7 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
+if [ $? != 0 ]; then
+  echo "Fix the error before commit!"
+  exit 1
+fi
+
+
+
 
 # Determine if a file list is passed.
 if [ "$#" -eq 1 ]; then
