@@ -23,8 +23,8 @@
 	<rule ref="WordPress">
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-		<exclude name="Generic.Commenting.DocComment.MissingShort" />
-		<exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+		<exclude name="Generic" />
+		<exclude name="Squiz" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
