@@ -4,6 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 4.5.0
 Tested up to: 4.9.1
+Requires PHP: 5.3.1
 Stable tag: 4.1.5
 
 == Description ==
