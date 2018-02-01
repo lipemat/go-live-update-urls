@@ -17,9 +17,10 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 
 <h4>Features</h4>
-* Database table by table selection
-* Supports serialized data in options and meta tables
-* Very easy to use admin page - which may be found under Tools
+* Database table by table selection.
+* Updates serialized data in core tables.
+* Very easy to use admin page - which may be found under Tools.
+
 
 <h4>Updates Entire Site including</h4>
 * Posts
@@ -29,19 +30,18 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Post Meta data
 * Custom Post Types
 * Widgets and widget data
-* Site settings
+* Options and settings
 * And much more
 
 <h4>Pro Features</h4>
-* Supports updating database tables created by plugins without fear of breaking.
+* Updates database tables created by plugins without fear of issues.
 * Database tables are organized into understandable sections.
-* Support serialized data across any table.
+* Updates serialized data across any table.
 * Priority support.
-* Improved user interface.
-* Test URL changes before running them. **NEW**
-* URL testing report provided for peace of mind. **NEW**
-* Automatically fixes common mistakes when entering URL. **NEW**
-* More features coming soon...
+* Improved admin page.
+* Ability to test URL changes before running them. **NEW**
+* URL testing report is provided for peace of mind. **NEW**
+* Optionally fix common mistakes when entering a URL automatically. **NEW**
 
 <h4>Contribute</h4>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
