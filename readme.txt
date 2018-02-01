@@ -5,7 +5,7 @@ Tags: Go Live, Urls, Domain Changes
 Requires at least: 4.5.0
 Tested up to: 4.9.1
 Requires PHP: 5.2.4
-Stable tag: 4.1.5
+Stable tag: 5.0.0
 
 == Description ==
 
