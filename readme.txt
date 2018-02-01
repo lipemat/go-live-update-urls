@@ -3,22 +3,24 @@ Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40matlipe%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 4.5.0
-Tested up to: 4.8.3
-Stable tag: 4.1.5
+Tested up to: 4.9.1
+Requires PHP: 5.2.4
+Stable tag: 5.0.0
 
 == Description ==
 
-Goes through entire site and replaces all instances of and old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
+Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.0</a> just dropped with lots of great new stuff!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.3</a> just dropped with lots of great new stuff!</blockquote>
 
 
 <h4>Features</h4>
-* Database table by table selection
-* Supports serialized data in options and meta tables
-* Very easy to use admin page - which may be found under Tools
+* Database table by table selection.
+* Updates serialized data in core tables.
+* Very easy to use admin page - which may be found under Tools.
+
 
 <h4>Updates Entire Site including</h4>
 * Posts
@@ -28,19 +30,18 @@ Goes through entire site and replaces all instances of and old url with a new on
 * Post Meta data
 * Custom Post Types
 * Widgets and widget data
-* Site settings
+* Options and settings
 * And much more
 
 <h4>Pro Features</h4>
-* Supports updating database tables created by plugins without fear of breaking.
+* Updates database tables created by plugins without fear of issues.
 * Database tables are organized into understandable sections.
-* Support serialized data across any table.
+* Updates serialized data across any table.
 * Priority support.
-* Improved user interface.
-* Test URL changes before running them. **NEW**
-* URL testing report provided for peace of mind. **NEW**
-* Automatically fixes common mistakes when entering URL. **NEW**
-* More features coming soon...
+* Improved admin page.
+* Ability to test URL changes before running them. **NEW**
+* URL testing report is provided for peace of mind. **NEW**
+* Optionally fix common mistakes when entering a URL automatically. **NEW**
 
 <h4>Contribute</h4>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
@@ -74,9 +75,17 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 == Screenshots ==
 
-1. Screenshot of a typical settings page. The verbiage will change slightly depending on your database structure
+1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 5.0.0 =
+* Bring back PHP 5.2 support
+* Restructure entire codebase
+* Greatly improve security
+* Improve performance
+* UI improvements
+* Use strict WP coding standards
+
 = 4.1.0 =
 * Drop PHP 5.2 support in favor of PHP 5.3
 * Support updating JSON urls

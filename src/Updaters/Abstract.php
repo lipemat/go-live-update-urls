@@ -1,16 +1,13 @@
 <?php
 
-namespace Go_Live_Update_Urls\Updaters;
-
 /**
  * _Updater
  *
  * @author  Mat Lipe
- * @since   12/13/2016
+ * @since   5.0.0
  *
- * @package Gluu\Updates
  */
-abstract class _Updater {
+abstract class Go_Live_Update_Urls__Updaters__Abstract {
 	protected $table;
 
 	protected $column;
@@ -20,7 +17,7 @@ abstract class _Updater {
 	protected $new;
 
 
-	public function __construct( $table, $column, $old, $new ){
+	public function __construct( $table, $column, $old, $new ) {
 		$this->table  = $table;
 		$this->column = $column;
 		$this->old    = $old;

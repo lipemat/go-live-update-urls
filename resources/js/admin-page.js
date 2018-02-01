@@ -1,19 +1,15 @@
 (function( $ ){
 	var go_live_update_urls = {
 		init : function(){
-			$( '.gluu-tables-button' ).click( this._un_check_tables );
+			$( '[data-js="go-live-update-urls/checkboxes/check-all"]' ).click( this._un_check_tables );
 		},
 
 		_un_check_tables : function(){
 			var el = $( this );
-			if( el.hasClass( 'checked' ) ){
-				el.removeClass( 'checked' );
-				el.val( el.data( 'un-checked' ) );
-				$( '[data-list="' + el.data( 'list' ) +'"] .gluu-wp-core-table' ).attr( 'checked', false );
+			if( el.prop( 'checked' ) ){
+				$( '[data-list="' + el.data( 'list' ) +'"] input' ).prop( 'checked', true );
 			} else {
-				el.addClass( 'checked' );
-				el.val( el.data( 'checked' ) );
-				$( '[data-list="' + el.data( 'list' ) +'"] .gluu-wp-core-table' ).attr( 'checked', true );
+				$( '[data-list="' + el.data( 'list' ) +'"] input' ).prop( 'checked', false );
 			}
 		}
 	};

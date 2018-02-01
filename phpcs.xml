@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards">
+    <!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+    <!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+    <!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/blob/develop/WordPress-Core/ruleset.xml -->
+
+    <description>Go Live Update URLS Ruleset.</description>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>*/dev/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+
+    <config name="minimum_supported_wp_version" value="4.7" />
+
+    <!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
+    <config name="testVersion" value="5.2-"/>
+
+    <!-- Rules -->
+    <rule ref="PHPCompatibility"/>
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="WordPress.VIP.ValidatedSanitizedInput.InputNotValidated" />
+		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+		<exclude name="WordPress.WP.PreparedSQL.NotPrepared" />
+		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__users" />
+		<exclude name="WordPress.CSRF.NonceVerification.NoNonceVerification" />
+		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash" />
+		<exclude name="PEAR" />
+		<exclude name="Generic" />
+		<exclude name="Squiz" />
+	</rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="go-live-update-urls" />
+        </properties>
+    </rule>
+</ruleset>
