@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 4.5.0
 Tested up to: 4.9.1
-Requires PHP: 5.3.1
+Requires PHP: 5.2.4
 Stable tag: 4.1.5
 
 == Description ==
@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.0</a> just dropped with lots of great new stuff!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.0.3</a> just dropped with lots of great new stuff!</blockquote>
 
 
 <h4>Features</h4>
@@ -75,9 +75,17 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 == Screenshots ==
 
-1. Screenshot of a typical settings page. The verbiage will change slightly depending on your database structure
+1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 5.0.0 =
+* Bring back PHP 5.2 support
+* Restructure entire codebase
+* Greatly improve security
+* Improve performance
+* UI improvements
+* Use strict WP coding standards
+
 = 4.1.0 =
 * Drop PHP 5.2 support in favor of PHP 5.3
 * Support updating JSON urls

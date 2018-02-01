@@ -1,7 +1,5 @@
 <?php
 
-namespace Go_Live_Update_Urls\Updaters;
-
 /**
  * JSON
  *
@@ -17,20 +15,20 @@ namespace Go_Live_Update_Urls\Updaters;
  *
  *
  * @author  Mat Lipe
- * @since   12/13/2016
+ * @since   5.0.0
  *
  * @package Gluu\Updates
  */
-class JSON extends _Updater {
+class Go_Live_Update_Urls__Updaters__JSON extends Go_Live_Update_Urls__Updaters__Abstract {
 
-	public function update_data(){
-		if( !strpos( $this->new, '/' ) && !strpos( $this->old, '/' ) ){
+	public function update_data() {
+		if ( ! strpos( $this->new, '/' ) && ! strpos( $this->old, '/' ) ) {
 			return false;
 		}
 
 		global $wpdb;
-		$old = substr( json_encode( $this->old ), 1, -1 );
-		$new = substr( json_encode( $this->new ), 1, -1 );
+		$old = substr( wp_json_encode( $this->old ), 1, - 1 );
+		$new = substr( wp_json_encode( $this->new ), 1, - 1 );
 
 		$update_query = "UPDATE " . $this->table . " SET " . $this->column . " = replace(" . $this->column . ", %s, %s)";
 		$wpdb->query( $wpdb->prepare( $update_query, array( $old, $new ) ) );

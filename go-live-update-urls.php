@@ -9,30 +9,46 @@ Version: 4.1.5
 Text Domain: go-live-update-urls
 */
 
-//@todo remove deprecated GLUU_VERSION on 6/6/18
-define( 'GLUU_VERSION', '4.1.5' );
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '4.1.5' );
-define( 'GLUU_VIEWS_DIR', plugin_dir_path(__FILE__) . 'views/' );
 
-function go_live_update_urls_autoload( $class ){
-	$parts = explode( '\\', $class );
-	if( $parts[ 0 ] === 'Go_Live_Update_Urls' ){
-		if( file_exists( dirname( __FILE__ ) . '/src/' . implode( DIRECTORY_SEPARATOR, $parts ) . '.php' ) ){
-			require( dirname( __FILE__ ) . '/src/' . implode( DIRECTORY_SEPARATOR, $parts ) . '.php' );
-		}
-	}
-}
-spl_autoload_register( 'go_live_update_urls_autoload' );
+/** Deprecated to be removed 6/1/18 */
+require plugin_dir_path( __FILE__ ) . '/src/GoLiveUpdateUrls.php';
 
-require( plugin_dir_path( __FILE__ )  . '/src/GoLiveUpdateUrls.php' );
-require( plugin_dir_path( __FILE__ )  . '/src/Go_Live_Update_Urls_Container.php' );
-
-
-function go_live_update_urls_load(){
+function go_live_update_urls_load() {
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
-	Go_Live_Update_Urls_Container::init();
-	GoLiveUpdateUrls::init();
+	Go_Live_Update_Urls_Admin_Page::init();
 }
 
-add_action('plugins_loaded', 'go_live_update_urls_load', 10 );
+/**
+ * Autoload classes from PSR4 src directory
+ * Mirrored after Composer dump-autoload for performance
+ *
+ * @param string $class
+ *
+ * @since 5.0.0
+ *
+ * @return void
+ */
+function go_live_update_urls_autoload( $class ) {
+	$classes = array(
+		//core
+		'Go_Live_Update_Urls_PHP_5_2_Mock_Class'  => 'PHP_5_2_Mock_Class.php',
+		'Go_Live_Update_Urls_Admin_Page'          => 'Admin_Page.php',
+		'Go_Live_Update_Urls_Core'                => 'Core.php',
+		'Go_Live_Update_Urls_Database'            => 'Database.php',
+		//updaters
+		'Go_Live_Update_Urls__Updaters__Abstract' => 'Updaters/Abstract.php',
+		'Go_Live_Update_Urls__Updaters__JSON'     => 'Updaters/JSON.php',
+		'Go_Live_Update_Urls__Updaters__Repo'     => 'Updaters/Repo.php',
+
+
+	);
+	if ( isset( $classes[ $class ] ) ) {
+		require dirname( __FILE__ ) . '/src/' . $classes[ $class ];
+	}
+}
+
+spl_autoload_register( 'go_live_update_urls_autoload' );
+
+add_action( 'plugins_loaded', 'go_live_update_urls_load' );

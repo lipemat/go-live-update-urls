@@ -2,117 +2,144 @@
 /**
  * Main Admin screen view
  *
- * @author Mat Lipe
+ * @since  5.0.0
  *
  * @uses   may be overridden in your theme by putting a copy of this file inside a go-live-update-urls folder
  */
 
-$gluu = GoLiveUpdateUrls::get_instance();
+$db    = Go_Live_Update_Urls_Database::instance();
+$admin = Go_Live_Update_Urls_Admin_Page::instance();
 
 ?>
-<div id="gluu" class="wrap">
-	<h2>Go Live Update Urls</h2>
+<div id="go-live-update-urls/admin-page" class="wrap">
+	<h2>
+		<?php esc_html_e( 'Go Live Update Urls', 'go-live-update-urls' ); ?>
+	</h2>
 
 	<p class="description">
-		<?php printf( _x( 'This will replace all occurrences %sin the entire database%s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
+		<?php
+		/* translators: <strong></strong> */
+		printf( esc_html_x( 'This will replace all occurrences %1$sin the entire database%2$s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' ); ?>
 	</p>
 
 	<strong>
 		<em style="color:red">
-			<?php _e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
+			<?php esc_html_e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
 		</em>
 	</strong>
-	<hr />
+	<hr/>
 
-	<form method="post" id="gluu-checkbox-form">
+	<form method="post" id="go-live-update-urls/checkbox-form">
 		<?php
-		wp_nonce_field( GoLiveUpdateUrls::NONCE, GoLiveUpdateUrls::NONCE );
+		wp_nonce_field( Go_Live_Update_Urls_Admin_Page::NONCE, Go_Live_Update_Urls_Admin_Page::NONCE );
 
-		do_action( 'gluu_before_checkboxes', $gluu );
+		do_action( 'gluu_before_checkboxes', $db );
 
-		if( apply_filters( 'gluu-use-default_checkboxes', true ) ){
+		if ( apply_filters( 'gluu-use-default_checkboxes', true ) ) {
 			?>
 			<h2>
-				<?php _e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
+				<?php esc_html_e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
 			</h2>
 			<p class="description" style="color:green">
-				<strong><?php _e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?></strong>
+				<strong>
+					<?php esc_attr_e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?>
+				</strong>
 			</p>
 			<p>
 				<input
-					type="button"
-					class="button-secondary checked gluu-tables-button"
+					type="checkbox"
+					class="go-live-update-urls/checkboxes/check-all"
 					data-list="wp-core"
-					value="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
-					data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
-					data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>" />
+					data-js="go-live-update-urls/checkboxes/check-all"
+					checked
+				/>
+				<hr />
 			</p>
-			<?php
-			echo $gluu->makeCheckBoxes( $gluu->get_core_tables(), "wp-core" );
+			<?php $admin->render_check_boxes( $db->get_core_tables(), 'wp-core' );
 
-			$custom_tables = $gluu->get_custom_plugin_tables();
-			if( !empty( $custom_tables ) ){
+			$custom_tables = $db->get_custom_plugin_tables();
+			if ( ! empty( $custom_tables ) ) {
 				?>
 				<hr/>
 
 				<h2>
-					<?php _e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
+					<?php esc_html_e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
 				</h2>
 				<p class="description" style="color:red">
-					<strong><?php printf( _x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %sTo support tables created by plugins use the %sPro Version%s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+					<strong>
+						<?php
+						/* translators: <br /> <a> </a> */
+						printf( esc_html_x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %1$sTo support tables created by plugins use the %2$sPro Version%3$s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
 				</p>
 				<p>
 					<input
-						type="button"
-						class="button-secondary gluu-tables-button"
+						type="checkbox"
+						class="go-live-update-urls/checkboxes/check-all"
 						data-list="custom-plugins"
-						value="<?php _e( 'check all', 'go-live-update-urls' ); ?>"
-						data-checked="<?php _e( 'un-check all', 'go-live-update-urls' ); ?>"
-						data-un-checked="<?php _e( 'check all', 'go-live-update-urls' ); ?>"/>
+						data-js="go-live-update-urls/checkboxes/check-all"/>
+				<hr />
 				</p>
-				<?php
-				echo $gluu->makeCheckBoxes( $custom_tables, "custom-plugins", false );
+				<?php $admin->render_check_boxes( $custom_tables, 'custom-plugins', false );
 			}
 		}
 
-		do_action( 'gluu_after_checkboxes', $gluu );
+		do_action( 'gluu_after_checkboxes', $db );
 
 		?>
-		<hr />
-		<table class="form-table">
+		<hr/>
+		<table class="form-table" id="go-live-update-urls/url-fields">
 			<tr>
 				<th scope="row" style="width:150px;">
-					<b><?php _e( 'Old URL', 'go-live-update-urls' ); ?></b>
+					<label for="old_url">
+						<?php esc_html_e( 'Old URL', 'go-live-update-urls' ); ?>
+					</label>
 				</th>
 				<td>
-					<input name="oldurl" type="text" id="oldurl" value="" style="width:300px;" title="<?php _e( 'Old URL', 'go-live-update-urls' ); ?>"/>
+					<input
+						name="<?php echo esc_attr( Go_Live_Update_Urls_Admin_Page::OLD_URL ); ?>"
+						type="text"
+						id="old_url"
+						value=""
+						style="width:300px;"
+						title="<?php esc_attr_e( 'Old URL', 'go-live-update-urls' ); ?>"/>
 				</td>
 			</tr>
 			<tr>
 				<th scope="row" style="width:150px;">
-					<b><?php _e( 'New URL', 'go-live-update-urls' ); ?></b>
+					<label for="new_url">
+						<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>
+					</label>
 				</th>
 				<td>
-					<input name="newurl" type="text" id="newurl" value="" style="width:300px;" title="<?php _e( 'New URL', 'go-live-update-urls' ); ?>"/>
+					<input
+						name="<?php echo esc_attr( Go_Live_Update_Urls_Admin_Page::NEW_URL ); ?>"
+						type="text"
+						id="new_url"
+						value=""
+						style="width:300px;"
+						title="<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>"/>
 				</td>
 			</tr>
 		</table>
 		<p class="description">
 			<strong>
 				<?php
-				echo apply_filters( 'gluu-uncheck-message', __(  'Only the checked tables will be updated.', 'go-live-update-urls' ) );
+				echo esc_html( apply_filters( 'gluu-uncheck-message', __( 'Only the checked tables will be updated.', 'go-live-update-urls' ) ) );
 				?>
 			</strong>
 		</p>
-        <?php
-        if( !defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ){
-	        ?>
-            <p class="description" style="color:#23282d">
-                <strong><?php printf( _x( 'To test this change before running it, use %sPro Version 2.0.0+%s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
-            </p>
-	        <?php
-        }
-        ?>
-		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', 'gluu-submit' ); ?>
+		<?php
+		if ( ! defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ) {
+			?>
+			<p class="description" style="color:#23282d">
+				<strong>
+					<?php
+					/* translators: <a></a> */
+					printf( esc_html_x( 'To test this change before running it, use %1$sPro Version 2.0.0+%1$s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+			</p>
+			<?php
+		}
+		?>
+		<?php submit_button( __( 'Make It Happen', 'go-live-update-urls' ), 'primary', Go_Live_Update_Urls_Admin_Page::SUBMIT ); ?>
 	</form>
 </div>
