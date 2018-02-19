@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.1.0</a> just dropped with lots of great new stuff!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.2.0</a> just dropped with lots of great new stuff!</blockquote>
 
 
 <h4>Features</h4>
@@ -39,9 +39,12 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Updates serialized data across any table.
 * Priority support.
 * Improved admin page.
-* Ability to test URL changes before running them. **NEW**
-* URL testing report is provided for peace of mind. **NEW**
-* Optionally fix common mistakes when entering a URL automatically. **NEW**
+* Ability to test URL changes before running them.
+* URL testing report is provided for peace of mind. 
+* Optionally fix common mistakes when entering a URL automatically.
+* View and use history of your Site Address (URL).
+* Predictive URLs automatically fill in the OLD URL and NEW URL.
+
 
 <h4>Contribute</h4>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
