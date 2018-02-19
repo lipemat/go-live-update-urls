@@ -140,6 +140,6 @@ $admin = Go_Live_Update_Urls_Admin_Page::instance();
 			<?php
 		}
 		?>
-		<?php submit_button( __( 'Save', 'go-live-update-urls' ), 'primary', Go_Live_Update_Urls_Admin_Page::SUBMIT ); ?>
+		<?php submit_button( __( 'Update URLs', 'go-live-update-urls' ), 'primary', Go_Live_Update_Urls_Admin_Page::SUBMIT ); ?>
 	</form>
 </div>
