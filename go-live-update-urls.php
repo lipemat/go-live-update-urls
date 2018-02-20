@@ -9,7 +9,7 @@ Version: 5.0.0
 Text Domain: go-live-update-urls
 */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.0.0' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.0.1' );
 
 /** Deprecated to be removed 6/1/18 */
 require plugin_dir_path( __FILE__ ) . '/src/GoLiveUpdateUrls.php';
