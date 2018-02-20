@@ -5,7 +5,7 @@ Plugin URI: https://matlipe.com/go-live-update-urls/
 Description: Updates all the URLs in the database to point to the new URL when making your site live or changing domains.
 Author: Mat Lipe
 Author URI: https://matlipe.com/
-Version: 5.0.0
+Version: 5.0.1
 Text Domain: go-live-update-urls
 */
 
