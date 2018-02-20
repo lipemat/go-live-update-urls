@@ -14,6 +14,28 @@ class Go_Live_Update_Urls_Core {
 
 	}
 
+
+	/**
+	 * Quick and dirty update of entire blog
+	 *
+	 * Mostly used for unit testing and future WP-CLI command
+	 *
+	 * @param string $old_url
+	 * @param string $new_url
+	 *
+	 * @since 5.0.1
+	 *
+	 * @return bool
+	 */
+	public function update( $old_url, $new_url ) {
+		$db = Go_Live_Update_Urls_Database::instance();
+		$tables = $db->get_all_table_names();
+
+		do_action( 'go-live-update-urls/core/before-update', $old_url, $new_url, $tables );
+
+		return $db->update_the_database( $old_url, $new_url, $tables );
+	}
+
 	/**
 	 * Get a view file from the theme first then this plugin
 	 *

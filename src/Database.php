@@ -55,7 +55,7 @@ class Go_Live_Update_Urls_Database {
 	 */
 	public function get_custom_plugin_tables() {
 		$core_tables = $this->get_core_tables();
-		$all_tables  = wp_list_pluck( $this->get_all_tables(), 'TABLE_NAME' );
+		$all_tables  = $this->get_all_table_names();
 		$all_tables  = array_flip( $all_tables );
 		foreach ( $core_tables as $_table ) {
 			unset( $all_tables[ $_table ] );
@@ -113,16 +113,15 @@ class Go_Live_Update_Urls_Database {
 
 
 	/**
-	 * Get a list of all database table for current install
-	 * Includes custom and standard tables
+	 * Get the names of every table in this blog
+	 * If we are multisite, we also get the global tables
 	 *
-	 * @static
+	 * @since 5.0.1
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function get_all_tables() {
+	public function get_all_table_names() {
 		global $wpdb;
-
 		$query = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->prefix . "%'";
 
 		//Done this way because like wp_% will return all other tables as well such as wp_2
@@ -136,7 +135,25 @@ class Go_Live_Update_Urls_Database {
 			$query    .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . $not_like . ')';
 		}
 
-		return $wpdb->get_results( $query );
+		return $wpdb->get_col( $query );
+	}
+
+
+	/**
+	 * @deprecated 5.0.1
+	 * @see Go_Live_Update_Urls_Database::get_all_table_names()
+	 */
+	public function get_all_tables() {
+		$names  = $this->get_all_table_names();
+		$tables = array();
+
+		foreach ( $names as $_name ) {
+			$tables[] = array(
+				'TABLE_NAME' => $_name,
+			);
+		}
+
+		return $tables;
 	}
 
 
@@ -149,6 +166,8 @@ class Go_Live_Update_Urls_Database {
 	 * @param string $new_url
 	 * @param array  $tables
 	 *
+	 * @todo split this functionality into its own OOP class
+	 *
 	 * @return bool
 	 */
 	public function update_the_database( $old_url, $new_url, array $tables ) {
@@ -156,6 +175,7 @@ class Go_Live_Update_Urls_Database {
 		$this->old_url = $old_url;
 		$this->new_url = $new_url;
 
+		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 
 		@set_time_limit( 0 );
 		@ini_set( 'memory_limit', '256M' );
@@ -172,8 +192,13 @@ class Go_Live_Update_Urls_Database {
 		$serialized_tables = $this->get_serialized_tables();
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
+		//backward compatibility for PRO 2.2.1-
+		if ( ! array_values( $tables ) === $tables ) {
+			$tables = (array) array_flip( $tables );
+		}
+
 		//Go through each table sent to be updated
-		foreach ( array_keys( $tables ) as $table ) {
+		foreach ( (array) $tables as $table ) {
 			if ( isset( $serialized_tables[ $table ] ) ) {
 				if ( is_array( $serialized_tables[ $table ] ) ) {
 					foreach ( $serialized_tables[ $table ] as $column ) {
@@ -224,6 +249,8 @@ class Go_Live_Update_Urls_Database {
 }
 
 		wp_cache_flush();
+
+		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
 		return true;
 	}

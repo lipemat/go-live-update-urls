@@ -14,12 +14,12 @@ class GoLiveUpdateUrls {
 
 	/**
 	 * @deprecated 5.0.0 in favor of Go_Live_Update_Urls_Database::get_all_tables()
-	 * @see        Go_Live_Update_Urls_Database::get_all_tables()
+	 * @see        Go_Live_Update_Urls_Database::get_all_table_names()
 	 */
 	public static function get_all_tables() {
 		_deprecated_function( 'GoLiveUpdateUrls::get_all_tables', '5.0.0', 'Go_Live_Update_Urls_Database::get_all_tables' );
 
-		return Go_Live_Update_Urls_Database::instance()->get_all_tables();
+		return Go_Live_Update_Urls_Database::instance()->get_all_table_names();
 	}
 
 	//********** SINGLETON FUNCTIONS **********/
