@@ -177,8 +177,10 @@ class Go_Live_Update_Urls_Database {
 
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 
+		if ( ! defined( 'WP_MEMORY_LIMIT' ) || preg_replace( '/[^0-9,.]/', '', WP_MEMORY_LIMIT ) < 256 ) {
+			@ini_set( 'memory_limit', '256M' );
+		}
 		@set_time_limit( 0 );
-		@ini_set( 'memory_limit', '256M' );
 		@ini_set( 'max_input_time', '-1' );
 
 		$updaters = (array) Go_Live_Update_Urls__Updaters__Repo::instance()->get_updaters();
