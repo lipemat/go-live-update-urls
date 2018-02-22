@@ -178,7 +178,7 @@ class Go_Live_Update_Urls_Database {
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 
 		@set_time_limit( 0 );
-		@ini_set( 'memory_limit', '256M' );
+		@ini_set( 'memory_limit', '512M' );
 		@ini_set( 'max_input_time', '-1' );
 
 		$updaters = (array) Go_Live_Update_Urls__Updaters__Repo::instance()->get_updaters();
