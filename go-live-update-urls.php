@@ -18,6 +18,7 @@ function go_live_update_urls_load() {
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
 	Go_Live_Update_Urls_Admin_Page::init();
+	Go_Live_Update_Urls_Core::init();
 }
 
 /**
