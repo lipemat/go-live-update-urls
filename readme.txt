@@ -5,7 +5,7 @@ Tags: Go Live, Urls, Domain Changes
 Requires at least: 4.5.0
 Tested up to: 4.9.4
 Requires PHP: 5.2.4
-Stable tag: 5.0.3
+Stable tag: 5.0.4
 
 == Description ==
 
@@ -113,7 +113,10 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 
 == Upgrade Notice ==
-= 5.1.1 =
+= 5.0.4 =
+Fixes bug with database not updating properly
+
+= 5.0.1 =
 For full functionality of PRO version 2.2.0
 
 = 3.1 =
