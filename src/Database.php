@@ -177,12 +177,6 @@ class Go_Live_Update_Urls_Database {
 
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 
-		if ( ! defined( 'WP_MEMORY_LIMIT' ) || preg_replace( '/[^0-9,.]/', '', WP_MEMORY_LIMIT ) < 256 ) {
-			@ini_set( 'memory_limit', '256M' );
-		}
-		@set_time_limit( 0 );
-		@ini_set( 'max_input_time', '-1' );
-
 		$updaters = (array) Go_Live_Update_Urls__Updaters__Repo::instance()->get_updaters();
 
 		// If the new domain is the old one with a new sub-domain like www
@@ -194,8 +188,8 @@ class Go_Live_Update_Urls_Database {
 		$serialized_tables = $this->get_serialized_tables();
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
-		//backward compatibility for PRO 2.2.1-
-		if ( ! array_values( $tables ) === $tables ) {
+		// Backward compatibility
+		if ( array_values( $tables ) !== $tables ) {
 			$tables = (array) array_flip( $tables );
 		}
 
@@ -211,8 +205,8 @@ class Go_Live_Update_Urls_Database {
 				}
 			}
 
-			$column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME='" . $table . "'";
-			$columns      = $wpdb->get_col( $column_query );
+			$column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s";
+			$columns      = $wpdb->get_col( $wpdb->prepare( $column_query, $table ) );
 
 			foreach ( $columns as $_column ) {
 				$update_query = 'UPDATE ' . $table . ' SET ' . $_column . ' = replace(' . $_column . ', %s, %s)';
