@@ -135,13 +135,8 @@ class Go_Live_Update_Urls_Admin_Page {
 			foreach ( $tables as $_table ) {
 				?>
 				<li>
-					<input
-						name="<?php echo esc_attr( self::TABLE_INPUT_NAME ); ?>[<?php echo esc_attr( $_table ); ?>]"
-						type="checkbox"
-						value="1"
-						class="go-live-update-urls/checkboxes/checkbox" <?php checked( $checked ); ?>/>
 					<?php
-					echo esc_html( $_table );
+					printf( '<input name="%s[]" type="checkbox" value="%s" checked /> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), esc_html( $_table ) );
 					if ( isset( $serialized_tables[ $_table ] ) ) {
 						?>
 						- <strong>
