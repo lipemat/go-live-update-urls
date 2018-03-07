@@ -136,7 +136,7 @@ class Go_Live_Update_Urls_Admin_Page {
 				?>
 				<li>
 					<?php
-					printf( '<input name="%s[]" type="checkbox" value="%s" checked /> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), esc_html( $_table ) );
+					printf( '<input name="%s[]" type="checkbox" value="%s" %s /> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
 					if ( isset( $serialized_tables[ $_table ] ) ) {
 						?>
 						- <strong>
