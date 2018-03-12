@@ -34,16 +34,17 @@ Goes through entire site and replaces all instances of an old url with a new one
 * And much more
 
 <h4>Pro Features</h4>
+* Priority support.
 * Updates database tables created by plugins without fear of issues.
 * Database tables are organized into understandable sections.
 * Updates serialized data across any table.
-* Priority support.
 * Improved admin page.
 * Ability to test URL changes before running them.
 * URL testing report is provided for peace of mind. 
 * Optionally fix common mistakes when entering a URL automatically.
 * View and use history of your Site Address (URL).
 * Predictive URLs automatically fill in the OLD URL and NEW URL.
+* Access to members only support area.
 
 
 <h4>Contribute</h4>
