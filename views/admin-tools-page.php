@@ -135,7 +135,7 @@ $admin = Go_Live_Update_Urls_Admin_Page::instance();
 				<strong>
 					<?php
 					/* translators: <a></a> */
-					printf( esc_html_x( 'To test this change before running it, use %1$sPro Version 2.0.0+%1$s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
+					printf( esc_html_x( 'To test this change before running it, use %1$sPro Version 2.0.0+%2$s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' ); ?></strong>
 			</p>
 			<?php
 		}
