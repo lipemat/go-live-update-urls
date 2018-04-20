@@ -79,7 +79,7 @@ class Go_Live_Update_Urls_Admin_Page {
 		?>
 		<div id="message" class="error fade">
 			<p>
-				<strong><?php esc_html_e( 'You must fill out both boxes to make the update!.', 'go-live-update-urls' ); ?></strong>
+				<strong><?php esc_html_e( 'You must fill out both URLS to make the update!.', 'go-live-update-urls' ); ?></strong>
 			</p>
 		</div>
 		<?php
