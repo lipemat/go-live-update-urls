@@ -1,0 +1,14 @@
+{
+    "name": "lipemat/go-live-update-urls",
+    "description": "Go Live Update Urls WordPress plugin",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lipemat",
+            "email": "mat@matlipe.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
