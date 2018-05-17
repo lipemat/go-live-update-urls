@@ -43,13 +43,10 @@ if [ $? != 0 ]; then
 fi
 
 
-
-
 # Determine if a file list is passed.
 if [ "$#" -eq 1 ]; then
   oIFS=$IFS
-  IFS='
-  '
+  IFS=''
   SFILES="$1"
   IFS=$oIFS
 fi
@@ -63,7 +60,6 @@ for FILE in $SFILES; do
     echo "Fix the error before commit."
     exit 1
   fi
-  FILES="$FILES $PROJECT/$FILE"
 done
 
 # Run php lint (PHP7).
