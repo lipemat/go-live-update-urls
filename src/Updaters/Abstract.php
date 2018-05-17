@@ -25,5 +25,13 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 	}
 
 
+	protected function update_column( $old, $new ) {
+		global $wpdb;
+
+		$update_query = 'UPDATE ' . $this->table . ' SET ' . $this->column . ' = replace(' . $this->column . ', %s, %s)';
+		$wpdb->query( $wpdb->prepare( $update_query, array( $old, $new ) ) );
+	}
+
+
 	abstract public function update_data();
 }

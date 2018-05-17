@@ -30,17 +30,18 @@ class Go_Live_Update_Urls_Database {
 			$wpdb->postmeta    => 'meta_value',
 			$wpdb->commentmeta => 'meta_value',
 			$wpdb->termmeta    => 'meta_value',
+			$wpdb->usermeta    => 'meta_value',
 		);
 
 		//we are not going to update user meta if we are not on main blog
 		if ( is_multisite() ) {
 			$serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
-			if ( 1 === (int) $wpdb->blogid ) {
-				$serialized_tables[ $wpdb->usermeta ] = 'meta_value';
+			//WP 5.0.0+
+			if ( isset( $wpdb->blogmeta ) ) {
+				$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
 			}
-		} else {
-			$serialized_tables[ $wpdb->usermeta ] = 'meta_value';
 		}
+
 
 		$tables = apply_filters( 'go-live-update-urls-serialized-tables', $serialized_tables );
 
@@ -75,11 +76,6 @@ class Go_Live_Update_Urls_Database {
 	public function get_core_tables() {
 		global $wpdb;
 
-		//Pre WP 4.4
-		if ( ! isset( $wpdb->termmeta ) ) {
-			$wpdb->termmeta = false;
-		}
-
 		$tables = array(
 			$wpdb->posts,
 			$wpdb->comments,
@@ -95,9 +91,6 @@ class Go_Live_Update_Urls_Database {
 			$wpdb->usermeta,
 		);
 
-		if ( isset( $wpdb->termmeta ) ) {
-			$tables[] = $wpdb->termmeta;
-		}
 		if ( is_multisite() ) {
 			$tables[] = $wpdb->blogs;
 			$tables[] = $wpdb->signups;
@@ -106,6 +99,10 @@ class Go_Live_Update_Urls_Database {
 			$tables[] = $wpdb->sitecategories;
 			$tables[] = $wpdb->registration_log;
 			$tables[] = $wpdb->blog_versions;
+			//WP 5.0.0+
+			if ( isset( $wpdb->blogmeta ) ) {
+				$tables[ $wpdb->blogmeta ];
+			}
 		}
 
 		return apply_filters( 'go_live_update_urls_core_tables', $tables );
@@ -124,8 +121,8 @@ class Go_Live_Update_Urls_Database {
 		global $wpdb;
 		$query = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->prefix . "%'";
 
-		//Done this way because like wp_% will return all other tables as well such as wp_2
-		//so we exclude all the possibles e.g. wp_2, wp_3, wp_4 up to 9
+		//Site 1's 'LIKE wp_%' will return all tables in the database
+		//so we exclude all possible sub sites e.g. wp_2, wp_3 up to 9
 		$not_like = null;
 		if ( 1 === (int) $wpdb->blogid && is_multisite() ) {
 			for ( $i = 1; $i <= 9; $i ++ ) {
@@ -134,14 +131,13 @@ class Go_Live_Update_Urls_Database {
 			$not_like = substr( $not_like, 0, - 1 );
 			$query    .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . $not_like . ')';
 		}
-
 		return $wpdb->get_col( $query );
 	}
 
 
 	/**
 	 * @deprecated 5.0.1
-	 * @see Go_Live_Update_Urls_Database::get_all_table_names()
+	 * @see        Go_Live_Update_Urls_Database::get_all_table_names()
 	 */
 	public function get_all_tables() {
 		$names  = $this->get_all_table_names();
@@ -166,7 +162,7 @@ class Go_Live_Update_Urls_Database {
 	 * @param string $new_url
 	 * @param array  $tables
 	 *
-	 * @todo split this functionality into its own OOP class
+	 * @todo  split this functionality into its own OOP class
 	 *
 	 * @return bool
 	 */
@@ -186,7 +182,7 @@ class Go_Live_Update_Urls_Database {
 		}
 
 		$serialized_tables = $this->get_serialized_tables();
-		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
+		$tables            = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
 		// Backward compatibility
 		if ( array_values( $tables ) !== $tables ) {
@@ -242,7 +238,7 @@ class Go_Live_Update_Urls_Database {
 					) ) );
 				}
 			}
-}
+		}
 
 		wp_cache_flush();
 

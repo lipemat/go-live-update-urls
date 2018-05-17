@@ -26,12 +26,9 @@ class Go_Live_Update_Urls__Updaters__JSON extends Go_Live_Update_Urls__Updaters_
 			return false;
 		}
 
-		global $wpdb;
 		$old = substr( wp_json_encode( $this->old ), 1, - 1 );
 		$new = substr( wp_json_encode( $this->new ), 1, - 1 );
-
-		$update_query = "UPDATE " . $this->table . " SET " . $this->column . " = replace(" . $this->column . ", %s, %s)";
-		$wpdb->query( $wpdb->prepare( $update_query, array( $old, $new ) ) );
+		$this->update_column( $old, $new );
 
 		return true;
 	}

@@ -32,6 +32,7 @@ class Go_Live_Update_Urls_Core {
 	public function raise_resource_limits() {
 		@set_time_limit( 0 );
 		@ini_set( 'max_input_time', '-1' );
+
 		wp_raise_memory_limit( 'go-live-update-urls/database/memory-limit' );
 	}
 
@@ -64,7 +65,7 @@ class Go_Live_Update_Urls_Core {
 	 * @return bool
 	 */
 	public function update( $old_url, $new_url ) {
-		$db = Go_Live_Update_Urls_Database::instance();
+		$db     = Go_Live_Update_Urls_Database::instance();
 		$tables = $db->get_all_table_names();
 
 		do_action( 'go-live-update-urls/core/before-update', $old_url, $new_url, $tables );

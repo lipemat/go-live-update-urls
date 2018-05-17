@@ -18,8 +18,9 @@ class Go_Live_Update_Urls__Updaters__Repo {
 	 * @return array
 	 */
 	public function get_updaters() {
-		$updaters['json'] = 'Go_Live_Update_Urls__Updaters__JSON';
-		$updaters         = apply_filters( 'go_live_update_urls_updaters', $updaters );
+		$updaters['json']        = 'Go_Live_Update_Urls__Updaters__JSON';
+		$updaters['url-encoded'] = 'Go_Live_Update_Urls__Updaters__Url_Encoded';
+		$updaters                = apply_filters( 'go_live_update_urls_updaters', $updaters );
 		if ( ! is_array( $updaters ) ) {
 			return array();
 		}
@@ -38,7 +39,6 @@ class Go_Live_Update_Urls__Updaters__Repo {
 	 * @var self
 	 */
 	protected static $instance;
-
 
 
 	/**
