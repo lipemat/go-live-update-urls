@@ -29,9 +29,10 @@ class Go_Live_Update_Urls_Core {
 	 *
 	 * @return void
 	 */
-	public function raise_resource_limits() {
+	public function raise_resource_limits(){
 		@set_time_limit( 0 );
 		@ini_set( 'max_input_time', '-1' );
+
 		wp_raise_memory_limit( 'go-live-update-urls/database/memory-limit' );
 	}
 
@@ -46,7 +47,7 @@ class Go_Live_Update_Urls_Core {
 	 *
 	 * @return string
 	 */
-	public function raise_memory_limit() {
+	public function raise_memory_limit(){
 		return self::MEMORY_LIMIT;
 	}
 

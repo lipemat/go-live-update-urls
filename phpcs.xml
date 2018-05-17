@@ -12,7 +12,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
 
-    <config name="minimum_supported_wp_version" value="4.7" />
+    <config name="minimum_supported_wp_version" value="4.5" />
 
     <!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
     <config name="testVersion" value="5.2-"/>
@@ -21,19 +21,6 @@
     <rule ref="PHPCompatibility"/>
 
 	<rule ref="WordPress">
-		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
-		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-		<exclude name="WordPress.VIP.ValidatedSanitizedInput.InputNotValidated" />
-		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
-		<exclude name="WordPress.WP.PreparedSQL.NotPrepared" />
-		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__users" />
-		<exclude name="WordPress.CSRF.NonceVerification.NoNonceVerification" />
-		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash" />
-		<exclude name="PEAR" />
-		<exclude name="Generic" />
-		<exclude name="Squiz" />
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
