@@ -11,9 +11,6 @@ Text Domain: go-live-update-urls
 
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.1.0' );
 
-/** Deprecated to be removed 6/1/18 */
-require plugin_dir_path( __FILE__ ) . '/src/GoLiveUpdateUrls.php';
-
 function go_live_update_urls_load() {
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
