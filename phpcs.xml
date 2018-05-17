@@ -32,6 +32,9 @@
 		<exclude name="Generic" />
 		<exclude name="Squiz" />
 	</rule>
+	<rule ref="WordPress.WP.PreparedSQL.NotPrepared">
+		<exclude-pattern>*/src/Database\.php</exclude-pattern>
+	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
             <property name="text_domain" type="array" value="go-live-update-urls" />
