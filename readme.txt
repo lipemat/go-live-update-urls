@@ -46,6 +46,12 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Predictive URLs automatically fill in the OLD URL and NEW URL.
 * Access to members only support area.
 
+<h4>Currently ships with the following languages</h4>
+* English (US)
+* French (fr_FR)
+* German (de_DE)   
+* Spanish (es_ES)
+
 
 <h4>Contribute</h4>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>

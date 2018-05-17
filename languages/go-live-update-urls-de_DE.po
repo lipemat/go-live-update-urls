@@ -1,11 +1,9 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: Go Live Update URLS\n"
 "POT-Creation-Date: 2018-05-17 10:41-0400\n"
-"PO-Revision-Date: 2016-05-15 10:47-0400\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2018-05-17 10:52-0400\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,26 +13,28 @@ msgstr ""
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: Mat Lipe <mat@matlipe.com>\n"
+"Language: de_DE\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: src/Admin_Page.php:38
 msgid "Ouch! That hurt! You should not be here!"
-msgstr ""
+msgstr "Autsch! Das tut weh! Du solltest nicht hier sein!"
 
 #: src/Admin_Page.php:65
 msgid "The URLS in the checked tables have been updated."
-msgstr ""
+msgstr "Die URLs in den überprüften Tabellen wurden aktualisiert."
 
 #: src/Admin_Page.php:82
 msgid "You must fill out both URLS to make the update!."
-msgstr ""
+msgstr "Sie müssen beide URLs ausfüllen, um das Update durchzuführen!."
 
 #: src/Admin_Page.php:144
 msgid "Serialized"
-msgstr ""
+msgstr "Seriell"
 
 #: views/admin-tools-page.php:16
 msgid "Go Live Update Urls"
@@ -47,55 +47,65 @@ msgid ""
 "This will replace all occurrences %1$sin the entire database%2$s of the Old "
 "URL with the New URL."
 msgstr ""
+"Dadurch werden alle Vorkommen%1$sin der gesamten Datenbank%2$s der alten URL "
+"durch die neue URL ersetzt."
 
 #: views/admin-tools-page.php:27
 msgid ""
 "Like any other database updating tool, you should always perform a backup "
 "before running."
 msgstr ""
+"Wie jedes andere Datenbankaktualisierungstool sollten Sie vor dem Ausführen "
+"immer eine Sicherung durchführen."
 
 #: views/admin-tools-page.php:41
 msgid "WordPress Core Tables"
-msgstr ""
+msgstr "Kerntabellen"
 
 #: views/admin-tools-page.php:45
 msgid "These tables are safe to update with the basic version of this plugin."
 msgstr ""
+"Diese Tabellen können mit der Basisversion dieses Plugins sicher "
+"aktualisiert werden."
 
 #: views/admin-tools-page.php:66
 msgid "Tables Created By Plugins"
-msgstr ""
+msgstr "Tabellen erstellt von Plugins"
 
 #: views/admin-tools-page.php:72
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
 "These tables are probably NOT SAFE to update with the basic version of this "
-"plugin. %1$sTo support tables created by plugins use the %2$sPro Version"
-"%3$s."
+"plugin. %1$sTo support tables created by plugins use the %2$sPro Version%3$s."
 msgstr ""
+"Diese Tabellen sind wahrscheinlich NICHT SICHER, um mit der Basisversion "
+"dieses Plugins zu aktualisieren. %1$sUm Tabellen zu unterstützen, die von "
+"Plugins erstellt wurden, verwenden Sie%2$sPro Version%3$s."
 
 #: views/admin-tools-page.php:94 views/admin-tools-page.php:104
 msgid "Old URL"
-msgstr ""
+msgstr "Alte URL"
 
 #: views/admin-tools-page.php:110 views/admin-tools-page.php:120
 msgid "New URL"
-msgstr ""
+msgstr "Neue URL"
 
 #: views/admin-tools-page.php:127
 msgid "Only the checked tables will be updated."
-msgstr ""
+msgstr "Nur die überprüften Tabellen werden aktualisiert."
 
 #: views/admin-tools-page.php:138
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "To test this change before running it, use %1$sPro Version 2.0.0+%2$s."
 msgstr ""
+"Um diese Änderung vor dem Ausführen zu testen, verwenden Sie%1$sPro Version "
+"2.0.0 +%2$s."
 
 #: views/admin-tools-page.php:143
 msgid "Update URLs"
-msgstr ""
+msgstr "URLs aktualisieren"
 
 #. Plugin Name of the plugin/theme
 msgid "Go Live Update URLS"
@@ -110,11 +120,13 @@ msgid ""
 "Updates all the URLs in the database to point to a new URL when making your "
 "site live or changing domains."
 msgstr ""
+"Aktualisiert alle URLs in der Datenbank so, dass sie auf eine neue URL "
+"verweisen, wenn Sie Ihre Site live schalten oder Domains ändern."
 
 #. Author of the plugin/theme
 msgid "Mat Lipe"
-msgstr ""
+msgstr "Mat Lipe"
 
 #. Author URI of the plugin/theme
 msgid "https://matlipe.com/"
-msgstr ""
+msgstr "https://matlipe.com/"
