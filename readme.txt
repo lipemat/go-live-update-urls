@@ -3,9 +3,9 @@ Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40matlipe%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
 Requires at least: 4.6.0
-Tested up to: 4.9.5
+Tested up to: 4.9.7
 Requires PHP: 5.2.4
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 
 == Description ==
 
