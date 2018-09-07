@@ -33,5 +33,7 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 	}
 
 
+	abstract public function apply_rule_to_url( $url );
+
 	abstract public function update_data();
 }

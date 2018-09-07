@@ -35,6 +35,7 @@ function go_live_update_urls_autoload( $class ) {
 		'Go_Live_Update_Urls_Admin_Page'             => 'Admin_Page.php',
 		'Go_Live_Update_Urls_Core'                   => 'Core.php',
 		'Go_Live_Update_Urls_Database'               => 'Database.php',
+		'Go_Live_Update_Urls_Serialized'             => 'Serialized.php',
 		//updaters
 		'Go_Live_Update_Urls__Updaters__Abstract'    => 'Updaters/Abstract.php',
 		'Go_Live_Update_Urls__Updaters__JSON'        => 'Updaters/JSON.php',
