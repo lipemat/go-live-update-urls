@@ -5,7 +5,7 @@ Tags: Go Live, Urls, Domain Changes
 Requires at least: 4.6.0
 Tested up to: 4.9.8
 Requires PHP: 5.2.4
-Stable tag: 5.1.2
+Stable tag: 5.2.0
 
 == Description ==
 
@@ -88,6 +88,10 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 5.2.0 =
+* Support URL Encoded URLS within serialized data 
+* Support JSON Encoded URLS within serialized data
+
 = 5.1.0 =
 * Added new languages including French, German, and Spanish
 * Support upcoming blogmeta table in WP 5.0.0+
