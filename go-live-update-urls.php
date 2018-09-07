@@ -5,11 +5,11 @@ Plugin URI: https://matlipe.com/go-live-update-urls/
 Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
 Author: Mat Lipe
 Author URI: https://matlipe.com/
-Version: 5.1.2
+Version: 5.2.0
 Text Domain: go-live-update-urls
 */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.1.2' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.2.0' );
 
 function go_live_update_urls_load() {
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
@@ -35,6 +35,7 @@ function go_live_update_urls_autoload( $class ) {
 		'Go_Live_Update_Urls_Admin_Page'             => 'Admin_Page.php',
 		'Go_Live_Update_Urls_Core'                   => 'Core.php',
 		'Go_Live_Update_Urls_Database'               => 'Database.php',
+		'Go_Live_Update_Urls_Serialized'             => 'Serialized.php',
 		//updaters
 		'Go_Live_Update_Urls__Updaters__Abstract'    => 'Updaters/Abstract.php',
 		'Go_Live_Update_Urls__Updaters__JSON'        => 'Updaters/JSON.php',

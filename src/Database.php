@@ -181,7 +181,6 @@ class Go_Live_Update_Urls_Database {
 			$this->double_subdomain = $subdomain . '.' . $this->new_url;
 		}
 
-		$serialized_tables = $this->get_serialized_tables();
 		$tables            = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
 		// Backward compatibility
@@ -189,18 +188,15 @@ class Go_Live_Update_Urls_Database {
 			$tables = (array) array_flip( $tables );
 		}
 
+		$serialized = new Go_Live_Update_Urls_Serialized( $this->old_url, $this->new_url );
+		$serialized->update_all_serialized_tables();
+		if ( $this->double_subdomain ) {
+			$serialized = new Go_Live_Update_Urls_Serialized( $this->double_subdomain, $this->new_url );
+			$serialized->update_all_serialized_tables();
+		}
+
 		//Go through each table sent to be updated
 		foreach ( (array) $tables as $table ) {
-			if ( isset( $serialized_tables[ $table ] ) ) {
-				if ( is_array( $serialized_tables[ $table ] ) ) {
-					foreach ( $serialized_tables[ $table ] as $column ) {
-						$this->update_serialized_table( $table, $column );
-					}
-				} else {
-					$this->update_serialized_table( $table, $serialized_tables[ $table ] );
-				}
-			}
-
 			$column_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s";
 			$columns      = $wpdb->get_col( $wpdb->prepare( $column_query, $table ) );
 
@@ -208,9 +204,7 @@ class Go_Live_Update_Urls_Database {
 				$update_query = 'UPDATE ' . $table . ' SET ' . $_column . ' = replace(' . $_column . ', %s, %s)';
 				$wpdb->query( $wpdb->prepare( $update_query, array( $this->old_url, $this->new_url ) ) );
 
-
 				//Run each updater
-				//@todo convert all the steps to their own updater class
 				foreach ( $updaters as $_updater_class ) {
 					if ( class_exists( $_updater_class ) ) {
 						/** @var Go_Live_Update_Urls__Updaters__Abstract $_updater */
@@ -245,94 +239,6 @@ class Go_Live_Update_Urls_Database {
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
 		return true;
-	}
-
-
-	/**
-	 * Goes through a table line by line and updates it
-	 *
-	 * @uses  for tables which may contain serialized arrays
-	 *
-	 * @since 5.0.0
-	 *
-	 * @param string $table  the table
-	 * @param string $column to column in the table
-	 *
-	 * @return void
-	 */
-	protected function update_serialized_table( $table, $column ) {
-		global $wpdb;
-		$pk = $wpdb->get_results( "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'" );
-		if ( empty( $pk[0] ) ) {
-			$pk = $wpdb->get_results( "SHOW KEYS FROM $table" );
-			if ( empty( $pk[0] ) ) {
-				//fail
-				return;
-			}
-		}
-
-		$primary_key_column = $pk[0]->Column_name;
-
-		//Get all the Serialized Rows and Replace them properly
-		$rows = $wpdb->get_results( "SELECT $primary_key_column, $column FROM $table WHERE $column LIKE 'a:%' OR $column LIKE 'O:%'" );
-
-		foreach ( $rows as $row ) {
-			if ( ! is_serialized( $row->{$column} ) ) {
-				continue;
-			}
-
-			if ( strpos( $row->{$column}, $this->old_url ) === false ) {
-				continue;
-			}
-
-			$data = @unserialize( $row->{$column} );
-
-			$clean = $this->replace_tree( $data, $this->old_url, $this->new_url );
-			//If we switch to a submain we have to run this again to remove the doubles
-			if ( $this->double_subdomain ) {
-				$clean = $this->replace_tree( $clean, $this->double_subdomain, $this->new_url );
-			}
-
-			$clean = @serialize( $clean );
-
-			$wpdb->query( $wpdb->prepare( "UPDATE $table SET $column=%s WHERE $primary_key_column=%s", $clean, $row->{$primary_key_column} ) );
-
-		}
-	}
-
-
-	/**
-	 * Replaces all the occurrences of a string in a multi-dimensional array or Object
-	 *
-	 * @uses  itself to call each level of the array
-	 *
-	 * @param iterable|string $data to change
-	 * @param string          $old  the old string
-	 * @param string          $new  the new string
-	 *
-	 * @since 5.0.0
-	 *
-	 * @return mixed
-	 *
-	 */
-	protected function replace_tree( $data, $old, $new ) {
-		if ( is_string( $data ) ) {
-			return trim( str_replace( $old, $new, $data ) );
-		}
-
-		if ( ! is_array( $data ) && ! is_object( $data ) ) {
-			return $data;
-		}
-
-		foreach ( $data as $key => $item ) {
-			if ( is_array( $data ) ) {
-				$data[ $key ] = $this->replace_tree( $item, $old, $new );
-			} else {
-				$data->{$key} = $this->replace_tree( $item, $old, $new );
-			}
-		}
-
-		return $data;
 	}
 
 
