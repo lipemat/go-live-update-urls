@@ -28,6 +28,8 @@
 		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
 		<exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__users" />
 		<exclude name="WordPress.VIP.ValidatedSanitizedInput.MissingUnslash" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery" />
+		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
 		<exclude name="PEAR" />
 		<exclude name="Generic" />
 		<exclude name="Squiz" />

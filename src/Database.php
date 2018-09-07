@@ -189,10 +189,10 @@ class Go_Live_Update_Urls_Database {
 		}
 
 		$serialized = new Go_Live_Update_Urls_Serialized( $this->old_url, $this->new_url );
-		$serialized->update();
+		$serialized->update_all_serialized_tables();
 		if ( $this->double_subdomain ) {
 			$serialized = new Go_Live_Update_Urls_Serialized( $this->double_subdomain, $this->new_url );
-			$serialized->update();
+			$serialized->update_all_serialized_tables();
 		}
 
 		//Go through each table sent to be updated
@@ -204,9 +204,7 @@ class Go_Live_Update_Urls_Database {
 				$update_query = 'UPDATE ' . $table . ' SET ' . $_column . ' = replace(' . $_column . ', %s, %s)';
 				$wpdb->query( $wpdb->prepare( $update_query, array( $this->old_url, $this->new_url ) ) );
 
-
 				//Run each updater
-				//@todo convert all the steps to their own updater class
 				foreach ( $updaters as $_updater_class ) {
 					if ( class_exists( $_updater_class ) ) {
 						/** @var Go_Live_Update_Urls__Updaters__Abstract $_updater */
@@ -242,11 +240,6 @@ class Go_Live_Update_Urls_Database {
 
 		return true;
 	}
-
-
-
-
-
 
 
 	protected function hook() {
