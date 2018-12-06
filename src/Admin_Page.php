@@ -47,11 +47,8 @@ class Go_Live_Update_Urls_Admin_Page {
 
 		$tables = array_map( 'sanitize_text_field', $_POST[ self::TABLE_INPUT_NAME ] );
 
-		if ( has_action( 'gluu-before-make-update' ) ) {
-			_deprecated_hook( 'gluu-before-make-update', '5.0.0', 'go-live-update-urls/admin-page/before-update' );
-			$this->tables = $tables;
-			do_action( 'gluu-before-make-update', $this );
-		}
+		$this->tables = $tables; // For backward compatibility. Kill when this deprecated call is removed.
+		do_action_deprecated( 'gluu-before-make-update', array( $this ), '5.0.0', 'go-live-update-urls/admin-page/before-update' );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
