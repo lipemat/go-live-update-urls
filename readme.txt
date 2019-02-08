@@ -5,7 +5,7 @@ Tags: Go Live, Urls, Domain Changes
 Requires at least: 4.6.0
 Tested up to: 5.0.3
 Requires PHP: 5.2.4
-Stable tag: 5.2.4
+Stable tag: 5.2.5
 
 == Description ==
 
@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.3.0</a> just dropped with lots of great new stuff!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.4.0</a> is now available with the ability to choose between a full table list or sections!</blockquote>
 
 
 <h4>Features</h4>
@@ -44,6 +44,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Optionally fix common mistakes when entering a URL automatically.
 * View and use history of your Site Address (URL).
 * Predictive URLs automatically fill in the OLD URL and NEW URL.
+* Ability to choose between a full table list and sections **NEW**
 * Access to members only support area.
 
 <h4>Currently ships with the following languages</h4>
