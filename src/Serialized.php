@@ -3,7 +3,6 @@
 /**
  * @author Mat Lipe
  * @since  5.2.0
- *
  */
 class Go_Live_Update_Urls_Serialized {
 	protected $column;
@@ -21,12 +20,19 @@ class Go_Live_Update_Urls_Serialized {
 	/**
 	 * Go through every registered serialized table and update them one by one
 	 *
+	 * @param array $tables - The tables to update.
+	 *
+	 * @since 5.2.5 - Only update provided tables.
+	 *
 	 * @return void
 	 */
-	public function update_all_serialized_tables() {
+	public function update_all_serialized_tables( array $tables ) {
 		$serialized_tables = Go_Live_Update_Urls_Database::instance()->get_serialized_tables();
 
 		foreach ( $serialized_tables as $table => $columns ) {
+			if ( ! in_array( $table, $tables, true ) ) {
+				continue;
+			}
 			foreach ( (array) $columns as $_column ) {
 				$this->update_table( $table, $_column );
 			}
@@ -48,18 +54,18 @@ class Go_Live_Update_Urls_Serialized {
 		if ( empty( $pk[0] ) ) {
 			$pk = $wpdb->get_results( "SHOW KEYS FROM {$table}" );
 			if ( empty( $pk[0] ) ) {
-				//fail
+				// fail
 				return;
 			}
 		}
 
 		$primary_key_column = $pk[0]->Column_name;
 
-		//Get all the Serialized Rows and Replace them properly
+		// Get all the Serialized Rows and Replace them properly
 		$rows = $wpdb->get_results( "SELECT $primary_key_column, {$column} FROM {$table} WHERE {$column} LIKE 'a:%' OR {$column} LIKE 'O:%'" );
 
 		foreach ( $rows as $row ) {
-			//skip the overhead of updating things that have nothing to update
+			// skip the overhead of updating things that have nothing to update
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
 				continue;
 			}
@@ -83,7 +89,6 @@ class Go_Live_Update_Urls_Serialized {
 	 * @since 5.2.0
 	 *
 	 * @return mixed
-	 *
 	 */
 	public function replace_tree( $data ) {
 		if ( is_string( $data ) ) {
