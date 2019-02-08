@@ -23,7 +23,7 @@ class Go_Live_Update_Urls_Database {
 	 */
 	public function get_serialized_tables() {
 		global $wpdb;
-		// default tables with serialized data
+		// Default tables with serialized data.
 		$serialized_tables = array(
 			$wpdb->options     => 'option_value',
 			$wpdb->postmeta    => 'meta_value',
@@ -32,10 +32,10 @@ class Go_Live_Update_Urls_Database {
 			$wpdb->usermeta    => 'meta_value',
 		);
 
-		// we are not going to update user meta if we are not on main blog
+		// We are not going to update site meta if we are not on main blog.
 		if ( is_multisite() ) {
 			$serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
-			// WP 5.0.0+
+			// WP 5.0.0+.
 			if ( isset( $wpdb->blogmeta ) ) {
 				$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
 			}
@@ -187,10 +187,10 @@ class Go_Live_Update_Urls_Database {
 		}
 
 		$serialized = new Go_Live_Update_Urls_Serialized( $this->old_url, $this->new_url );
-		$serialized->update_all_serialized_tables();
+		$serialized->update_all_serialized_tables( $tables );
 		if ( $this->double_subdomain ) {
 			$serialized = new Go_Live_Update_Urls_Serialized( $this->double_subdomain, $this->new_url );
-			$serialized->update_all_serialized_tables();
+			$serialized->update_all_serialized_tables( $tables );
 		}
 
 		// Go through each table sent to be updated.
