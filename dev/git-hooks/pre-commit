@@ -2,16 +2,9 @@
 
 #######################################################################################
 #
-# This script is setup for PHP 5.2 and submodules .git/modules/{dir}/hooks/pre-commit
-# Change the php version is desired, otherwise works just fine by renaming
-#  @see pre-commit for root project .git/modules
+# This script is setup for PHP 5.4 and PHP 7.3
 #
-#####################################################################################
-PHP='D:/xampp/php-5.2/php'
-PHP7='D:/xampp/php-7.2/php'
-PHPUNIT='E:/OneDrive/scripts/phpunit/phpunit-3.6.sh'
-PHPUNIT7='E:/OneDrive/scripts/phpunit/6.5.3/phpunit-6.5.3.phar'
-### Could be any level, could use dirname(realpath('$0'), 3); but have to change for each usage. Will only work from root of submodule unless change to dirname()
+#######################################################################################
 PROJECT="."
 
 ## Fix windows paths
@@ -20,67 +13,69 @@ PROJECT=${PROJECT//\\//}
 STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \\\\.php`
 
 # Check for phpcs config
-if [ ! -f $PROJECT/phpcs.xml ] && [ ! -f $PROJECT/phpcs.xml.dist ]; then
-  echo "$PROJECT/phpcs.xml or $PROJECT/phpcs.xml.dist not found!"
+if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
+  echo "${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
   exit 1;
 fi
 
 # Run phpunit (PHP5).
 ## Use SSH script instead of a PHP call so no $PHP
 echo "Running PHP Unit (PHP5)."
-$PHPUNIT --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
-if [ $? != 0 ]; then
+phpunit 5.4 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
+if [[ $? != 0 ]]; then
   echo "Fix the error before commit!"
   exit 1
 fi
 
 # Run phpunit (PHP7).
 echo "Running PHP Unit (PHP7)."
-$PHP7 $PHPUNIT7 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
-if [ $? != 0 ]; then
+phpunit 7.3 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
+if [[ $? != 0 ]]; then
   echo "Fix the error before commit!"
   exit 1
 fi
 
 
 # Determine if a file list is passed.
-if [ "$#" -eq 1 ]; then
+if [[ "$#" -eq 1 ]]; then
   oIFS=$IFS
-  IFS=''
+  IFS='
+  '
   SFILES="$1"
-  IFS=$oIFS
+  IFS=${oIFS}
 fi
 SFILES=${SFILES:-$STAGED_FILES_CMD}
 
 # Run php lint (PHP5).
 echo "Checking PHP5 Lint..."
-for FILE in $SFILES; do
-  $PHP -l -d display_errors=0 $PROJECT/$FILE
-  if [ $? != 0 ]; then
+for FILE in ${SFILES}; do
+  php 5.4 -l -d display_errors=0 ${PROJECT}/${FILE}
+  if [[ $? != 0 ]]; then
     echo "Fix the error before commit."
     exit 1
   fi
+  FILES="${FILES} ${PROJECT}/${FILE}"
 done
 
 # Run php lint (PHP7).
 echo "Checking PHP7 Lint..."
-for FILE in $SFILES; do
-  $PHP7 -l -d display_errors=0 $PROJECT/$FILE
-  if [ $? != 0 ]; then
+for FILE in ${SFILES}; do
+  php 7.3 -l -d display_errors=0 ${PROJECT}/${FILE}
+  if [[ $? != 0 ]]; then
     echo "Fix the error before commit."
     exit 1
   fi
-  FILES="$FILES $PROJECT/$FILE"
+  FILES="${FILES} ${PROJECT}/${FILE}"
 done
 
 # Run phpcs.
-if [ "$FILES" != "" ]; then
-  echo "Running Code Sniffer."
-  phpcs --encoding=utf-8 -s -n -p $FILES
-  if [ $? != 0 ]; then
+if [[ "${FILES}" != "" ]]; then
+  echo "Running Code Sniffer..."
+  phpcs --encoding=utf-8 -s -n -p ${FILES}
+  if [[ $? != 0 ]]; then
     echo "Fix the error before commit!"
     echo "Run"
-    echo "  phpcbf $FILES"
+    echo "  phpcbf ${FILES}"
     echo "for automatic fix or fix it manually."
     exit 1
   fi
