@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.4.0</a> is now available with the ability to choose between a full table list or sections!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.6.0</a> is now available with support for WP-CLI!</blockquote>
 
 
 <h4>Features</h4>
