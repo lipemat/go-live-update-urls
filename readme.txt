@@ -34,9 +34,8 @@ Goes through entire site and replaces all instances of an old url with a new one
 * And much more
 
 <h4>Pro Features</h4>
-* Priority support.
 * Updates database tables created by plugins without fear of issues.
-* Database tables are organized into understandable sections.
+* Database tables are organized into simple intuitive sections.
 * Updates serialized data across any table.
 * Improved admin page.
 * Ability to test URL changes before running them.
@@ -44,8 +43,9 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Optionally fix common mistakes when entering a URL automatically.
 * View and use history of your Site Address (URL).
 * Predictive URLs automatically fill in the OLD URL and NEW URL.
-* Ability to choose between a full table list and sections **NEW**
-* Access to members only support area.
+* Ability to choose between a full table list and sections.
+* WP-CLI support for updating URLs from the command line. **NEW**
+* Priority Support with access to members only support area.
 
 <h4>Currently ships with the following languages</h4>
 * English (US)
