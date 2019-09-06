@@ -5,13 +5,13 @@
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
  * Author: Mat Lipe
  * Author URI: https://matlipe.com/
- * Version: 5.2.9
+ * Version: 5.2.10
  * Text Domain: go-live-update-urls
  *
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.2.9' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.2.10' );
 
 /**
  * Load the plugin

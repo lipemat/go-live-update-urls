@@ -2,10 +2,10 @@
 Contributors: Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40matlipe%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: Go Live, Urls, Domain Changes 
-Requires at least: 4.7.0
-Tested up to: 5.2.2
-Requires PHP: 5.4.4
-Stable tag: 5.2.9
+Requires at least: 4.8.0
+Tested up to: 5.2.3
+Requires PHP: 5.6.0
+Stable tag: 5.2.10
 
 == Description ==
 
@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
-<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.4.0</a> is now available with the ability to choose between a full table list or sections!</blockquote>
+<blockquote><a href="https://matlipe.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.6.0</a> is now available with support for WP-CLI!</blockquote>
 
 
 <h4>Features</h4>
@@ -34,9 +34,8 @@ Goes through entire site and replaces all instances of an old url with a new one
 * And much more
 
 <h4>Pro Features</h4>
-* Priority support.
 * Updates database tables created by plugins without fear of issues.
-* Database tables are organized into understandable sections.
+* Database tables are organized into simple intuitive sections.
 * Updates serialized data across any table.
 * Improved admin page.
 * Ability to test URL changes before running them.
@@ -44,8 +43,9 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Optionally fix common mistakes when entering a URL automatically.
 * View and use history of your Site Address (URL).
 * Predictive URLs automatically fill in the OLD URL and NEW URL.
-* Ability to choose between a full table list and sections **NEW**
-* Access to members only support area.
+* Ability to choose between a full table list and sections.
+* WP-CLI support for updating URLs from the command line. **NEW**
+* Priority Support with access to members only support area.
 
 <h4>Currently ships with the following languages</h4>
 * English (US)
