@@ -3,7 +3,7 @@
 /**
  * Register
  *
- * @author  Mat Lipe
+ * @author  OnPoint Plugins
  * @since   5.0.0
  *
  * @package Go_Live_Update_Urls\Updates
