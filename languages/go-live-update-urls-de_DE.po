@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Last-Translator: Mat Lipe <mat@matlipe.com>\n"
+"Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language: de_DE\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
@@ -112,7 +112,7 @@ msgid "Go Live Update URLS"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://matlipe.com/go-live-update-urls/"
+msgid "https://onpointplugins.com/go-live-update-urls/"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -128,5 +128,5 @@ msgid "Mat Lipe"
 msgstr "Mat Lipe"
 
 #. Author URI of the plugin/theme
-msgid "https://matlipe.com/"
-msgstr "https://matlipe.com/"
+msgid "https://onpointplugins.com/"
+msgstr "https://onpointplugins.com/"

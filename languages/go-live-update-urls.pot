@@ -102,7 +102,7 @@ msgid "Go Live Update URLS"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://matlipe.com/go-live-update-urls/"
+msgid "https://onpointplugins.com/go-live-update-urls/"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -116,5 +116,5 @@ msgid "Mat Lipe"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://matlipe.com/"
+msgid "https://onpointplugins.com/"
 msgstr ""
