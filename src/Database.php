@@ -3,7 +3,7 @@
 /**
  * Go_Live_Update_Urls_Database
  *
- * @author Mat Lipe
+ * @author OnPoint Plugins
  * @since  2/1/2018
  */
 class Go_Live_Update_Urls_Database {

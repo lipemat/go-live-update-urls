@@ -3,7 +3,7 @@
 /**
  * _Updater
  *
- * @author  Mat Lipe
+ * @author  OnPoint Plugins
  * @since   5.0.0
  *
  */

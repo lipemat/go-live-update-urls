@@ -3,7 +3,7 @@
 /**
  * Go_Live_Update_Urls__Updaters__Url_Encoded
  *
- * @author Mat Lipe
+ * @author OnPoint Plugins
  * @since  5/17/2018
  *
  */

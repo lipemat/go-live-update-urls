@@ -1,17 +1,17 @@
 <?php
 /**
  * Plugin Name: Go Live Update URLS
- * Plugin URI: https://matlipe.com/go-live-update-urls/
+ * Plugin URI: https://onpointplugins.com/go-live-update-urls/
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
- * Author: Mat Lipe
- * Author URI: https://matlipe.com/
- * Version: 5.2.10
+ * Author: OnPoint Plugins
+ * Author URI: https://onpointplugins.com/
+ * Version: 5.2.11
  * Text Domain: go-live-update-urls
  *
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.2.10' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.2.11' );
 
 /**
  * Load the plugin

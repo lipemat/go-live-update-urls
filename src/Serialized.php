@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Mat Lipe
+ * @author OnPoint Plugins
  * @since  5.2.0
  */
 class Go_Live_Update_Urls_Serialized {

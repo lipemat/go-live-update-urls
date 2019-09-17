@@ -14,7 +14,7 @@
  * than just doing the update we run it on each column
  *
  *
- * @author  Mat Lipe
+ * @author  OnPoint Plugins
  * @since   5.0.0
  *
  * @package Gluu\Updates
