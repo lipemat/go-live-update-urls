@@ -1,17 +1,17 @@
 === Plugin Name ===
 Contributors: Mat Lipe, onpointplugins
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40matlipe%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.2.3
+Tested up to: 5.3.0
 Requires PHP: 5.6.0
-Stable tag: 5.2.11
+Stable tag: 5.2.12
 
 == Description ==
 
 Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls Pro</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
 
 <blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.6.0</a> is now available with support for WP-CLI!</blockquote>
 
@@ -89,6 +89,10 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 5.2.12 = 
+* Support for WordPress version 5.3.0
+* Officially drop support for PHP 5.4 in favor of 5.6.0
+
 = 5.2.0 =
 * Support URL Encoded URLS within serialized data 
 * Support JSON Encoded URLS within serialized data

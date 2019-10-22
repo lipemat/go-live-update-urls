@@ -1,22 +1,22 @@
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2018-05-17 10:41-0400\n"
-"PO-Revision-Date: 2018-05-17 10:55-0400\n"
+"Project-Id-Version: Go Live Update Urls\n"
+"POT-Creation-Date: 2019-10-22 11:05-0400\n"
+"PO-Revision-Date: 2019-10-22 11:05-0400\n"
+"Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.7\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
-"Language: fr_FR\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
@@ -24,23 +24,24 @@ msgstr ""
 msgid "Ouch! That hurt! You should not be here!"
 msgstr "Aie! Ça fait mal! Tu ne devrais pas être ici!"
 
-#: src/Admin_Page.php:65
+#: src/Admin_Page.php:62
 msgid "The URLS in the checked tables have been updated."
 msgstr "Les URL dans les tables vérifiées ont été mises à jour."
 
-#: src/Admin_Page.php:82
+#: src/Admin_Page.php:79
 msgid "You must fill out both URLS to make the update!."
 msgstr "Vous devez remplir les deux URL pour effectuer la mise à jour!"
 
-#: src/Admin_Page.php:144
+#: src/Admin_Page.php:141
 msgid "Serialized"
 msgstr "Serial"
 
-#: views/admin-tools-page.php:16
+#. Plugin Name of the plugin/theme
+#: views/admin-tools-page.php:21
 msgid "Go Live Update Urls"
-msgstr ""
+msgstr "Go Live Update Urls"
 
-#: views/admin-tools-page.php:22
+#: views/admin-tools-page.php:27
 #, php-format
 msgctxt "{<strong>} {</strong>}"
 msgid ""
@@ -50,7 +51,7 @@ msgstr ""
 "Cela remplacera toutes les occurrences%1$sin de la base de données entière"
 "%2$s de l'ancienne URL avec la nouvelle URL."
 
-#: views/admin-tools-page.php:27
+#: views/admin-tools-page.php:33
 msgid ""
 "Like any other database updating tool, you should always perform a backup "
 "before running."
@@ -58,21 +59,21 @@ msgstr ""
 "Comme tout autre outil de mise à jour de base de données, vous devez "
 "toujours effectuer une sauvegarde avant de l'exécuter."
 
-#: views/admin-tools-page.php:41
+#: views/admin-tools-page.php:48
 msgid "WordPress Core Tables"
 msgstr "Tables de base"
 
-#: views/admin-tools-page.php:45
+#: views/admin-tools-page.php:52
 msgid "These tables are safe to update with the basic version of this plugin."
 msgstr ""
 "Ces tables peuvent être mises à jour en toute sécurité avec la version de "
 "base de ce plugin."
 
-#: views/admin-tools-page.php:66
+#: views/admin-tools-page.php:74
 msgid "Tables Created By Plugins"
 msgstr "Tables créées par des plugins"
 
-#: views/admin-tools-page.php:72
+#: views/admin-tools-page.php:80
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -83,19 +84,19 @@ msgstr ""
 "de base de ce plugin. %1$sPour prendre en charge les tables créées par les "
 "plugins, utilisez la version%2$sPro%3$s."
 
-#: views/admin-tools-page.php:94 views/admin-tools-page.php:104
+#: views/admin-tools-page.php:105 views/admin-tools-page.php:115
 msgid "Old URL"
 msgstr "Ancienne URL"
 
-#: views/admin-tools-page.php:110 views/admin-tools-page.php:120
+#: views/admin-tools-page.php:121 views/admin-tools-page.php:131
 msgid "New URL"
 msgstr "Nouvelle URL"
 
-#: views/admin-tools-page.php:127
+#: views/admin-tools-page.php:138
 msgid "Only the checked tables will be updated."
 msgstr "Seules les tables vérifiées seront mises à jour."
 
-#: views/admin-tools-page.php:138
+#: views/admin-tools-page.php:149
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "To test this change before running it, use %1$sPro Version 2.0.0+%2$s."
@@ -103,17 +104,13 @@ msgstr ""
 "Pour tester cette modification avant de l'exécuter, utilisez%1$sPro Version "
 "2.0.0 +%2$s."
 
-#: views/admin-tools-page.php:143
+#: views/admin-tools-page.php:156
 msgid "Update URLs"
 msgstr "Mettre à jour les URL"
 
-#. Plugin Name of the plugin/theme
-msgid "Go Live Update URLS"
-msgstr ""
-
 #. Plugin URI of the plugin/theme
 msgid "https://onpointplugins.com/go-live-update-urls/"
-msgstr ""
+msgstr "https://onpointplugins.com/go-live-update-urls/"
 
 #. Description of the plugin/theme
 msgid ""
@@ -125,9 +122,9 @@ msgstr ""
 "domaine."
 
 #. Author of the plugin/theme
-msgid "Mat Lipe"
-msgstr ""
+msgid "OnPoint Plugins"
+msgstr "OnPoint Plugins"
 
 #. Author URI of the plugin/theme
 msgid "https://onpointplugins.com/"
-msgstr ""
+msgstr "https://onpointplugins.com/"
