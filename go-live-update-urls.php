@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Go Live Update URLS
+ * Plugin Name: Go Live Update Urls
  * Plugin URI: https://onpointplugins.com/go-live-update-urls/
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
  * Author: OnPoint Plugins
