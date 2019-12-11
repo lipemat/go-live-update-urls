@@ -54,6 +54,7 @@ class Go_Live_Update_Urls_Admin_Page {
 
 		if ( Go_Live_Update_Urls_Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) {
 			add_action( 'admin_notices', array( $this, 'success' ) );
+			add_filter( 'go-live-update-urls/views/admin-tools-page/disable-description', '__return_true' );
 		}
 	}
 

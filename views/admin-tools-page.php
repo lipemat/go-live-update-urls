@@ -21,20 +21,28 @@ $admin = Go_Live_Update_Urls_Admin_Page::instance();
 		<?php esc_html_e( 'Go Live Update Urls', 'go-live-update-urls' ); ?>
 	</h2>
 
-	<p class="description">
-		<?php
-		/* translators: <strong></strong> */
-		printf( esc_html_x( 'This will replace all occurrences %1$sin the entire database%2$s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' );
+	<?php
+	if ( ! apply_filters( 'go-live-update-urls/views/admin-tools-page/disable-description', false ) ) {
 		?>
-	</p>
 
-	<strong>
-		<em style="color:red">
-			<?php esc_html_e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
-		</em>
-	</strong>
-	<br/><br/>
-	<hr/>
+		<p class="description">
+			<?php
+			/* translators: <strong></strong> */
+			printf( esc_html_x( 'This will replace all occurrences %1$sin the entire database%2$s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' );
+			?>
+		</p>
+
+		<strong>
+			<em style="color:red">
+				<?php esc_html_e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
+			</em>
+		</strong>
+		<br/><br/>
+		<hr/>
+
+		<?php
+	}
+	?>
 
 	<form method="post" id="go-live-update-urls/checkbox-form">
 		<?php
