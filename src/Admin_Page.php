@@ -129,10 +129,10 @@ class Go_Live_Update_Urls_Admin_Page {
 	 *
 	 */
 	public function render_check_boxes( $tables, $list, $checked = true ) {
-		$serialized_tables = Go_Live_Update_Urls_Database::instance()->get_serialized_tables();
 		?>
-		<ul class="go-live-update-urls/checkboxes go-live-update-urls/checkboxes/<?php echo esc_attr( $list ); ?>"
-		    data-list="<?php echo esc_attr( $list ); ?>">
+		<ul
+			class="go-live-update-urls/checkboxes go-live-update-urls/checkboxes/<?php echo esc_attr( $list ); ?>"
+			data-list="<?php echo esc_attr( $list ); ?>">
 			<?php
 
 			foreach ( $tables as $_table ) {
@@ -140,15 +140,6 @@ class Go_Live_Update_Urls_Admin_Page {
 				<li>
 					<?php
 					printf( '<input name="%s[]" type="checkbox" value="%s" %s /> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
-					if ( isset( $serialized_tables[ $_table ] ) ) {
-						?>
-						- <strong>
-							<em>
-								<?php esc_html_e( 'Serialized', 'go-live-update-urls' ); ?>
-							</em>
-						</strong>
-						<?php
-					}
 					?>
 				</li>
 				<?php
@@ -161,8 +152,7 @@ class Go_Live_Update_Urls_Admin_Page {
 
 	}
 
-	//********** SINGLETON **********/
-
+	/********** SINGLETON **********/
 
 	/**
 	 * Instance of this class for use as singleton

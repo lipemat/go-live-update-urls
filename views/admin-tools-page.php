@@ -13,7 +13,6 @@
  */
 
 $db    = Go_Live_Update_Urls_Database::instance();
-$admin = Go_Live_Update_Urls_Admin_Page::instance();
 
 ?>
 <div id="go-live-update-urls/admin-page" class="wrap">
@@ -71,7 +70,7 @@ $admin = Go_Live_Update_Urls_Admin_Page::instance();
 			<hr/>
 			</p>
 			<?php
-			$admin->render_check_boxes( $db->get_core_tables(), 'wp-core' );
+			Go_Live_Update_Urls_Admin_Page::instance()->render_check_boxes( $db->get_core_tables(), 'wp-core' );
 
 			$custom_tables = $db->get_custom_plugin_tables();
 			if ( ! empty( $custom_tables ) ) {
@@ -98,7 +97,7 @@ $admin = Go_Live_Update_Urls_Admin_Page::instance();
 				<hr/>
 				</p>
 				<?php
-				$admin->render_check_boxes( $custom_tables, 'custom-plugins', false );
+				Go_Live_Update_Urls_Admin_Page::instance()->render_check_boxes( $custom_tables, 'custom-plugins', false );
 			}
 		}
 
