@@ -85,10 +85,9 @@ class Go_Live_Update_Urls_Database {
 			$tables[] = $wpdb->sitemeta;
 			$tables[] = $wpdb->sitecategories;
 			$tables[] = $wpdb->registration_log;
-			$tables[] = $wpdb->blog_versions;
 			// WP 5.0.0+.
 			if ( isset( $wpdb->blogmeta ) ) {
-				$tables[ $wpdb->blogmeta ];
+				$tables[] = $wpdb->blogmeta;
 			}
 		}
 
