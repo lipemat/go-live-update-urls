@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Register
+ * Repository for the Updater classes.
  *
  * @author  OnPoint Plugins
  * @since   5.0.0
@@ -15,14 +15,14 @@ class Go_Live_Update_Urls__Updaters__Repo {
 	 *
 	 * @filter go_live_update_urls_updaters
 	 *
-	 * @return array
+	 * @return Go_Live_Update_Urls__Updaters__Abstract[]
 	 */
 	public function get_updaters() {
 		$updaters['json']        = 'Go_Live_Update_Urls__Updaters__JSON';
 		$updaters['url-encoded'] = 'Go_Live_Update_Urls__Updaters__Url_Encoded';
 		$updaters                = apply_filters( 'go_live_update_urls_updaters', $updaters );
 		if ( ! is_array( $updaters ) ) {
-			return array();
+			return [];
 		}
 
 		return $updaters;
@@ -30,8 +30,7 @@ class Go_Live_Update_Urls__Updaters__Repo {
 
 
 
-	//********** SINGLETON **********/
-
+	/********** SINGLETON **********/
 
 	/**
 	 * Instance of this class for use as singleton

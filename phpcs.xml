@@ -6,6 +6,9 @@
 
     <description>Go Live Update Urls Ruleset.</description>
 
+	<!-- sniff both PHP and JS -->
+	<arg name="extensions" value="php/PHP,js/JS,jsx/JS,ts/JS,tsx/JS"/>
+
     <!-- Exclude paths -->
     <exclude-pattern>*/dev/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
@@ -21,6 +24,16 @@
     <rule ref="PHPCompatibility"/>
 
 	<rule ref="WordPress">
+		<exclude-pattern>*/js/*</exclude-pattern>
+
+		<exclude name="Generic.Formatting.MultipleStatementAlignment" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+
+		<exclude name="PEAR.Functions.FunctionCallSignature" />
+		<exclude name="PEAR.NamingConventions.ValidClassName" />
+
+		<exclude name="Squiz.Commenting.FileComment.Missing" />
+
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.DB.DirectDatabaseQuery" />
@@ -31,4 +44,8 @@
             <property name="text_domain" type="array" value="go-live-update-urls" />
         </properties>
     </rule>
+	<!-- Test against JS XXS https://vip.wordpress.com/documentation/vip-go/vip-code-review/javascript-security-best-practices/ -->
+	<rule ref="WordPressVIPMinimum.JS">
+		<type>error</type>
+	</rule>
 </ruleset>

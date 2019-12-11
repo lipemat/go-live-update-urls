@@ -40,7 +40,7 @@ class Go_Live_Update_Urls_Admin_Page {
 
 		$old_url = trim( sanitize_text_field( $_POST[ self::OLD_URL ] ) );
 		$new_url = trim( sanitize_text_field( $_POST[ self::NEW_URL ] ) );
-		if ( empty( $old_url ) || empty( $new_url ) ) {
+		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
 			add_action( 'admin_notices', array( $this, 'epic_fail' ) );
 			return;
 		}
@@ -54,6 +54,7 @@ class Go_Live_Update_Urls_Admin_Page {
 
 		if ( Go_Live_Update_Urls_Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) {
 			add_action( 'admin_notices', array( $this, 'success' ) );
+			add_filter( 'go-live-update-urls/views/admin-tools-page/disable-description', '__return_true' );
 		}
 	}
 
@@ -72,11 +73,16 @@ class Go_Live_Update_Urls_Admin_Page {
 	}
 
 
+	/**
+	 * Display a message if any fields were not filed out.
+	 *
+	 * @return void
+	 */
 	public function epic_fail() {
 		?>
 		<div id="message" class="error fade">
 			<p>
-				<strong><?php esc_html_e( 'You must fill out both URLS to make the update!.', 'go-live-update-urls' ); ?></strong>
+				<strong><?php esc_html_e( 'You must fill out both URLs and select tables to update URLs!', 'go-live-update-urls' ); ?></strong>
 			</p>
 		</div>
 		<?php
