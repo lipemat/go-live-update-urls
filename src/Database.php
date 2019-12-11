@@ -138,6 +138,7 @@ class Go_Live_Update_Urls_Database {
 	 * @see        Go_Live_Update_Urls_Database::get_all_table_names()
 	 */
 	public function get_all_tables() {
+		_deprecated_function( 'get_all_tables', '5.0.1', 'get_all_table_names' );
 		$names  = $this->get_all_table_names();
 		$tables = array();
 
@@ -215,7 +216,7 @@ class Go_Live_Update_Urls_Database {
 					}
 				}
 
-				// Fix the dub dubs if this was the old domain with a new sub
+				// Fix the dub dubs if this was the old domain with a new sub.
 				if ( $this->double_subdomain ) {
 					$wpdb->query(
 						$wpdb->prepare(
