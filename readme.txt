@@ -3,9 +3,9 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.3.0
+Tested up to: 5.3.1
 Requires PHP: 5.6.0
-Stable tag: 5.2.12
+Stable tag: 5.3.0
 
 == Description ==
 
@@ -89,6 +89,13 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 5.3.0 =
+* Display error message when no tables are selected during update.
+* Fix bug when updating columns which are name the same as MySQL commands.
+* Improve stability to modernize code some code.
+* Introduce `go-live-update-urls/views/admin-tools-page/disable-description` filter.
+* Cleanup some long deprecated code.
+
 = 5.2.12 = 
 * Support for WordPress version 5.3.0
 * Officially drop support for PHP 5.4 in favor of 5.6.0

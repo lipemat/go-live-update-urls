@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2019-10-22 11:06-0400\n"
-"PO-Revision-Date: 2019-10-22 11:06-0400\n"
+"POT-Creation-Date: 2019-12-11 13:13-0500\n"
+"PO-Revision-Date: 2019-12-11 13:13-0500\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -24,15 +24,15 @@ msgstr ""
 msgid "Ouch! That hurt! You should not be here!"
 msgstr "Autsch! Das tut weh! Du solltest nicht hier sein!"
 
-#: src/Admin_Page.php:62
+#: src/Admin_Page.php:63
 msgid "The URLS in the checked tables have been updated."
 msgstr "Die URLs in den überprüften Tabellen wurden aktualisiert."
 
-#: src/Admin_Page.php:79
-msgid "You must fill out both URLS to make the update!."
-msgstr "Sie müssen beide URLs ausfüllen, um das Update durchzuführen!."
+#: src/Admin_Page.php:85
+msgid "You must fill out both URLs and select tables to update URLs!"
+msgstr "Sie müssen beide URLs ausfüllen, um das Update durchzuführen!"
 
-#: src/Admin_Page.php:141
+#: src/Admin_Page.php:147
 msgid "Serialized"
 msgstr "Seriell"
 
@@ -41,7 +41,7 @@ msgstr "Seriell"
 msgid "Go Live Update Urls"
 msgstr "Go Live Update Urls"
 
-#: views/admin-tools-page.php:27
+#: views/admin-tools-page.php:31
 #, php-format
 msgctxt "{<strong>} {</strong>}"
 msgid ""
@@ -51,7 +51,7 @@ msgstr ""
 "Dadurch werden alle Vorkommen%1$sin der gesamten Datenbank%2$s der alten URL "
 "durch die neue URL ersetzt."
 
-#: views/admin-tools-page.php:33
+#: views/admin-tools-page.php:37
 msgid ""
 "Like any other database updating tool, you should always perform a backup "
 "before running."
@@ -59,21 +59,21 @@ msgstr ""
 "Wie jedes andere Datenbankaktualisierungstool sollten Sie vor dem Ausführen "
 "immer eine Sicherung durchführen."
 
-#: views/admin-tools-page.php:48
+#: views/admin-tools-page.php:56
 msgid "WordPress Core Tables"
 msgstr "Kerntabellen"
 
-#: views/admin-tools-page.php:52
+#: views/admin-tools-page.php:60
 msgid "These tables are safe to update with the basic version of this plugin."
 msgstr ""
 "Diese Tabellen können mit der Basisversion dieses Plugins sicher "
 "aktualisiert werden."
 
-#: views/admin-tools-page.php:74
+#: views/admin-tools-page.php:82
 msgid "Tables Created By Plugins"
 msgstr "Tabellen erstellt von Plugins"
 
-#: views/admin-tools-page.php:80
+#: views/admin-tools-page.php:88
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -84,19 +84,19 @@ msgstr ""
 "dieses Plugins zu aktualisieren. %1$sUm Tabellen zu unterstützen, die von "
 "Plugins erstellt wurden, verwenden Sie%2$sPro Version%3$s."
 
-#: views/admin-tools-page.php:105 views/admin-tools-page.php:115
+#: views/admin-tools-page.php:113 views/admin-tools-page.php:123
 msgid "Old URL"
 msgstr "Alte URL"
 
-#: views/admin-tools-page.php:121 views/admin-tools-page.php:131
+#: views/admin-tools-page.php:129 views/admin-tools-page.php:139
 msgid "New URL"
 msgstr "Neue URL"
 
-#: views/admin-tools-page.php:138
+#: views/admin-tools-page.php:146
 msgid "Only the checked tables will be updated."
 msgstr "Nur die überprüften Tabellen werden aktualisiert."
 
-#: views/admin-tools-page.php:149
+#: views/admin-tools-page.php:157
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "To test this change before running it, use %1$sPro Version 2.0.0+%2$s."
@@ -104,7 +104,7 @@ msgstr ""
 "Um diese Änderung vor dem Ausführen zu testen, verwenden Sie%1$sPro Version "
 "2.0.0 +%2$s."
 
-#: views/admin-tools-page.php:156
+#: views/admin-tools-page.php:164
 msgid "Update URLs"
 msgstr "URLs aktualisieren"
 
