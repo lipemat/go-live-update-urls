@@ -92,6 +92,7 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 = 5.3.0 =
 * Display error message when no tables are selected during update.
 * Fix bug when updating columns which are name the same as MySQL commands.
+* Remove confusing '- Serialized' label from checkboxes list.
 * Improve stability to modernize code some code.
 * Introduce `go-live-update-urls/views/admin-tools-page/disable-description` filter.
 * Cleanup some long deprecated code.
