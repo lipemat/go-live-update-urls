@@ -71,6 +71,12 @@ Manual Installation
 
 == Frequently Asked Questions ==
 
+= Not all URLs are updating? = 
+
+The most common issue when running this plugin is putting a `/` at the end of the domain. For example `http://domain.com/`. Some sites have the domain stored within the database without the trailing `/` and will not update everything in this way.
+
+If you are seeing some but not all URLs updating when running the plugin, give it a try without the `/`. For example `http://domain.com`. 
+
 = Where do you use this plugin? =
 
 Under the Tools menu in the dashboard there will be a "Go Live" link.
