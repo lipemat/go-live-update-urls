@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Go Live Update Urls ===
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
