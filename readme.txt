@@ -1,9 +1,9 @@
-=== Go Live Update Urls ===
+=== Plugin Name ===
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.3.1
+Tested up to: 5.4.1
 Requires PHP: 5.6.0
 Stable tag: 5.3.0
 
@@ -70,12 +70,6 @@ Manual Installation
 
 
 == Frequently Asked Questions ==
-
-= Not all URLs are updating? = 
-
-The most common issue when running this plugin is putting a `/` at the end of the domain. For example `http://domain.com/`. Some sites have the domain stored within the database without the trailing `/` and will not update everything in this way.
-
-If you are seeing some but not all URLs updating when running the plugin, give it a try without the `/`. For example `http://domain.com`. 
 
 = Where do you use this plugin? =
 
