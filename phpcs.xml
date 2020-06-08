@@ -18,7 +18,7 @@
     <config name="minimum_supported_wp_version" value="4.7" />
 
     <!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-    <config name="testVersion" value="5.4-"/>
+    <config name="testVersion" value="5.5-"/>
 
     <!-- Rules -->
     <rule ref="PHPCompatibility"/>
