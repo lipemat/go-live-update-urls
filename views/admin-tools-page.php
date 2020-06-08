@@ -50,9 +50,9 @@ $db    = Database::instance();
 		<?php
 		wp_nonce_field( Admin::NONCE, Admin::NONCE );
 
-		do_action( 'gluu_before_checkboxes', $db );
+		do_action( 'go-live-update-urls-pro/admin/before-checkboxes', $db );
 
-		if ( apply_filters( 'gluu-use-default_checkboxes', true ) ) {
+		if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 			?>
 			<h2>
 				<?php esc_html_e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
@@ -104,7 +104,7 @@ $db    = Database::instance();
 			}
 		}
 
-		do_action( 'gluu_after_checkboxes', $db );
+		do_action( 'go-live-update-urls-pro/admin/after-checkboxes', $db );
 
 		?>
 		<hr/>
@@ -144,9 +144,7 @@ $db    = Database::instance();
 		</table>
 		<p class="description" id="go-live-update-urls/views/only-checked">
 			<strong>
-				<?php
-				echo esc_html( apply_filters( 'gluu-uncheck-message', __( 'Only the checked tables will be updated.', 'go-live-update-urls' ) ) );
-				?>
+				<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
 			</strong>
 		</p>
 		<?php

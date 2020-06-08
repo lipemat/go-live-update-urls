@@ -2,9 +2,9 @@
 
 namespace Go_Live_Update_Urls;
 
+use Go_Live_Update_Urls\Traits\Singleton;
 use Go_Live_Update_Urls\Updaters\Repo;
 use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
-use Go_Live_Update_Urls\Serialized;
 
 /**
  * Database manipulation.
@@ -13,6 +13,8 @@ use Go_Live_Update_Urls\Serialized;
  * @since  6.0.0
  */
 class Database {
+	use Singleton;
+
 	/**
 	 * Get list of tables we treat as serialized when updating
 	 *
@@ -40,7 +42,7 @@ class Database {
 			}
 		}
 
-		return apply_filters( 'go-live-update-urls-serialized-tables', $serialized_tables );
+		return apply_filters( 'go-live-update-urls/database/serialized-tables', $serialized_tables );
 	}
 
 
@@ -57,7 +59,7 @@ class Database {
 			unset( $all_tables[ $_table ] );
 		}
 
-		return apply_filters( 'go_live_update_urls_plugin_tables', array_keys( $all_tables ) );
+		return apply_filters( 'go-live-update-urls/database/plugin-tables', array_keys( $all_tables ) );
 	}
 
 
@@ -99,7 +101,7 @@ class Database {
 			}
 		}
 
-		return apply_filters( 'go_live_update_urls_core_tables', $tables );
+		return apply_filters( 'go-live-update-urls/database/core-tables', $tables );
 	}
 
 
@@ -214,31 +216,5 @@ class Database {
 
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
-	}
-
-	// ********** SINGLETON **********/
-
-
-	/**
-	 * Instance of this class for use as singleton
-	 *
-	 * @var self
-	 */
-	protected static $instance;
-
-
-	/**
-	 * Get (and instantiate, if necessary) the instance of the
-	 * class
-	 *
-	 * @static
-	 * @return self
-	 */
-	public static function instance() {
-		if ( ! is_a( self::$instance, __CLASS__ ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 }

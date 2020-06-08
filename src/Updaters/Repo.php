@@ -15,8 +15,6 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Repo {
 	use Singleton;
 
-	const UPDATERS_FILTER = 'go-live-update-urls/updaters/repo/updaters';
-
 	/**
 	 * Get all registered updaters by classname
 	 * This list will grow over time as things are converted over
@@ -26,7 +24,7 @@ class Repo {
 	 * @return Updaters_Abstract[]
 	 */
 	public function get_updaters() {
-		$updaters = apply_filters( self::UPDATERS_FILTER, [
+		$updaters = apply_filters( 'go-live-update-urls/updaters/repo/updaters', [
 			'url-encoded' => Url_Encoded::class,
 		] );
 		if ( ! is_array( $updaters ) ) {

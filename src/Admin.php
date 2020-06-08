@@ -64,13 +64,15 @@ class Admin {
 	}
 
 
+	/**
+	 * Render a success message as admin banner.
+	 */
 	public function success() {
-		$message = apply_filters( 'go-live-update-urls-success-message', __( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ) );
 		?>
 		<div id="message" class="updated fade">
 			<p>
 				<strong>
-					<?php echo esc_html( $message ); ?>
+					<?php echo esc_html( apply_filters( 'go-live-update-urls/admin/success', __( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ) ) ); ?>
 				</strong>
 			</p>
 		</div>
