@@ -17,7 +17,6 @@ use Go_Live_Update_Urls\Admin;
 use Go_Live_Update_Urls\Core;
 use Go_Live_Update_Urls\Database;
 use Go_Live_Update_Urls\Serialized;
-use Go_Live_Update_Urls\Updaters\JSON;
 use Go_Live_Update_Urls\Updaters\Repo;
 use Go_Live_Update_Urls\Traits\Singleton;
 use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
@@ -50,7 +49,6 @@ function go_live_update_urls_autoload( $class ) {
 		Admin::class             => 'Admin.php',
 		Core::class              => 'Core.php',
 		Database::class          => 'Database.php',
-		JSON::class              => 'Updaters/JSON.php',
 		Repo::class              => 'Updaters/Repo.php',
 		Serialized::class        => 'Serialized.php',
 		Singleton::class         => 'Traits/Singleton.php',

@@ -26,8 +26,7 @@ class Repo {
 	 * @return Updaters_Abstract[]
 	 */
 	public function get_updaters() {
-		$updaters = apply_filters( 'go_live_update_urls_updaters', [
-			'json'        => JSON::class,
+		$updaters = apply_filters( self::UPDATERS_FILTER, [
 			'url-encoded' => Url_Encoded::class,
 		] );
 		if ( ! is_array( $updaters ) ) {
