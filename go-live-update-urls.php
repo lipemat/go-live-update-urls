@@ -13,6 +13,16 @@
 
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.3.0' );
 
+use Go_Live_Update_Urls\Admin;
+use Go_Live_Update_Urls\Core;
+use Go_Live_Update_Urls\Database;
+use Go_Live_Update_Urls\Serialized;
+use Go_Live_Update_Urls\Updaters\JSON;
+use Go_Live_Update_Urls\Updaters\Repo;
+use Go_Live_Update_Urls\Traits\Singleton;
+use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
+use Go_Live_Update_Urls\Updaters\Url_Encoded;
+
 /**
  * Load the plugin
  *
@@ -21,8 +31,8 @@ define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.3.0' );
 function go_live_update_urls_load() {
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
-	Go_Live_Update_Urls_Admin_Page::init();
-	Go_Live_Update_Urls_Core::init();
+	Admin::init();
+	Core::init();
 }
 
 /**
@@ -36,21 +46,19 @@ function go_live_update_urls_load() {
  * @return void
  */
 function go_live_update_urls_autoload( $class ) {
-	$classes = array(
-		// core.
-		'Go_Live_Update_Urls_PHP_5_2_Mock_Class'     => 'PHP_5_2_Mock_Class.php',
-		'Go_Live_Update_Urls_Admin_Page'             => 'Admin_Page.php',
-		'Go_Live_Update_Urls_Core'                   => 'Core.php',
-		'Go_Live_Update_Urls_Database'               => 'Database.php',
-		'Go_Live_Update_Urls_Serialized'             => 'Serialized.php',
-		// updaters.
-		'Go_Live_Update_Urls__Updaters__Abstract'    => 'Updaters/Abstract.php',
-		'Go_Live_Update_Urls__Updaters__JSON'        => 'Updaters/JSON.php',
-		'Go_Live_Update_Urls__Updaters__Repo'        => 'Updaters/Repo.php',
-		'Go_Live_Update_Urls__Updaters__Url_Encoded' => 'Updaters/Url_Encoded.php',
-	);
+	$classes = [
+		Admin::class             => 'Admin.php',
+		Core::class              => 'Core.php',
+		Database::class          => 'Database.php',
+		JSON::class              => 'Updaters/JSON.php',
+		Repo::class              => 'Updaters/Repo.php',
+		Serialized::class        => 'Serialized.php',
+		Singleton::class         => 'Traits/Singleton.php',
+		Updaters_Abstract::class => 'Updaters/Updaters_Abstract.php',
+		Url_Encoded::class       => 'Updaters/Url_Encoded.php',
+	];
 	if ( isset( $classes[ $class ] ) ) {
-		require dirname( __FILE__ ) . '/src/' . $classes[ $class ];
+		require __DIR__ . '/src/' . $classes[ $class ];
 	}
 }
 

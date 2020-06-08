@@ -1,13 +1,23 @@
 <?php
 
+namespace Go_Live_Update_Urls;
+
+use Go_Live_Update_Urls\Updaters\Repo;
+use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
+
 /**
+ * Serialized data handling.
+ *
  * @author OnPoint Plugins
- * @since  5.2.0
+ * @since  6.0.0
  */
-class Go_Live_Update_Urls_Serialized {
+class Serialized {
 	protected $column;
+
 	protected $new;
+
 	protected $old;
+
 	protected $table;
 
 
@@ -27,7 +37,7 @@ class Go_Live_Update_Urls_Serialized {
 	 * @return void
 	 */
 	public function update_all_serialized_tables( array $tables ) {
-		$serialized_tables = Go_Live_Update_Urls_Database::instance()->get_serialized_tables();
+		$serialized_tables = Database::instance()->get_serialized_tables();
 
 		foreach ( $serialized_tables as $table => $columns ) {
 			if ( ! in_array( $table, $tables, true ) ) {
@@ -74,7 +84,6 @@ class Go_Live_Update_Urls_Serialized {
 			$clean = @serialize( $clean );
 
 			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) );
-
 		}
 	}
 
@@ -82,9 +91,9 @@ class Go_Live_Update_Urls_Serialized {
 	/**
 	 * Replaces all the occurrences of a string in a multi-dimensional array or Object
 	 *
-	 * @uses  itself to call each level of the array
-	 *
 	 * @param iterable|string $data to change
+	 *
+	 * @uses  itself to call each level of the array
 	 *
 	 * @since 5.2.0
 	 *
@@ -124,7 +133,7 @@ class Go_Live_Update_Urls_Serialized {
 	 */
 	protected function replace( $data ) {
 		foreach ( $this->get_updater_objects() as $_updater ) {
-			/** @var Go_Live_Update_Urls__Updaters__Abstract $_updater */
+			/** @var Updaters_Abstract $_updater */
 			$data = str_replace( $_updater->apply_rule_to_url( $this->old ), $_updater->apply_rule_to_url( $this->new ), $data );
 		}
 
@@ -167,12 +176,12 @@ class Go_Live_Update_Urls_Serialized {
 	 *       Come up with a better architecture which gives us access to apply_url_to_url() without
 	 *       empty constructing an object.
 	 *
-	 * @return Go_Live_Update_Urls__Updaters__Abstract[]
+	 * @return Updaters_Abstract[]
 	 */
 	protected function get_updater_objects() {
 		static $updaters;
 		if ( null === $updaters ) {
-			$updaters = (array) Go_Live_Update_Urls__Updaters__Repo::instance()->get_updaters();
+			$updaters = (array) Repo::instance()->get_updaters();
 			foreach ( $updaters as $k => $_class ) {
 				$updaters[ $k ] = new $_class( null, null, null, null );
 			}

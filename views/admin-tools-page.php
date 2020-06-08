@@ -12,7 +12,10 @@
  * @package go-live-update-urls
  */
 
-$db    = Go_Live_Update_Urls_Database::instance();
+use Go_Live_Update_Urls\Admin;
+use Go_Live_Update_Urls\Database;
+
+$db    = Database::instance();
 
 ?>
 <div id="go-live-update-urls/admin-page" class="wrap">
@@ -45,7 +48,7 @@ $db    = Go_Live_Update_Urls_Database::instance();
 
 	<form method="post" id="go-live-update-urls/checkbox-form">
 		<?php
-		wp_nonce_field( Go_Live_Update_Urls_Admin_Page::NONCE, Go_Live_Update_Urls_Admin_Page::NONCE );
+		wp_nonce_field( Admin::NONCE, Admin::NONCE );
 
 		do_action( 'gluu_before_checkboxes', $db );
 
@@ -70,7 +73,7 @@ $db    = Go_Live_Update_Urls_Database::instance();
 			<hr/>
 			</p>
 			<?php
-			Go_Live_Update_Urls_Admin_Page::instance()->render_check_boxes( $db->get_core_tables(), 'wp-core' );
+			Admin::instance()->render_check_boxes( $db->get_core_tables(), 'wp-core' );
 
 			$custom_tables = $db->get_custom_plugin_tables();
 			if ( ! empty( $custom_tables ) ) {
@@ -97,7 +100,7 @@ $db    = Go_Live_Update_Urls_Database::instance();
 				<hr/>
 				</p>
 				<?php
-				Go_Live_Update_Urls_Admin_Page::instance()->render_check_boxes( $custom_tables, 'custom-plugins', false );
+				Admin::instance()->render_check_boxes( $custom_tables, 'custom-plugins', false );
 			}
 		}
 
@@ -114,7 +117,7 @@ $db    = Go_Live_Update_Urls_Database::instance();
 				</th>
 				<td>
 					<input
-						name="<?php echo esc_attr( Go_Live_Update_Urls_Admin_Page::OLD_URL ); ?>"
+						name="<?php echo esc_attr( Admin::OLD_URL ); ?>"
 						type="text"
 						id="old_url"
 						value=""
@@ -130,7 +133,7 @@ $db    = Go_Live_Update_Urls_Database::instance();
 				</th>
 				<td>
 					<input
-						name="<?php echo esc_attr( Go_Live_Update_Urls_Admin_Page::NEW_URL ); ?>"
+						name="<?php echo esc_attr( Admin::NEW_URL ); ?>"
 						type="text"
 						id="new_url"
 						value=""
@@ -160,6 +163,6 @@ $db    = Go_Live_Update_Urls_Database::instance();
 			<?php
 		}
 		?>
-		<?php submit_button( __( 'Update URLs', 'go-live-update-urls' ), 'primary', Go_Live_Update_Urls_Admin_Page::SUBMIT ); ?>
+		<?php submit_button( __( 'Update URLs', 'go-live-update-urls' ), 'primary', Admin::SUBMIT ); ?>
 	</form>
 </div>

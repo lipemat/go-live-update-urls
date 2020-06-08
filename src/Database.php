@@ -1,10 +1,18 @@
 <?php
+
+namespace Go_Live_Update_Urls;
+
+use Go_Live_Update_Urls\Updaters\Repo;
+use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
+use Go_Live_Update_Urls\Serialized;
+
 /**
- * Go_Live_Update_Urls_Database
+ * Database manipulation.
  *
  * @author OnPoint Plugins
+ * @since  6.0.0
  */
-class Go_Live_Update_Urls_Database {
+class Database {
 	/**
 	 * Get list of tables we treat as serialized when updating
 	 *
@@ -138,7 +146,7 @@ class Go_Live_Update_Urls_Database {
 		global $wpdb;
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
-		$updaters = (array) Go_Live_Update_Urls__Updaters__Repo::instance()->get_updaters();
+		$updaters = (array) Repo::instance()->get_updaters();
 
 		// If the new domain is the old one with a new sub-domain like www.
 		if ( strpos( $new_url, $old_url ) !== false ) {
@@ -146,10 +154,10 @@ class Go_Live_Update_Urls_Database {
 			$double_subdomain = $subdomain . '.' . $new_url;
 		}
 
-		$serialized = new Go_Live_Update_Urls_Serialized( $old_url, $new_url );
+		$serialized = new Serialized( $old_url, $new_url );
 		$serialized->update_all_serialized_tables( $tables );
 		if ( ! empty( $double_subdomain ) ) {
-			$serialized = new Go_Live_Update_Urls_Serialized( $double_subdomain, $new_url );
+			$serialized = new Serialized( $double_subdomain, $new_url );
 			$serialized->update_all_serialized_tables( $tables );
 		}
 
@@ -158,11 +166,11 @@ class Go_Live_Update_Urls_Database {
 		foreach ( (array) $tables as $table ) {
 			$columns = $wpdb->get_col( $wpdb->prepare( $get_columns_query, $table ) );
 			foreach ( $columns as $_column ) {
-				$this->update_column( $table, $_column, $old_url, $new_url);
+				$this->update_column( $table, $_column, $old_url, $new_url );
 
 				foreach ( $updaters as $_updater_class ) {
 					if ( class_exists( $_updater_class ) ) {
-						/* @var Go_Live_Update_Urls__Updaters__Abstract $_updater - Individual updater class */
+						/* @var Updaters_Abstract $_updater - Individual updater class */
 						$_updater = $_updater_class::factory( $table, $_column, $old_url, $new_url );
 						$_updater->update_data();
 						if ( ! empty( $double_subdomain ) ) {
@@ -174,9 +182,9 @@ class Go_Live_Update_Urls_Database {
 
 				// Fix the dub dubs if this was the old domain with a new sub.
 				if ( ! empty( $double_subdomain ) ) {
-					$this->update_column( $table, $_column, $double_subdomain, $new_url);
+					$this->update_column( $table, $_column, $double_subdomain, $new_url );
 					// Fix the emails breaking by being appended the new subdomain.
-					$this->update_column( $table, $_column, '@' . $new_url, '@' . $old_url);
+					$this->update_column( $table, $_column, '@' . $new_url, '@' . $old_url );
 				}
 			}
 		}
@@ -192,8 +200,8 @@ class Go_Live_Update_Urls_Database {
 	/**
 	 * Update an individual table's column.
 	 *
-	 * @param string $table Table to update.
-	 * @param string $column Column to update.
+	 * @param string $table   Table to update.
+	 * @param string $column  Column to update.
 	 * @param string $old_url Old URL.
 	 * @param string $new_url New URL.
 	 *
@@ -210,12 +218,14 @@ class Go_Live_Update_Urls_Database {
 
 	// ********** SINGLETON **********/
 
+
 	/**
 	 * Instance of this class for use as singleton
 	 *
 	 * @var self
 	 */
 	protected static $instance;
+
 
 	/**
 	 * Get (and instantiate, if necessary) the instance of the

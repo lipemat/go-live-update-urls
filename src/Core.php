@@ -1,22 +1,22 @@
 <?php
 
+namespace Go_Live_Update_Urls;
+
 /**
- * Go_Live_Update_Urls_Core
+ * Core functionality for the plugin.
  *
  * @author OnPoint Plugins
- * @since  5.0.0
- *
+ * @since  6.0.0
  */
-class Go_Live_Update_Urls_Core {
+class Core {
 	const MEMORY_LIMIT = '256M';
 
-
 	protected function hook() {
-		add_action( 'go-live-update-urls/database/before-update', array( $this, 'raise_resource_limits' ), 0, 0 );
-		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', array(
+		add_action( 'go-live-update-urls/database/before-update', [ $this, 'raise_resource_limits' ], 0, 0 );
+		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [
 			$this,
 			'raise_memory_limit',
-		), 0, 0 );
+		], 0, 0 );
 	}
 
 
@@ -25,7 +25,7 @@ class Go_Live_Update_Urls_Core {
 	 * 2. Set input time to unlimited
 	 * 3. Set memory limit to context which will use our filter
 	 *
-	 * @see Go_Live_Update_Urls_Core::raise_memory_limit();
+	 * @see Core::raise_memory_limit();
 	 *
 	 * @return void
 	 */
@@ -65,7 +65,7 @@ class Go_Live_Update_Urls_Core {
 	 * @return bool
 	 */
 	public function update( $old_url, $new_url ) {
-		$db     = Go_Live_Update_Urls_Database::instance();
+		$db = Database::instance();
 		$tables = $db->get_all_table_names();
 
 		do_action( 'go-live-update-urls/core/before-update', $old_url, $new_url, $tables );
@@ -77,20 +77,19 @@ class Go_Live_Update_Urls_Core {
 	/**
 	 * Get a view file from the theme first then this plugin
 	 *
-	 * @since 5.0.0
-	 *
 	 * @param string $file
+	 *
+	 * @since 5.0.0
 	 *
 	 * @return string
 	 */
 	public function get_view_file( $file ) {
-		$theme_file = locate_template( array( 'go-live-update-urls/' . $file ) );
+		$theme_file = locate_template( [ 'go-live-update-urls/' . $file ] );
 		if ( empty( $theme_file ) ) {
 			$theme_file = self::plugin_path( 'views/' . $file );
 		}
 
 		return $theme_file;
-
 	}
 
 
@@ -121,7 +120,6 @@ class Go_Live_Update_Urls_Core {
 	 * @return string
 	 */
 	public static function plugin_path( $append = '' ) {
-
 		if ( ! self::$plugin_path ) {
 			self::$plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) );
 		}
@@ -138,7 +136,6 @@ class Go_Live_Update_Urls_Core {
 	 * @return string
 	 */
 	public static function plugin_url( $append = '' ) {
-
 		if ( ! self::$plugin_url ) {
 			self::$plugin_url = trailingslashit( plugins_url( basename( self::plugin_path() ), dirname( dirname( __FILE__ ) ) ) );
 		}

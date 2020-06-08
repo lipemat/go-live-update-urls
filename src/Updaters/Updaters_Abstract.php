@@ -1,12 +1,16 @@
 <?php
 
+namespace Go_Live_Update_Urls\Updaters;
+
+use Go_Live_Update_Urls\Database;
+
 /**
  * Base Abstract for any URL updating classes.
  *
  * @author  OnPoint Plugins
- * @since   5.0.0
+ * @since   6.0.0
  */
-abstract class Go_Live_Update_Urls__Updaters__Abstract {
+abstract class Updaters_Abstract {
 	/**
 	 * The database table.
 	 *
@@ -61,7 +65,7 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 	 * @return void
 	 */
 	protected function update_column( $old_url, $new_url ) {
-		Go_Live_Update_Urls_Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
+		Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
 	}
 
 

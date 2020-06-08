@@ -1,28 +1,33 @@
 <?php
 
+namespace Go_Live_Update_Urls;
+
+use Go_Live_Update_Urls\Traits\Singleton;
+
 /**
- * Go_Live_Update_Urls_Admin_Page
+ * Tools Page in WordPress Admin.
  *
  * @author OnPoint Plugins
- * @since  5.0.0
- *
+ * @since  6.0.0
  */
-class Go_Live_Update_Urls_Admin_Page {
-	const NONCE = 'go-live-update-urls/nonce/update-tables';
-	const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
-	const SUBMIT = 'go-live-update-urls/input/submit';
+class Admin {
+	use Singleton;
 
-	//@todo change these to snake-case after 6/1/18
+	const NONCE            = 'go-live-update-urls/nonce/update-tables';
+	const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
+	const SUBMIT           = 'go-live-update-urls/input/submit';
+
+	// @todo change these to snake-case after 6/1/18.
 	const OLD_URL = 'oldurl';
 	const NEW_URL = 'newurl';
 
 
 	protected function hook() {
 		if ( ! empty( $_POST[ self::SUBMIT ] ) ) {
-			add_action( 'init', array( $this, 'validate_update_submission' ) );
+			add_action( 'init', [ $this, 'validate_update_submission' ] );
 		}
 
-		add_action( 'admin_menu', array( $this, 'register_admin_page' ) );
+		add_action( 'admin_menu', [ $this, 'register_admin_page' ] );
 	}
 
 
@@ -41,19 +46,19 @@ class Go_Live_Update_Urls_Admin_Page {
 		$old_url = trim( sanitize_text_field( $_POST[ self::OLD_URL ] ) );
 		$new_url = trim( sanitize_text_field( $_POST[ self::NEW_URL ] ) );
 		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
-			add_action( 'admin_notices', array( $this, 'epic_fail' ) );
+			add_action( 'admin_notices', [ $this, 'epic_fail' ] );
 			return;
 		}
 
 		$tables = array_map( 'sanitize_text_field', $_POST[ self::TABLE_INPUT_NAME ] );
 
 		$this->tables = $tables; // For backward compatibility. Kill when this deprecated call is removed.
-		do_action_deprecated( 'gluu-before-make-update', array( $this ), '5.0.0', 'go-live-update-urls/admin-page/before-update' );
+		do_action_deprecated( 'gluu-before-make-update', [ $this ], '5.0.0', 'go-live-update-urls/admin-page/before-update' );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
-		if ( Go_Live_Update_Urls_Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) {
-			add_action( 'admin_notices', array( $this, 'success' ) );
+		if ( Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) {
+			add_action( 'admin_notices', [ $this, 'success' ] );
 			add_filter( 'go-live-update-urls/views/admin-tools-page/disable-description', '__return_true' );
 		}
 	}
@@ -86,7 +91,6 @@ class Go_Live_Update_Urls_Admin_Page {
 			</p>
 		</div>
 		<?php
-
 	}
 
 
@@ -96,10 +100,10 @@ class Go_Live_Update_Urls_Admin_Page {
 	 * @since 5.0.0
 	 */
 	public function register_admin_page() {
-		add_management_page( 'go-live-update-urls-setting', 'Go Live', 'manage_options', 'go-live-update-urls-settings', array(
+		add_management_page( 'go-live-update-urls-setting', 'Go Live', 'manage_options', 'go-live-update-urls-settings', [
 			$this,
 			'admin_page',
-		) );
+		] );
 	}
 
 
@@ -110,20 +114,20 @@ class Go_Live_Update_Urls_Admin_Page {
 	 *
 	 */
 	public function admin_page() {
-		wp_enqueue_script( 'go-live-update-urls-admin-page', Go_Live_Update_Urls_Core::plugin_url( 'resources/js/admin-page.js' ), array( 'jquery' ), GO_LIVE_UPDATE_URLS_VERSION );
+		wp_enqueue_script( 'go-live-update-urls-admin-page', Core::plugin_url( 'resources/js/admin-page.js' ), [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION );
 
-		require Go_Live_Update_Urls_Core::instance()->get_view_file( 'admin-tools-page.php' );
+		require Core::instance()->get_view_file( 'admin-tools-page.php' );
 	}
 
 
 	/**
 	 * Creates a list of checkboxes for each table
 	 *
-	 * @since  5.0.0
-	 *
 	 * @param array  $tables
 	 * @param string $list - uses by js to separate lists
 	 * @param bool   $checked
+	 *
+	 * @since  5.0.0
 	 *
 	 * @return void
 	 *
@@ -148,43 +152,5 @@ class Go_Live_Update_Urls_Admin_Page {
 			?>
 		</ul>
 		<?php
-
-
-	}
-
-	/********** SINGLETON **********/
-
-	/**
-	 * Instance of this class for use as singleton
-	 *
-	 * @var self
-	 */
-	protected static $instance;
-
-
-	/**
-	 * Create the instance of the class
-	 *
-	 * @static
-	 * @return void
-	 */
-	public static function init() {
-		self::instance()->hook();
-	}
-
-
-	/**
-	 * Get (and instantiate, if necessary) the instance of the
-	 * class
-	 *
-	 * @static
-	 * @return self
-	 */
-	public static function instance() {
-		if ( ! is_a( self::$instance, __CLASS__ ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 }
