@@ -15,7 +15,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
 
-    <config name="minimum_supported_wp_version" value="4.7" />
+    <config name="minimum_supported_wp_version" value="4.8" />
 
     <!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
     <config name="testVersion" value="5.5-"/>
@@ -47,5 +47,14 @@
 	<!-- Test against JS XXS https://vip.wordpress.com/documentation/vip-go/vip-code-review/javascript-security-best-practices/ -->
 	<rule ref="WordPressVIPMinimum.JS">
 		<type>error</type>
+	</rule>
+
+	<!-- wp_verify_nonce() handles casting on it's own and does not need extra overhead -->
+	<rule ref="WordPress.Security.ValidatedSanitizedInput">
+		<properties>
+			<property name="customUnslashingSanitizingFunctions" type="array">
+				<element value="wp_verify_nonce"/>
+			</property>
+		</properties>
 	</rule>
 </ruleset>

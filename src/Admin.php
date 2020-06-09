@@ -13,13 +13,11 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const OLD_URL          = 'old_url';
+	const NEW_URL          = 'new_url';
 	const NONCE            = 'go-live-update-urls/nonce/update-tables';
 	const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
 	const SUBMIT           = 'go-live-update-urls/input/submit';
-
-	// @todo change these to snake-case after 6/1/18.
-	const OLD_URL = 'oldurl';
-	const NEW_URL = 'newurl';
 
 
 	/**
@@ -42,21 +40,23 @@ class Admin {
 	 * @return void
 	 */
 	public function validate_update_submission() {
-		if ( ! wp_verify_nonce( sanitize_text_field( $_POST[ self::NONCE ] ), self::NONCE ) ) {
+		if ( ! isset( $_POST[ self::NONCE ] ) || ! wp_verify_nonce( $_POST[ self::NONCE ], self::NONCE ) ) {
 			wp_die( esc_html__( 'Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
-		$old_url = trim( sanitize_text_field( $_POST[ self::OLD_URL ] ) );
-		$new_url = trim( sanitize_text_field( $_POST[ self::NEW_URL ] ) );
-		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
-			add_action( 'admin_notices', [ $this, 'epic_fail' ] );
+		if ( empty( $_POST[ self::OLD_URL ] ) || empty( $_POST[ self::NEW_URL ] ) ) {
+			$this->failure_message();
 			return;
 		}
 
-		$tables = array_map( 'sanitize_text_field', $_POST[ self::TABLE_INPUT_NAME ] );
+		$old_url = trim( sanitize_text_field( \wp_unslash( $_POST[ self::OLD_URL ] ) ) );
+		$new_url = trim( sanitize_text_field( \wp_unslash( $_POST[ self::NEW_URL ] ) ) );
+		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
+			$this->failure_message();
+			return;
+		}
 
-		$this->tables = $tables; // For backward compatibility. Kill when this deprecated call is removed.
-		do_action_deprecated( 'gluu-before-make-update', [ $this ], '5.0.0', 'go-live-update-urls/admin-page/before-update' );
+		$tables = array_map( 'sanitize_text_field', \wp_unslash( $_POST[ self::TABLE_INPUT_NAME ] ) );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
@@ -88,14 +88,18 @@ class Admin {
 	 *
 	 * @return void
 	 */
-	public function epic_fail() {
-		?>
-		<div id="message" class="error fade">
-			<p>
-				<strong><?php esc_html_e( 'You must fill out both URLs and select tables to update URLs!', 'go-live-update-urls' ); ?></strong>
-			</p>
-		</div>
-		<?php
+	public function failure_message() {
+		add_action( 'admin_notices', function () {
+			?>
+			<div id="message" class="error fade">
+				<p>
+					<strong>
+						<?php esc_html_e( 'You must fill out both URLs and select tables to update URLs!', 'go-live-update-urls' ); ?>
+					</strong>
+				</p>
+			</div>
+			<?php
+		} );
 	}
 
 
@@ -118,7 +122,7 @@ class Admin {
 	 * @since 5.0.0
 	 */
 	public function admin_page() {
-		wp_enqueue_script( 'go-live-update-urls-admin-page', GO_LIVE_UPDATE_URLS_URL . '/resources/js/admin-page.js', [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION, true );
+		wp_enqueue_script( 'go-live-update-urls-admin-page', GO_LIVE_UPDATE_URLS_URL . 'resources/js/admin-page.js', [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION, true );
 
 		?>
 		<div id="go-live-update-urls/admin-page" class="wrap">
@@ -173,11 +177,10 @@ class Admin {
 							data-js="go-live-update-urls/checkboxes/check-all"
 							checked
 						/>
-					<hr />
 					</p>
+					<hr />
 					<?php
-					self::instance()->render_check_boxes( Database::instance()->get_core_tables(), 'wp-core' );
-
+					$this->render_check_boxes( Database::instance()->get_core_tables(), 'wp-core' );
 					$custom_tables = Database::instance()->get_custom_plugin_tables();
 					if ( ! empty( $custom_tables ) ) {
 						?>
@@ -200,10 +203,10 @@ class Admin {
 								class="go-live-update-urls/checkboxes/check-all"
 								data-list="custom-plugins"
 								data-js="go-live-update-urls/checkboxes/check-all" />
-						<hr />
 						</p>
+						<hr />
 						<?php
-						self::instance()->render_check_boxes( $custom_tables, 'custom-plugins', false );
+						$this->render_check_boxes( $custom_tables, 'custom-plugins', false );
 					}
 				}
 
@@ -274,9 +277,9 @@ class Admin {
 	/**
 	 * Creates a list of checkboxes for each table
 	 *
-	 * @param array  $tables
-	 * @param string $list - uses by js to separate lists
-	 * @param bool   $checked
+	 * @param array  $tables - List of all tables.
+	 * @param string $list - Used by js to separate lists.
+	 * @param bool   $checked - Should all checkboxes be checked.
 	 *
 	 * @since  5.0.0
 	 *
@@ -293,7 +296,7 @@ class Admin {
 				?>
 				<li>
 					<?php
-					printf( '<input name="%s[]" type="checkbox" value="%s" %s /> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
+					printf( '<input name="%s[]" type="checkbox" value="%s" %s/> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
 					?>
 				</li>
 				<?php
