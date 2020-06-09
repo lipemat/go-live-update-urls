@@ -22,8 +22,11 @@ class Admin {
 	const NEW_URL = 'newurl';
 
 
+	/**
+	 * Add actions.
+	 */
 	protected function hook() {
-		if ( ! empty( $_POST[ self::SUBMIT ] ) ) {
+		if ( ! empty( $_POST[ self::SUBMIT ] ) ) { //phpcs:ignore
 			add_action( 'init', [ $this, 'validate_update_submission' ] );
 		}
 
@@ -113,12 +116,158 @@ class Admin {
 	 * Output the Admin Page for using this plugin
 	 *
 	 * @since 5.0.0
-	 *
 	 */
 	public function admin_page() {
-		wp_enqueue_script( 'go-live-update-urls-admin-page', Core::plugin_url( 'resources/js/admin-page.js' ), [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION );
+		wp_enqueue_script( 'go-live-update-urls-admin-page', GO_LIVE_UPDATE_URLS_URL . '/resources/js/admin-page.js', [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION, true );
 
-		require Core::instance()->get_view_file( 'admin-tools-page.php' );
+		?>
+		<div id="go-live-update-urls/admin-page" class="wrap">
+			<h2>
+				<?php esc_html_e( 'Go Live Update Urls', 'go-live-update-urls' ); ?>
+			</h2>
+
+			<?php
+			if ( ! apply_filters( 'go-live-update-urls/views/admin-tools-page/disable-description', false ) ) {
+				?>
+
+				<p class="description">
+					<?php
+					/* translators: <strong></strong> */
+					printf( esc_html_x( 'This will replace all occurrences %1$sin the entire database%2$s of the Old URL with the New URL.', '{<strong>} {</strong>}', 'go-live-update-urls' ), '<strong>', '</strong>' );
+					?>
+				</p>
+
+				<strong>
+					<em style="color:red">
+						<?php esc_html_e( 'Like any other database updating tool, you should always perform a backup before running.', 'go-live-update-urls' ); ?>
+					</em>
+				</strong>
+				<br /><br />
+				<hr />
+
+				<?php
+			}
+			?>
+
+			<form method="post" id="go-live-update-urls/checkbox-form">
+				<?php
+				wp_nonce_field( self::NONCE, self::NONCE );
+
+				do_action( 'go-live-update-urls-pro/admin/before-checkboxes', Database::instance() );
+
+				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
+					?>
+					<h2>
+						<?php esc_html_e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
+					</h2>
+					<p class="description" style="color:green">
+						<strong>
+							<?php esc_attr_e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?>
+						</strong>
+					</p>
+					<p>
+						<input
+							type="checkbox"
+							class="go-live-update-urls/checkboxes/check-all"
+							data-list="wp-core"
+							data-js="go-live-update-urls/checkboxes/check-all"
+							checked
+						/>
+					<hr />
+					</p>
+					<?php
+					self::instance()->render_check_boxes( Database::instance()->get_core_tables(), 'wp-core' );
+
+					$custom_tables = Database::instance()->get_custom_plugin_tables();
+					if ( ! empty( $custom_tables ) ) {
+						?>
+						<hr />
+
+						<h2>
+							<?php esc_html_e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
+						</h2>
+						<p class="description" style="color:red">
+							<strong>
+								<?php
+								/* translators: <br /> <a> </a> */
+								printf( esc_html_x( 'These tables are probably NOT SAFE to update with the basic version of this plugin. %1$sTo support tables created by plugins use the %2$sPro Version%3$s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+								?>
+							</strong>
+						</p>
+						<p>
+							<input
+								type="checkbox"
+								class="go-live-update-urls/checkboxes/check-all"
+								data-list="custom-plugins"
+								data-js="go-live-update-urls/checkboxes/check-all" />
+						<hr />
+						</p>
+						<?php
+						self::instance()->render_check_boxes( $custom_tables, 'custom-plugins', false );
+					}
+				}
+
+				do_action( 'go-live-update-urls-pro/admin/after-checkboxes', Database::instance() );
+
+				?>
+				<hr />
+				<table class="form-table" id="go-live-update-urls/url-fields">
+					<tr>
+						<th scope="row" style="width:150px;">
+							<label for="old_url">
+								<?php esc_html_e( 'Old URL', 'go-live-update-urls' ); ?>
+							</label>
+						</th>
+						<td>
+							<input
+								name="<?php echo esc_attr( self::OLD_URL ); ?>"
+								type="text"
+								id="old_url"
+								value=""
+								style="width:300px;"
+								title="<?php esc_attr_e( 'Old URL', 'go-live-update-urls' ); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" style="width:150px;">
+							<label for="new_url">
+								<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>
+							</label>
+						</th>
+						<td>
+							<input
+								name="<?php echo esc_attr( self::NEW_URL ); ?>"
+								type="text"
+								id="new_url"
+								value=""
+								style="width:300px;"
+								title="<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>" />
+						</td>
+					</tr>
+				</table>
+				<p class="description" id="go-live-update-urls/views/only-checked">
+					<strong>
+						<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
+					</strong>
+				</p>
+				<?php
+				if ( ! defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ) {
+					?>
+					<p class="description" style="color:#23282d">
+						<strong>
+							<?php
+							/* translators: <a></a> */
+							printf( esc_html_x( 'To test this change before running it, use %1$sPro Version 2.0.0+%2$s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+							?>
+						</strong>
+					</p>
+					<?php
+				}
+				?>
+				<?php submit_button( __( 'Update URLs', 'go-live-update-urls' ), 'primary', self::SUBMIT ); ?>
+			</form>
+		</div>
+		<?php
 	}
 
 
@@ -132,7 +281,6 @@ class Admin {
 	 * @since  5.0.0
 	 *
 	 * @return void
-	 *
 	 */
 	public function render_check_boxes( $tables, $list, $checked = true ) {
 		?>

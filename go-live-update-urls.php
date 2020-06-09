@@ -12,6 +12,7 @@
  */
 
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.3.0' );
+define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
 use Go_Live_Update_Urls\Admin;
 use Go_Live_Update_Urls\Core;
