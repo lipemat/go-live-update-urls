@@ -153,7 +153,7 @@ class Admin {
 			}
 			?>
 
-			<form method="post" id="go-live-update-urls/checkbox-form">
+			<form method="post" class="go-live-update-urls/admin/checkbox-form">
 				<?php
 				wp_nonce_field( self::NONCE, self::NONCE );
 
@@ -214,7 +214,7 @@ class Admin {
 
 				?>
 				<hr />
-				<table class="form-table" id="go-live-update-urls/url-fields">
+				<table class="form-table" data-js="go-live-update-urls/admin/url-fields">
 					<tr>
 						<th scope="row" style="width:150px;">
 							<label for="old_url">
@@ -248,7 +248,7 @@ class Admin {
 						</td>
 					</tr>
 				</table>
-				<p class="description" id="go-live-update-urls/views/only-checked">
+				<p class="description" data-js="go-live-update-urls/admin/only-checked-tables">
 					<strong>
 						<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
 					</strong>
@@ -260,7 +260,7 @@ class Admin {
 						<strong>
 							<?php
 							/* translators: <a></a> */
-							printf( esc_html_x( 'To test this change before running it, use %1$sPro Version 2.0.0+%2$s.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test the updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
 							?>
 						</strong>
 					</p>
