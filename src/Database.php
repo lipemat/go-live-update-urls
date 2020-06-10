@@ -138,8 +138,6 @@ class Database {
 	 * @param string $new_url - the new URL.
 	 * @param array  $tables  - the tables we are going to update.
 	 *
-	 * @todo  split this functionality into its own OOP class
-	 *
 	 * @since 5.0.0
 	 *
 	 * @return bool
@@ -182,7 +180,7 @@ class Database {
 					}
 				}
 
-				// Fix the dub dubs if this was the old domain with a new sub.
+				// Fix the double up if this was the old domain with a new subdomain.
 				if ( ! empty( $double_subdomain ) ) {
 					$this->update_column( $table, $_column, $double_subdomain, $new_url );
 					// Fix the emails breaking by being appended the new subdomain.

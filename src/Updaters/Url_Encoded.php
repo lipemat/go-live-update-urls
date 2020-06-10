@@ -20,7 +20,7 @@ class Url_Encoded extends Updaters_Abstract {
 	 *
 	 * @return string
 	 */
-	public function apply_rule_to_url( $url ) {
+	public static function apply_rule_to_url( $url ) {
 		return rawurlencode( $url );
 	}
 
@@ -32,12 +32,12 @@ class Url_Encoded extends Updaters_Abstract {
 	 * @return bool
 	 */
 	public function update_data() {
-		$old = $this->apply_rule_to_url( $this->old );
+		$old = self::apply_rule_to_url( $this->old );
 		if ( $old === $this->old ) {
 			return false;
 		}
 
-		$this->update_column( $old, $this->apply_rule_to_url( $this->new ) );
+		$this->update_column( $old, self::apply_rule_to_url( $this->new ) );
 
 		return true;
 	}

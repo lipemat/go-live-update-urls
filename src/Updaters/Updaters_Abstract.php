@@ -41,7 +41,7 @@ abstract class Updaters_Abstract {
 
 
 	/**
-	 * Go_Live_Update_Urls__Updaters__Abstract constructor.
+	 * Updaters Constructor
 	 *
 	 * @param string $table   Table to update.
 	 * @param string $column  Column to update.
@@ -57,6 +57,15 @@ abstract class Updaters_Abstract {
 
 
 	/**
+	 * The method which is called to actually run the update
+	 * using this updater.
+	 *
+	 * @return bool
+	 */
+	abstract public function update_data();
+
+
+	/**
 	 * Update this table and column.
 	 *
 	 * @param string $old_url Old URL.
@@ -69,6 +78,7 @@ abstract class Updaters_Abstract {
 	}
 
 
+	//phpcs:disable
 	/**
 	 * Filter the new or old url based on this particular updater's logic.
 	 *
@@ -76,20 +86,14 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return string
 	 */
-	abstract public function apply_rule_to_url( $url );
+	public static function apply_rule_to_url( $url ) {
+		throw new \RuntimeException( __( 'You must implement apply_rule_to_url with an override' ) );
+	}
+	//phpcs:enable
 
 
 	/**
-	 * The method which is called to actually run the update
-	 * using this updater.
-	 *
-	 * @return bool
-	 */
-	abstract public function update_data();
-
-
-	/**
-	 * Factory to get constructed class .
+	 * Factory to get constructed class
 	 *
 	 * @param string $table   Table to update.
 	 * @param string $column  Column to update.

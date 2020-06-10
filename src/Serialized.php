@@ -3,7 +3,6 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Updaters\Repo;
-use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Serialized data handling.
@@ -12,15 +11,26 @@ use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
  * @since  6.0.0
  */
 class Serialized {
-	protected $column;
-
+	/**
+	 * New URL
+	 *
+	 * @var string
+	 */
 	protected $new;
-
+	/**
+	 * Old URL
+	 *
+	 * @var string
+	 */
 	protected $old;
 
-	protected $table;
 
-
+	/**
+	 * Serialized constructor.
+	 *
+	 * @param string $old - Old URL.
+	 * @param string $new - New URL.
+	 */
 	public function __construct( $old, $new ) {
 		$this->new = $new;
 		$this->old = $old;
@@ -53,37 +63,39 @@ class Serialized {
 	/**
 	 * Query all serialized rows from a database table and update them one by one
 	 *
-	 * @param $table
-	 * @param $column
+	 * @param string $table - Database table.
+	 * @param string $column - Database column.
 	 *
 	 * @return void
 	 */
 	protected function update_table( $table, $column ) {
 		global $wpdb;
-		$pk = $wpdb->get_results( "SHOW KEYS FROM {$table} WHERE Key_name = 'PRIMARY'" );
+		$column = (string) esc_sql( $column );
+		$table = (string) esc_sql( $table );
+		$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . "` WHERE Key_name = 'PRIMARY'" );
 		if ( empty( $pk[0] ) ) {
-			$pk = $wpdb->get_results( "SHOW KEYS FROM {$table}" );
+			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
 			if ( empty( $pk[0] ) ) {
-				// fail
+				// Fail.
 				return;
 			}
 		}
-
 		$primary_key_column = $pk[0]->Column_name;
 
-		// Get all the Serialized Rows and Replace them properly
-		$rows = $wpdb->get_results( "SELECT $primary_key_column, {$column} FROM {$table} WHERE {$column} LIKE 'a:%' OR {$column} LIKE 'O:%'" );
+		// Get all serialized rows.
+		$rows = $wpdb->get_results( "SELECT $primary_key_column, {$column} FROM {$table} WHERE {$column} LIKE 'a:%' OR {$column} LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		foreach ( $rows as $row ) {
-			// skip the overhead of updating things that have nothing to update
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
 				continue;
 			}
 
+			//phpcs:disable
 			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
 			$clean = @serialize( $clean );
+			//phpcs:enable
 
-			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -91,7 +103,7 @@ class Serialized {
 	/**
 	 * Replaces all the occurrences of a string in a multi-dimensional array or Object
 	 *
-	 * @param iterable|string $data to change
+	 * @param iterable|string $data - Data to change.
 	 *
 	 * @uses  itself to call each level of the array
 	 *
@@ -127,17 +139,16 @@ class Serialized {
 	 * Also replace occurrences of an old url formatted using
 	 * all available updaters
 	 *
-	 * @param string $data
+	 * @param string $mysql_value - Original value from the database.
 	 *
 	 * @return string
 	 */
-	protected function replace( $data ) {
-		foreach ( $this->get_updater_objects() as $_updater ) {
-			/** @var Updaters_Abstract $_updater */
-			$data = str_replace( $_updater->apply_rule_to_url( $this->old ), $_updater->apply_rule_to_url( $this->new ), $data );
+	protected function replace( $mysql_value ) {
+		foreach ( Repo::instance()->get_updaters() as $_updater ) {
+			$mysql_value = str_replace( $_updater::apply_rule_to_url( $this->old ), $_updater::apply_rule_to_url( $this->new ), $mysql_value );
 		}
 
-		return trim( str_replace( $this->old, $this->new, $data ) );
+		return trim( str_replace( $this->old, $this->new, $mysql_value ) );
 	}
 
 
@@ -146,48 +157,26 @@ class Serialized {
 	 * Check first for serialized data,
 	 * Then check for occurrences of any urls formatted by an updater
 	 *
-	 * @param string $data
+	 * @param string $mysql_value - Original value from the database.
 	 *
 	 * @return bool
 	 */
-	protected function has_data_to_update( $data ) {
-		if ( ! is_serialized( $data ) ) {
+	protected function has_data_to_update( $mysql_value ) {
+		if ( ! is_serialized( $mysql_value ) ) {
 			return false;
 		}
 
-		if ( strpos( $data, $this->old ) !== false ) {
+		if ( strpos( $mysql_value, $this->old ) !== false ) {
 			return true;
 		}
 
-		foreach ( $this->get_updater_objects() as $_updater ) {
-			if ( strpos( $data, $_updater->apply_rule_to_url( $this->old ) ) !== false ) {
+		foreach ( Repo::instance()->get_updaters() as $_updater ) {
+			if ( strpos( $mysql_value, $_updater::apply_rule_to_url( $this->old ) ) !== false ) {
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-
-	/**
-	 * Get an array of all available url updaters
-	 *
-	 * @todo The current updater architecture uses object with 4 arguments passed to the class
-	 *       Come up with a better architecture which gives us access to apply_url_to_url() without
-	 *       empty constructing an object.
-	 *
-	 * @return Updaters_Abstract[]
-	 */
-	protected function get_updater_objects() {
-		static $updaters;
-		if ( null === $updaters ) {
-			$updaters = (array) Repo::instance()->get_updaters();
-			foreach ( $updaters as $k => $_class ) {
-				$updaters[ $k ] = new $_class( null, null, null, null );
-			}
-		}
-
-		return $updaters;
 	}
 
 }
