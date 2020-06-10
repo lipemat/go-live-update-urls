@@ -3,9 +3,9 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.3.1
+Tested up to: 5.4.1
 Requires PHP: 5.6.0
-Stable tag: 5.3.0
+Stable tag: 6.0.0
 
 == Description ==
 
@@ -34,17 +34,18 @@ Goes through entire site and replaces all instances of an old url with a new one
 * And much more
 
 <h4>Pro Features</h4>
-* Updates database tables created by plugins without fear of issues.
+* Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
 * Updates serialized data across any table.
+* Updates JSON data across any table.
 * Improved admin page.
 * Ability to test URL changes before running them.
-* URL testing report is provided for peace of mind. 
-* Optionally fix common mistakes when entering a URL automatically.
-* View and use history of your Site Address (URL).
-* Predictive URLs automatically fill in the OLD URL and NEW URL.
-* Ability to choose between a full table list and sections.
-* WP-CLI support for updating URLs from the command line. **NEW**
+* URL testing report is provided for peace of mind.
+* Option to fix common mistakes automatically when entering a URL.
+* iew and use history of your site's address.
+* Predictive URLs automatically fill in the "Old URL" and "New URL.".
+* Ability to choose between a full table or sections.
+* WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
 <h4>Currently ships with the following languages</h4>
@@ -89,6 +90,12 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 6.0.0 =
+* Entirely new code structure.
+* Removed all deprecated code and filters.
+* Improved filter and action names.
+* Improved performance.
+
 = 5.3.0 =
 * Display error message when no tables are selected during update.
 * Fix bug when updating columns which are name the same as MySQL commands.
@@ -144,6 +151,9 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 
 == Upgrade Notice ==
+= 6.0.0 =
+Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
+
 = 5.0.6 =
 Fixes bug with submit button in a small number of browsers
 

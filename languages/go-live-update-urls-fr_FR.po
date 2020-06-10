@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update Urls\n"
-"POT-Creation-Date: 2019-12-11 13:14-0500\n"
-"PO-Revision-Date: 2019-12-11 13:14-0500\n"
+"POT-Creation-Date: 2020-06-10 12:21-0600\n"
+"PO-Revision-Date: 2020-06-10 12:21-0600\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,28 +20,34 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: src/Admin_Page.php:38
+#: go-live-update-urls.php:86
+#, php-format
+msgctxt "{<a>}{</a>}"
+msgid ""
+"Go Live Update Urls requires %1$sGo Live Update Urls PRO %3$s+%2$s. Please "
+"update or deactivate the PRO version."
+msgstr ""
+"Go Live Update Urls nécessite %1$sGo Live Update Urls PRO %3$s -%2$s. "
+"Veuillez mettre à jour ou désactiver la version PRO."
+
+#: src/Admin.php:44
 msgid "Ouch! That hurt! You should not be here!"
 msgstr "Aie! Ça fait mal! Tu ne devrais pas être ici!"
 
-#: src/Admin_Page.php:63
+#: src/Admin.php:78
 msgid "The URLS in the checked tables have been updated."
 msgstr "Les URL dans les tables vérifiées ont été mises à jour."
 
-#: src/Admin_Page.php:85
+#: src/Admin.php:97
 msgid "You must fill out both URLs and select tables to update URLs!"
 msgstr "Vous devez remplir les deux URL pour effectuer la mise à jour!"
 
-#: src/Admin_Page.php:147
-msgid "Serialized"
-msgstr "Serial"
-
 #. Plugin Name of the plugin/theme
-#: views/admin-tools-page.php:21
+#: src/Admin.php:130
 msgid "Go Live Update Urls"
 msgstr "Go Live Update Urls"
 
-#: views/admin-tools-page.php:31
+#: src/Admin.php:140
 #, php-format
 msgctxt "{<strong>} {</strong>}"
 msgid ""
@@ -51,7 +57,7 @@ msgstr ""
 "Cela remplacera toutes les occurrences%1$sin de la base de données entière"
 "%2$s de l'ancienne URL avec la nouvelle URL."
 
-#: views/admin-tools-page.php:37
+#: src/Admin.php:146
 msgid ""
 "Like any other database updating tool, you should always perform a backup "
 "before running."
@@ -59,21 +65,21 @@ msgstr ""
 "Comme tout autre outil de mise à jour de base de données, vous devez "
 "toujours effectuer une sauvegarde avant de l'exécuter."
 
-#: views/admin-tools-page.php:56
+#: src/Admin.php:165
 msgid "WordPress Core Tables"
 msgstr "Tables de base"
 
-#: views/admin-tools-page.php:60
+#: src/Admin.php:169
 msgid "These tables are safe to update with the basic version of this plugin."
 msgstr ""
 "Ces tables peuvent être mises à jour en toute sécurité avec la version de "
 "base de ce plugin."
 
-#: views/admin-tools-page.php:82
+#: src/Admin.php:190
 msgid "Tables Created By Plugins"
 msgstr "Tables créées par des plugins"
 
-#: views/admin-tools-page.php:88
+#: src/Admin.php:196
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -84,29 +90,33 @@ msgstr ""
 "de base de ce plugin. %1$sPour prendre en charge les tables créées par les "
 "plugins, utilisez la version%2$sPro%3$s."
 
-#: views/admin-tools-page.php:113 views/admin-tools-page.php:123
+#: src/Admin.php:221 src/Admin.php:231
 msgid "Old URL"
 msgstr "Ancienne URL"
 
-#: views/admin-tools-page.php:129 views/admin-tools-page.php:139
+#: src/Admin.php:237 src/Admin.php:247
 msgid "New URL"
 msgstr "Nouvelle URL"
 
-#: views/admin-tools-page.php:146
+#: src/Admin.php:253
 msgid "Only the checked tables will be updated."
 msgstr "Seules les tables vérifiées seront mises à jour."
 
-#: views/admin-tools-page.php:157
+#: src/Admin.php:263
 #, php-format
 msgctxt "{<a>}{</a>}"
-msgid "To test this change before running it, use %1$sPro Version 2.0.0+%2$s."
+msgid "Use the %1$sPRO version%2$s to test the updates before making them."
 msgstr ""
-"Pour tester cette modification avant de l'exécuter, utilisez%1$sPro Version "
-"2.0.0 +%2$s."
+"Utilisez la version %1$sPRO%2$s pour tester les mises à jour avant de les "
+"faire."
 
-#: views/admin-tools-page.php:164
+#: src/Admin.php:270
 msgid "Update URLs"
 msgstr "Mettre à jour les URL"
+
+#: src/Updaters/Updaters_Abstract.php:90
+msgid "You must implement apply_rule_to_url with an override"
+msgstr "Vous devez mettre en œuvre apply_rule_to_url avec un remplacement"
 
 #. Plugin URI of the plugin/theme
 msgid "https://onpointplugins.com/go-live-update-urls/"
@@ -128,3 +138,24 @@ msgstr "OnPoint Plugins"
 #. Author URI of the plugin/theme
 msgid "https://onpointplugins.com/"
 msgstr "https://onpointplugins.com/"
+
+#~ msgid ""
+#~ "OnPoint Plugins Author URI: https://onpointplugins.com/ Version: 5.3.0 "
+#~ "Text Domain:"
+#~ msgstr ""
+#~ "OnPoint Plugins Author URI: https://onpointplugins.com/ Version: 5.3.0 "
+#~ "Text Domain:"
+
+#~ msgid "https://onpointplugins.com/ Version: 5.3.0 Text Domain:"
+#~ msgstr "https://onpointplugins.com/ Version: 5.3.0 Text Domain:"
+
+#~ msgid "Serialized"
+#~ msgstr "Serial"
+
+#, php-format
+#~ msgctxt "{<a>}{</a>}"
+#~ msgid ""
+#~ "To test this change before running it, use %1$sPro Version 2.0.0+%2$s."
+#~ msgstr ""
+#~ "Pour tester cette modification avant de l'exécuter, utilisez%1$sPro "
+#~ "Version 2.0.0 +%2$s."

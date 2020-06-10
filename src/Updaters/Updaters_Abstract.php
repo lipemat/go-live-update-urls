@@ -1,12 +1,16 @@
 <?php
 
+namespace Go_Live_Update_Urls\Updaters;
+
+use Go_Live_Update_Urls\Database;
+
 /**
  * Base Abstract for any URL updating classes.
  *
  * @author  OnPoint Plugins
- * @since   5.0.0
+ * @since   6.0.0
  */
-abstract class Go_Live_Update_Urls__Updaters__Abstract {
+abstract class Updaters_Abstract {
 	/**
 	 * The database table.
 	 *
@@ -37,7 +41,7 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 
 
 	/**
-	 * Go_Live_Update_Urls__Updaters__Abstract constructor.
+	 * Updaters Constructor
 	 *
 	 * @param string $table   Table to update.
 	 * @param string $column  Column to update.
@@ -53,29 +57,6 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 
 
 	/**
-	 * Update this table and column.
-	 *
-	 * @param string $old_url Old URL.
-	 * @param string $new_url New URL.
-	 *
-	 * @return void
-	 */
-	protected function update_column( $old_url, $new_url ) {
-		Go_Live_Update_Urls_Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
-	}
-
-
-	/**
-	 * Filter the new or old url based on this particular updater's logic.
-	 *
-	 * @param string $url - Either the old or new URL.
-	 *
-	 * @return string
-	 */
-	abstract public function apply_rule_to_url( $url );
-
-
-	/**
 	 * The method which is called to actually run the update
 	 * using this updater.
 	 *
@@ -85,7 +66,34 @@ abstract class Go_Live_Update_Urls__Updaters__Abstract {
 
 
 	/**
-	 * Factory to get constructed class .
+	 * Update this table and column.
+	 *
+	 * @param string $old_url Old URL.
+	 * @param string $new_url New URL.
+	 *
+	 * @return void
+	 */
+	protected function update_column( $old_url, $new_url ) {
+		Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
+	}
+
+
+	//phpcs:disable
+	/**
+	 * Filter the new or old url based on this particular updater's logic.
+	 *
+	 * @param string $url - Either the old or new URL.
+	 *
+	 * @return string
+	 */
+	public static function apply_rule_to_url( $url ) {
+		throw new \RuntimeException( __( 'You must implement apply_rule_to_url with an override' ) );
+	}
+	//phpcs:enable
+
+
+	/**
+	 * Factory to get constructed class
 	 *
 	 * @param string $table   Table to update.
 	 * @param string $column  Column to update.

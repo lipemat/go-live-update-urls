@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Prepend the current branch name to every commit message.
+#
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 6)"
+RESET_COLOR="$(tput setaf 9)"
+
+# Extract the current working branch
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+FEATURE="${BRANCH//[!0-9]/}"; #only the ticket number
+
+if [[ ! "$FEATURE"  ]]; then
+	echo "${YELLOW}[prepare-commit-msg]${BLUE} Skipping the message prefixing because the branch doesn't have a ticket number."
+	echo ${RESET_COLOR}
+	exit
+fi
+
+# Extract the commit message
+MESSAGE=$(cat "$1")
+
+# Prepend the current branch name to the message
+echo "[#$FEATURE] $MESSAGE" > "$1"
+echo
+
+echo ${RESET_COLOR}
