@@ -254,7 +254,7 @@ class Admin {
 					</strong>
 				</p>
 				<?php
-				if ( ! defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ) {
+				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 					?>
 					<p class="description" style="color:#23282d">
 						<strong>

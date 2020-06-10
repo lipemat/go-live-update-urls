@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update Urls\n"
-"POT-Creation-Date: 2020-06-10 11:48-0600\n"
-"PO-Revision-Date: 2020-06-10 11:48-0600\n"
+"POT-Creation-Date: 2020-06-10 12:21-0600\n"
+"PO-Revision-Date: 2020-06-10 12:21-0600\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -19,6 +19,16 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: go-live-update-urls.php:86
+#, php-format
+msgctxt "{<a>}{</a>}"
+msgid ""
+"Go Live Update Urls requires %1$sGo Live Update Urls PRO %3$s+%2$s. Please "
+"update or deactivate the PRO version."
+msgstr ""
+"Go Live Update Urls nécessite %1$sGo Live Update Urls PRO %3$s -%2$s. "
+"Veuillez mettre à jour ou désactiver la version PRO."
 
 #: src/Admin.php:44
 msgid "Ouch! That hurt! You should not be here!"
@@ -128,6 +138,16 @@ msgstr "OnPoint Plugins"
 #. Author URI of the plugin/theme
 msgid "https://onpointplugins.com/"
 msgstr "https://onpointplugins.com/"
+
+#~ msgid ""
+#~ "OnPoint Plugins Author URI: https://onpointplugins.com/ Version: 5.3.0 "
+#~ "Text Domain:"
+#~ msgstr ""
+#~ "OnPoint Plugins Author URI: https://onpointplugins.com/ Version: 5.3.0 "
+#~ "Text Domain:"
+
+#~ msgid "https://onpointplugins.com/ Version: 5.3.0 Text Domain:"
+#~ msgstr "https://onpointplugins.com/ Version: 5.3.0 Text Domain:"
 
 #~ msgid "Serialized"
 #~ msgstr "Serial"

@@ -12,6 +12,7 @@
  */
 
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '5.3.0' );
+define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.0.0' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
 use Go_Live_Update_Urls\Admin;
@@ -29,11 +30,19 @@ use Go_Live_Update_Urls\Updaters\Url_Encoded;
  * @return void
  */
 function go_live_update_urls_load() {
+	require __DIR__ . '/deprecated/Go_Live_Update_Urls_Database.php';
+
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
 	Admin::init();
 	Core::init();
+
+	if ( defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) && version_compare( GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION, GO_LIVE_UPDATE_URLS_PRO_VERSION, '>' ) ) {
+		add_action( 'admin_notices', 'go_live_update_urls_pro_plugin_notice' );
+	}
 }
+
+add_action( 'plugins_loaded', 'go_live_update_urls_load' );
 
 /**
  * Autoload classes from PSR4 src directory
@@ -63,4 +72,21 @@ function go_live_update_urls_autoload( $class ) {
 
 spl_autoload_register( 'go_live_update_urls_autoload' );
 
-add_action( 'plugins_loaded', 'go_live_update_urls_load' );
+/**
+ * Display a warning if we don't have the required PRO version installed
+ *
+ * @return void
+ */
+function go_live_update_urls_pro_plugin_notice() {
+	?>
+	<div id="message" class="error">
+		<p>
+			<?php
+			/* translators: {%1$s}[<a>]{%2$s}[</a>] https://wordpress.org/plugins/go-live-update-urls/ */ //phpcs:disable
+			printf( esc_html_x( 'Go Live Update Urls requires %1$sGo Live Update Urls PRO %3$s+%2$s. Please update or deactivate the PRO version.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a target="_blank" href="https://onpointplugins.com/product/go-live-update-urls-pro/">', '</a>', esc_attr( GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION ) );
+			?>
+		</p>
+	</div>
+	<?php
+}
+
