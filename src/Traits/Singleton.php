@@ -10,9 +10,6 @@ trait Singleton {
 	protected function hook() {
 	}
 
-	// ********** SINGLETON **********/
-
-
 	/**
 	 * Instance of this class for use as singleton
 	 *
@@ -28,7 +25,7 @@ trait Singleton {
 	 * @return void
 	 */
 	public static function init() {
-		self::instance()->hook();
+		static::instance()->hook();
 	}
 
 
@@ -40,9 +37,9 @@ trait Singleton {
 	 * @return self
 	 */
 	public static function instance() {
-		if ( ! is_a( self::$instance, __CLASS__ ) ) {
-			self::$instance = new self();
+		if ( ! is_a( static::$instance, __CLASS__ ) ) {
+			static::$instance = new static();
 		}
-		return self::$instance;
+		return static::$instance;
 	}
 }
