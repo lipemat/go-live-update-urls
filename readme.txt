@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.4.1
 Requires PHP: 5.6.0
-Stable tag: 5.3.0
+Stable tag: 6.0.0
 
 == Description ==
 
@@ -90,6 +90,12 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 1. Typical settings page. The verbiage will change slightly depending on your database structure
 
 == Changelog ==
+= 6.0.0 =
+* Entirely new code structure.
+* Removed all deprecated code and filters.
+* Improved filter and action names.
+* Improved performance.
+
 = 5.3.0 =
 * Display error message when no tables are selected during update.
 * Fix bug when updating columns which are name the same as MySQL commands.
@@ -145,6 +151,9 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 
 == Upgrade Notice ==
+= 6.0.0 =
+Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
+
 = 5.0.6 =
 Fixes bug with submit button in a small number of browsers
 
