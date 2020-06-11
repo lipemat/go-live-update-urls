@@ -54,6 +54,14 @@ Goes through entire site and replaces all instances of an old url with a new one
 * German (de_DE)   
 * Spanish (es_ES)
 
+<h4>Developers</h4>
+Developer docs may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">here</a>.
+
+<h4>Troubleshooting</h4>
+Troubleshooting information may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">here</a>.
+
+<h4>Contribute</h4>
+Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
 <h4>Contribute</h4>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
