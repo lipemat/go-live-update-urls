@@ -16,13 +16,13 @@ Goes through entire site and replaces all instances of an old url with a new one
 <blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.0.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
 
 
-<h4>Features</h4>
+<h3>Features</h3>
 * Database table by table selection.
 * Updates serialized data in core tables.
 * Very easy to use admin page - which may be found under Tools.
 
 
-<h4>Updates Entire Site including</h4>
+<h3>Updates Entire Site including</h3>
 * Posts
 * Pages
 * Image urls
@@ -33,7 +33,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Options and settings
 * And much more
 
-<h4>Pro Features</h4>
+<h3>Pro Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
 * Updates serialized data across any table.
@@ -48,22 +48,22 @@ Goes through entire site and replaces all instances of an old url with a new one
 * WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
-<h4>Currently ships with the following languages</h4>
+<h3>Currently ships with the following languages</h3>
 * English (US)
 * French (fr_FR)
 * German (de_DE)   
 * Spanish (es_ES)
 
-<h4>Developers</h4>
+<h3>Developers</h3>
 Developer docs may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">here</a>.
 
-<h4>Troubleshooting</h4>
+<h3>Troubleshooting</h3>
 Troubleshooting information may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">here</a>.
 
-<h4>Contribute</h4>
+<h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
-<h4>Contribute</h4>
+<h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
 == Installation ==
