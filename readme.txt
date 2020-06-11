@@ -11,9 +11,9 @@ Stable tag: 6.0.0
 
 Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before updating, support for tables created by plugins, update history, and so much more!</strong>
 
-<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.6.0</a> is now available with support for WP-CLI!</blockquote>
+<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.0.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
 
 
 <h4>Features</h4>
