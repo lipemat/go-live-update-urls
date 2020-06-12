@@ -42,7 +42,7 @@ function go_live_update_urls_load() {
 	}
 }
 
-add_action( 'plugins_loaded', 'go_live_update_urls_load' );
+add_action( 'plugins_loaded', 'go_live_update_urls_load', 8 );
 
 /**
  * Autoload classes from PSR4 src directory
