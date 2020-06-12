@@ -3,9 +3,9 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Requires PHP: 5.6.0
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 
 == Description ==
 
@@ -159,7 +159,7 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 
 == Upgrade Notice ==
-= 6.0.0 =
+= 6.0.1 =
 Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
 
 = 5.0.6 =
