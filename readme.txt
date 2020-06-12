@@ -3,26 +3,26 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Requires PHP: 5.6.0
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 
 == Description ==
 
 Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before running, updating of tables created by plugins, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before updating, support for tables created by plugins, update history, and so much more!</strong>
 
-<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 2.6.0</a> is now available with support for WP-CLI!</blockquote>
+<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.0.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
 
 
-<h4>Features</h4>
+<h3>Features</h3>
 * Database table by table selection.
 * Updates serialized data in core tables.
 * Very easy to use admin page - which may be found under Tools.
 
 
-<h4>Updates Entire Site including</h4>
+<h3>Updates Entire Site including</h3>
 * Posts
 * Pages
 * Image urls
@@ -33,7 +33,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 * Options and settings
 * And much more
 
-<h4>Pro Features</h4>
+<h3>Pro Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
 * Updates serialized data across any table.
@@ -48,14 +48,22 @@ Goes through entire site and replaces all instances of an old url with a new one
 * WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
-<h4>Currently ships with the following languages</h4>
+<h3>Currently ships with the following languages</h3>
 * English (US)
 * French (fr_FR)
 * German (de_DE)   
 * Spanish (es_ES)
 
+<h3>Developers</h3>
+Developer docs may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">here</a>.
 
-<h4>Contribute</h4>
+<h3>Troubleshooting</h3>
+Troubleshooting information may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">here</a>.
+
+<h3>Contribute</h3>
+Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
+
+<h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
 == Installation ==
@@ -151,7 +159,7 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 
 
 == Upgrade Notice ==
-= 6.0.0 =
+= 6.0.1 =
 Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
 
 = 5.0.6 =
