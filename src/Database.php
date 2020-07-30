@@ -3,8 +3,6 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Traits\Singleton;
-use Go_Live_Update_Urls\Updaters\Repo;
-use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Database manipulation.
@@ -143,50 +141,13 @@ class Database {
 	 * @return bool
 	 */
 	public function update_the_database( $old_url, $new_url, array $tables ) {
-		global $wpdb;
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
-		$updaters = (array) Repo::instance()->get_updaters();
 
-		// If the new domain is the old one with a new sub-domain like www.
-		if ( strpos( $new_url, $old_url ) !== false ) {
-			list( $subdomain ) = explode( '.', $new_url );
-			$double_subdomain = $subdomain . '.' . $new_url;
-		}
-
-		$serialized = new Serialized( $old_url, $new_url );
-		$serialized->update_all_serialized_tables( $tables );
-		if ( ! empty( $double_subdomain ) ) {
-			$serialized = new Serialized( $double_subdomain, $new_url );
-			$serialized->update_all_serialized_tables( $tables );
-		}
-
-		$get_columns_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s";
-
+		$updates = Updates::factory( $old_url, $new_url, $tables );
+		$updates->update_serialized_values();
 		foreach ( (array) $tables as $table ) {
-			$columns = $wpdb->get_col( $wpdb->prepare( $get_columns_query, $table ) );
-			foreach ( $columns as $_column ) {
-				$this->update_column( $table, $_column, $old_url, $new_url );
-
-				foreach ( $updaters as $_updater_class ) {
-					if ( class_exists( $_updater_class ) ) {
-						/* @var Updaters_Abstract $_updater - Individual updater class */
-						$_updater = $_updater_class::factory( $table, $_column, $old_url, $new_url );
-						$_updater->update_data();
-						if ( ! empty( $double_subdomain ) ) {
-							$_updater = new $_updater_class( $table, $_column, $double_subdomain, $new_url );
-							$_updater->update_data();
-						}
-					}
-				}
-
-				// Fix the double up if this was the old domain with a new subdomain.
-				if ( ! empty( $double_subdomain ) ) {
-					$this->update_column( $table, $_column, $double_subdomain, $new_url );
-					// Fix the emails breaking by being appended the new subdomain.
-					$this->update_column( $table, $_column, '@' . $new_url, '@' . $old_url );
-				}
-			}
+			$updates->update_table_columns( $table );
 		}
 
 		wp_cache_flush();
@@ -195,6 +156,8 @@ class Database {
 
 		return true;
 	}
+
+
 
 
 	/**

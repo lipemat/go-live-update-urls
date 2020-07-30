@@ -85,7 +85,7 @@ class Serialized {
 		// Get all serialized rows.
 		$rows = $wpdb->get_results( "SELECT $primary_key_column, {$column} FROM {$table} WHERE {$column} LIKE 'a:%' OR {$column} LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		foreach ( $rows as $row ) {
+		foreach ( $rows as $k => $row ) {
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
 				continue;
 			}
@@ -144,11 +144,15 @@ class Serialized {
 	 * @return string
 	 */
 	protected function replace( $mysql_value ) {
+		$mysql_value = trim( str_replace( $this->old, $this->new, $mysql_value ) );
 		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			$mysql_value = str_replace( $_updater::apply_rule_to_url( $this->old ), $_updater::apply_rule_to_url( $this->new ), $mysql_value );
+			$formatted = $_updater::apply_rule_to_url( $this->old );
+			if ( $formatted !== $this->old ) {
+				$mysql_value = str_replace( $formatted, (string) $_updater::apply_rule_to_url( $this->new ), $mysql_value );
+			}
 		}
 
-		return trim( str_replace( $this->old, $this->new, $mysql_value ) );
+		return trim( $mysql_value );
 	}
 
 
