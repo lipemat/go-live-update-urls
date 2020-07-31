@@ -138,23 +138,26 @@ class Database {
 	 *
 	 * @since 5.0.0
 	 *
-	 * @return bool
+	 * @return int[]
 	 */
 	public function update_the_database( $old_url, $new_url, array $tables ) {
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
 		$updates = Updates::factory( $old_url, $new_url, $tables );
-		$updates->update_serialized_values();
-		foreach ( (array) $tables as $table ) {
-			$updates->update_table_columns( $table );
+		$counts = $updates->update_serialized_values();
+		foreach ( (array) $tables as $_table ) {
+			if ( ! array_key_exists( $_table, $counts ) ) {
+				$counts[ $_table ] = 0;
+			}
+			$counts[ $_table ] += $updates->update_table_columns( $_table );
 		}
 
 		wp_cache_flush();
 
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
-		return true;
+		return apply_filters( 'go-live-update-urls/database/update/counts', $counts, $old_url, $new_url, $tables, $this );
 	}
 
 
@@ -170,12 +173,13 @@ class Database {
 	 *
 	 * @since 5.3.0
 	 *
-	 * @return void
+	 * @return int
 	 */
 	public function update_column( $table, $column, $old_url, $new_url ) {
 		global $wpdb;
 
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
+		return $wpdb->rows_affected;
 	}
 }

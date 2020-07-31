@@ -5,13 +5,13 @@ namespace Go_Live_Update_Urls;
 use Go_Live_Update_Urls\Updaters\Repo;
 
 /**
- * Make updates to the database.
+ * Make various updates to the database.
  *
  */
 class Updates {
-	protected $old;
+	protected $old_url;
 
-	protected $new;
+	protected $new_url;
 
 	protected $tables;
 
@@ -24,8 +24,8 @@ class Updates {
 	 * @param        $tables
 	 */
 	public function __construct( $old, $new, $tables ) {
-		$this->old = $old;
-		$this->new = $new;
+		$this->old_url = $old;
+		$this->new_url = $new;
 		$this->tables = $tables;
 	}
 
@@ -34,55 +34,62 @@ class Updates {
 		global $wpdb;
 		$doubled = $this->get_doubled_up_subdomain();
 		$columns = $wpdb->get_col( $wpdb->prepare( "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
-		array_walk( $columns, function( $column ) use ( $table, $doubled ) {
-			Database::instance()->update_column( $table, $column, $this->old, $this->new );
-			$this->update_column_with_updaters( $table, $column );
+		$count = 0;
+		array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
+			$count += Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
+			$count += $this->update_column_with_updaters( $table, $column );
 			$this->update_email_addresses( $table, $column );
 
 			if ( null !== $doubled ) {
-				Database::instance()->update_column( $table, $column, $doubled, $this->new );
+				Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
 			}
 		} );
+
+		return $count;
 	}
 
 
 	protected function update_email_addresses( $table, $column ) {
-		$url = wp_parse_url( $this->old );
+		$url = wp_parse_url( $this->old_url );
 		$doubled = $this->get_doubled_up_subdomain();
 		if ( null === $doubled || ! empty( $url['scheme'] ) ) {
 			return 0;
 		}
-		Database::instance()->update_column( $table, $column, '@' . $this->new, '@' . $this->old );
+		Database::instance()->update_column( $table, $column, '@' . $this->new_url, '@' . $this->old_url );
 	}
 
 
 	protected function update_column_with_updaters( $table, $column ) {
 		$doubled = $this->get_doubled_up_subdomain();
-		array_map( function ( $class ) use ( $doubled, $table, $column ) {
+		$count = 0;
+		array_map( function ( $class ) use ( $doubled, $table, $column, &$count ) {
 			if ( class_exists( $class ) ) {
-				$updater = $class::factory( $table, $column, $this->old, $this->new );
-				$updater->update_data();
+				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
+				$count += (int) $updater->update_data();
 				if ( null !== $doubled ) {
-					$updater = new $class( $table, $column, $doubled, $this->new );
+					$updater = new $class( $table, $column, $doubled, $this->new_url );
 					$updater->update_data();
 				}
 			}
 		}, Repo::instance()->get_updaters() );
+		return $count;
 	}
 
 
 	public function update_serialized_values() {
-		$serialized = new Serialized( $this->old, $this->new );
-		$serialized->update_all_serialized_tables( $this->tables );
+		$serialized = new Serialized( $this->old_url, $this->new_url );
+		$counts = $serialized->update_all_serialized_tables( $this->tables );
 
 		$doubled = $this->get_doubled_up_subdomain();
 		if ( null !== $doubled ) {
-			$serialized = new Serialized( $doubled, $this->new );
+			$serialized = new Serialized( $doubled, $this->new_url );
 			$serialized->update_all_serialized_tables( $this->tables );
 			// Handle emails.
-			$serialized = new Serialized( '@' . $this->new, '@' . $this->old );
+			$serialized = new Serialized( '@' . $this->new_url, '@' . $this->old_url );
 			$serialized->update_all_serialized_tables( $this->tables );
 		}
+
+		return $counts;
 	}
 
 
@@ -99,9 +106,9 @@ class Updates {
 	 * @return string|null
 	 */
 	protected function get_doubled_up_subdomain() {
-		if ( strpos( $this->new, $this->old ) !== false ) {
-			list( $subdomain ) = explode( '.', $this->new );
-			return $subdomain . '.' . $this->new;
+		if ( strpos( $this->new_url, $this->old_url ) !== false ) {
+			list( $subdomain ) = explode( '.', $this->new_url );
+			return $subdomain . '.' . $this->new_url;
 		}
 		return null;
 	}

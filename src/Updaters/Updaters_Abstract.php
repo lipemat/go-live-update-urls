@@ -60,7 +60,7 @@ abstract class Updaters_Abstract {
 	 * The method which is called to actually run the update
 	 * using this updater.
 	 *
-	 * @return bool
+	 * @return int
 	 */
 	abstract public function update_data();
 
@@ -71,10 +71,10 @@ abstract class Updaters_Abstract {
 	 * @param string $old_url Old URL.
 	 * @param string $new_url New URL.
 	 *
-	 * @return void
+	 * @return int
 	 */
 	protected function update_column( $old_url, $new_url ) {
-		Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
+		return Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
 	}
 
 

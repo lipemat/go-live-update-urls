@@ -24,6 +24,14 @@ class Serialized {
 	 */
 	protected $old;
 
+	/**
+	 * Hold replacement count during a table update.
+	 * We may replace multiple per table row so we count
+	 * the actual str_replace() instead of mysql affected.
+	 *
+	 * @var int
+	 */
+	private $count = 0;
 
 	/**
 	 * Serialized constructor.
@@ -44,19 +52,21 @@ class Serialized {
 	 *
 	 * @since 5.2.5 - Only update provided tables.
 	 *
-	 * @return void
+	 * @return int[]
 	 */
 	public function update_all_serialized_tables( array $tables ) {
 		$serialized_tables = Database::instance()->get_serialized_tables();
 
+		$counts = [];
 		foreach ( $serialized_tables as $table => $columns ) {
 			if ( ! in_array( $table, $tables, true ) ) {
 				continue;
 			}
-			foreach ( (array) $columns as $_column ) {
-				$this->update_table( $table, $_column );
-			}
+			$counts[ $table ] = array_sum( array_map( function ( $column ) use ( $table ) {
+				return $this->update_table( $table, $column );
+			}, (array) $columns ) );
 		}
+		return $counts;
 	}
 
 
@@ -66,10 +76,11 @@ class Serialized {
 	 * @param string $table - Database table.
 	 * @param string $column - Database column.
 	 *
-	 * @return void
+	 * @return int
 	 */
 	protected function update_table( $table, $column ) {
 		global $wpdb;
+		$this->count = 0;
 		$column = (string) esc_sql( $column );
 		$table = (string) esc_sql( $table );
 		$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . "` WHERE Key_name = 'PRIMARY'" );
@@ -77,7 +88,7 @@ class Serialized {
 			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
 			if ( empty( $pk[0] ) ) {
 				// Fail.
-				return;
+				return 0;
 			}
 		}
 		$primary_key_column = $pk[0]->Column_name;
@@ -95,8 +106,11 @@ class Serialized {
 			$clean = @serialize( $clean );
 			//phpcs:enable
 
-			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) );
 		}
+
+		return $this->count;
 	}
 
 
@@ -144,11 +158,13 @@ class Serialized {
 	 * @return string
 	 */
 	protected function replace( $mysql_value ) {
-		$mysql_value = trim( str_replace( $this->old, $this->new, $mysql_value ) );
+		$mysql_value = trim( str_replace( $this->old, $this->new, $mysql_value, $count ) );
+		$this->count += $count;
 		foreach ( Repo::instance()->get_updaters() as $_updater ) {
 			$formatted = $_updater::apply_rule_to_url( $this->old );
 			if ( $formatted !== $this->old ) {
-				$mysql_value = str_replace( $formatted, (string) $_updater::apply_rule_to_url( $this->new ), $mysql_value );
+				$mysql_value = (string) str_replace( $formatted, $_updater::apply_rule_to_url( $this->new ), $mysql_value, $count );
+				$this->count += $count;
 			}
 		}
 
@@ -183,4 +199,15 @@ class Serialized {
 		return false;
 	}
 
+
+	/**
+	 * Getter for current count.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return int
+	 */
+	public function get_count() {
+		return $this->count;
+	}
 }
