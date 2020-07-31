@@ -183,9 +183,8 @@ class Database {
 		}
 
 		return apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
-
-
 	}
+
 
 	/**
 	 * Update an individual table's column.
@@ -202,14 +201,21 @@ class Database {
 	public function update_column( $table, $column, $old_url, $new_url ) {
 		global $wpdb;
 
+		$count = $this->count_column_urls( $table, $column, $old_url );
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
-		return $wpdb->rows_affected;
+		return $count;
 	}
 
 
 	/**
 	 * Count of number of rows in a table which contain the old URL.
+	 *
+	 * When updating, the serialized data is updated first and this
+	 * counts the left overs.
+	 *
+	 * When dry-run counting, this will count all occurrences in the
+	 * database.
 	 *
 	 * @param string $table   - Table to update.
 	 * @param string $column  - Column to update.
@@ -224,6 +230,6 @@ class Database {
 
 		$update_query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
 
-		return $wpdb->get_var( $wpdb->prepare( $update_query, [$old_url, $old_url] ) );
+		return (int) $wpdb->get_var( $wpdb->prepare( $update_query, [ $old_url, $old_url ] ) );
 	}
 }
