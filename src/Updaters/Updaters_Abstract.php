@@ -68,13 +68,27 @@ abstract class Updaters_Abstract {
 	/**
 	 * Update this table and column.
 	 *
-	 * @param string $old_url Old URL.
-	 * @param string $new_url New URL.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 *
 	 * @return int
 	 */
 	protected function update_column( $old_url, $new_url ) {
 		return Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
+	}
+
+
+	/**
+	 * Count occurrences of the old URL in this table's column.
+	 *
+	 * @return int
+	 */
+	public function count_urls() {
+		$old_url = static::apply_rule_to_url( $this->old );
+		if ( $old_url === $this->old ) {
+			return 0;
+		}
+		return Database::instance()->count_column_urls( $this->table, $this->column, $old_url );
 	}
 
 

@@ -31,18 +31,29 @@ class Updates {
 
 
 	public function update_table_columns( $table ) {
-		global $wpdb;
 		$doubled = $this->get_doubled_up_subdomain();
-		$columns = $wpdb->get_col( $wpdb->prepare( "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
+		$columns = $this->get_table_columns( $table );
 		$count = 0;
 		array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
-			$count += Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
-			$count += $this->update_column_with_updaters( $table, $column );
+			$count += (int) Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
+			$count += (int) $this->update_column_with_updaters( $table, $column );
 			$this->update_email_addresses( $table, $column );
 
 			if ( null !== $doubled ) {
 				Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
 			}
+		} );
+
+		return $count;
+	}
+
+
+	public function count_table_urls( $table ) {
+		$columns = $this->get_table_columns( $table );
+		$count = 0;
+		array_walk( $columns, function ( $column ) use ( $table, &$count ) {
+			$count += (int) Database::instance()->count_column_urls( $table, $column, $this->old_url );
+			$count += (int) $this->count_column_urls_with_updaters( $table, $column );
 		} );
 
 		return $count;
@@ -70,6 +81,18 @@ class Updates {
 					$updater = new $class( $table, $column, $doubled, $this->new_url );
 					$updater->update_data();
 				}
+			}
+		}, Repo::instance()->get_updaters() );
+		return $count;
+	}
+
+
+	protected function count_column_urls_with_updaters( $table, $column ) {
+		$count = 0;
+		array_map( function ( $class ) use ( $table, $column, &$count ) {
+			if ( class_exists( $class ) ) {
+				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
+				$count += (int) $updater->count_urls();
 			}
 		}, Repo::instance()->get_updaters() );
 		return $count;
@@ -111,6 +134,21 @@ class Updates {
 			return $subdomain . '.' . $this->new_url;
 		}
 		return null;
+	}
+
+
+	/**
+	 * Return all database columns for a specified table.
+	 *
+	 * @param string $table - Database table to retrieve from.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return string[]
+	 */
+	protected function get_table_columns( $table ) {
+		global $wpdb;
+		return $wpdb->get_col( $wpdb->prepare( "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
 	}
 
 

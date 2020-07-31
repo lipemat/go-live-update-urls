@@ -157,19 +157,43 @@ class Database {
 
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
-		return apply_filters( 'go-live-update-urls/database/update/counts', $counts, $old_url, $new_url, $tables, $this );
+		return apply_filters( 'go-live-update-urls/database/updated/counts', $counts, $old_url, $new_url, $tables, $this );
 	}
 
 
+	/**
+	 * Count all occurrences of the old URL within a provided
+	 * list of tables.
+	 *
+	 * @param string $old_url - the old URL.
+	 * @param string $new_url - the new URL.
+	 * @param array  $tables  - the tables we are going to update.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return int[]
+	 */
+	public function count_database_urls( $old_url, $new_url, array $tables ) {
+		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
+		$updates = Updates::factory( $old_url, $new_url, $tables );
+		$counts = [];
+		foreach ( (array) $tables as $_table ) {
+			$counts[ $_table ] = $updates->count_table_urls( $_table );
+		}
+
+		return apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
+
+
+	}
 
 	/**
 	 * Update an individual table's column.
 	 *
-	 * @param string $table   Table to update.
-	 * @param string $column  Column to update.
-	 * @param string $old_url Old URL.
-	 * @param string $new_url New URL.
+	 * @param string $table   -  Table to update.
+	 * @param string $column  - Column to update.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 *
 	 * @since 5.3.0
 	 *
@@ -181,5 +205,25 @@ class Database {
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
 		return $wpdb->rows_affected;
+	}
+
+
+	/**
+	 * Count of number of rows in a table which contain the old URL.
+	 *
+	 * @param string $table   - Table to update.
+	 * @param string $column  - Column to update.
+	 * @param string $old_url - Old URL.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return int
+	 */
+	public function count_column_urls( $table, $column, $old_url ) {
+		global $wpdb;
+
+		$update_query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
+
+		return $wpdb->get_var( $wpdb->prepare( $update_query, [$old_url, $old_url] ) );
 	}
 }

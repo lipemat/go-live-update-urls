@@ -17,6 +17,7 @@ class Serialized {
 	 * @var string
 	 */
 	protected $new;
+
 	/**
 	 * Old URL
 	 *
@@ -31,7 +32,18 @@ class Serialized {
 	 *
 	 * @var int
 	 */
-	private $count = 0;
+	protected $count = 0;
+
+	/**
+	 * Setting dry run to `true` will prevent any data
+	 * from being updated in the database but still run
+	 * through the process and return counts of would
+	 * have been updated of dry run was `false`.
+	 *
+	 * @var bool
+	 */
+	protected $dry_run = false;
+
 
 	/**
 	 * Serialized constructor.
@@ -71,9 +83,10 @@ class Serialized {
 
 
 	/**
-	 * Query all serialized rows from a database table and update them one by one
+	 * Query all serialized rows from a database table and
+	 * update them one by one.
 	 *
-	 * @param string $table - Database table.
+	 * @param string $table  - Database table.
 	 * @param string $column - Database column.
 	 *
 	 * @return int
@@ -106,8 +119,10 @@ class Serialized {
 			$clean = @serialize( $clean );
 			//phpcs:enable
 
-			//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET {$column}=%s WHERE {$primary_key_column}=%s", $clean, $row->{$primary_key_column} ) );
+			if ( ! $this->dry_run ) {
+				//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}`=%s", $clean, $row->{$primary_key_column} ) );
+			}
 		}
 
 		return $this->count;
@@ -209,5 +224,19 @@ class Serialized {
 	 */
 	public function get_count() {
 		return $this->count;
+	}
+
+
+	/**
+	 * Set the property to determine if we are
+	 * doing a dry run for counts, or actually updating
+	 * the database.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @param bool $dry_run - Is this a dry run or not.
+	 */
+	public function set_dry_run( $dry_run ) {
+		$this->dry_run = $dry_run;
 	}
 }
