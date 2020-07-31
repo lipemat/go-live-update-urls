@@ -9,6 +9,7 @@ use Go_Live_Update_Urls\Updaters\Repo;
  *
  */
 class Updates {
+
 	protected $old_url;
 
 	protected $new_url;
@@ -138,7 +139,12 @@ class Updates {
 
 
 	/**
-	 * Return all database columns for a specified table.
+	 * Return all database columns for a specified table that
+	 * match the column types we update.
+	 *
+	 * We include any varchar or char which are 21 characters
+	 * or above which takes care of a lot of core columns with
+	 * don't store URLs.
 	 *
 	 * @param string $table - Database table to retrieve from.
 	 *
@@ -148,7 +154,14 @@ class Updates {
 	 */
 	protected function get_table_columns( $table ) {
 		global $wpdb;
-		return $wpdb->get_col( $wpdb->prepare( "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
+
+		$all = $wpdb->get_results( $wpdb->prepare( "SELECT COLUMN_NAME as name, COLUMN_TYPE as type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
+		$types = Database::instance()->get_column_types();
+
+		return wp_list_pluck( array_filter( $all, function ( $column ) use ( $types ) {
+			// Strip the (\d) from varchar and char (21) and over they match.
+			return in_array( preg_replace( '/\((\d{3}|[3-9][\d]|[2][1-9])[\d]*?\)/', '', $column->type ), $types, true );
+		} ), 'name' );
 	}
 
 

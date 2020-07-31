@@ -104,6 +104,29 @@ class Database {
 
 
 	/**
+	 * Get types of MySQL fields which may contain URLS.
+	 *
+	 * Only fields of these types will be updated.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return array
+	 */
+	public function get_column_types() {
+		$types = [
+			'char',
+			'longtext',
+			'longtext',
+			'mediumtext',
+			'text',
+			'tinytext',
+			'varchar',
+		];
+		return apply_filters( 'go-live-update-urls/database/core-tables', $types, $this );
+	}
+
+
+	/**
 	 * Get the names of every table in this blog
 	 * If we are multisite, we also get the global tables
 	 *
