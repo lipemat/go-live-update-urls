@@ -5,13 +5,13 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.0
 Requires PHP: 5.6.0
-Stable tag: 6.1.0
+Stable tag: 6.1.1
 
 == Description ==
 
 Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including priority support, the ability to test a URL before updating, support for tables created by plugins, update history, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, priority support, and so much more!</strong>
 
 <blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.0.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
 
@@ -25,10 +25,10 @@ Goes through entire site and replaces all instances of an old url with a new one
 <h3>Updates Entire Site including</h3>
 * Posts
 * Pages
-* Image urls
+* Image URLs
 * Excerpts
-* Post Meta data
-* Custom Post Types
+* Post meta data
+* Custom post types
 * Widgets and widget data
 * Options and settings
 * And much more
@@ -86,12 +86,12 @@ Under the Tools menu in the dashboard there will be a "Go Live" link.
 
 = Why does updating the domain break some plugins? =
 
-Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may un-check tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, usermeta, commentmeta, and sitemeta tables are serialization safe. The <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> supports updating these tables created by plugins.
+Some plugins will store the serialized or JSON data in the database which does not allow for easy updating of the data. You may un-check tables used by such plugins and then update the urls manually for those plugins. Currently, the options, postmeta, usermeta, commentmeta, blogmeta, and sitemeta tables are serialization safe. The <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> supports updating all tables created by plugins, including ones with serialized or JSON data.
 
 = How do I know which tables I should not update? =
 
 Most tables will be just fine to update. This plugin will tell you which ones not to update.
-If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues with custom tables, you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
+If you wish to try to update tables mentioned as "not safe" anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues with custom tables, you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
 
 == Screenshots ==
 
