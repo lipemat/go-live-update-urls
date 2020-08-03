@@ -25,10 +25,10 @@ Goes through entire site and replaces all instances of an old url with a new one
 <h3>Updates Entire Site including</h3>
 * Posts
 * Pages
-* Image urls
+* Image URLs
 * Excerpts
-* Post Meta data
-* Custom Post Types
+* Post meta data
+* Custom post types
 * Widgets and widget data
 * Options and settings
 * And much more
