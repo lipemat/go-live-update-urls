@@ -86,12 +86,12 @@ Under the Tools menu in the dashboard there will be a "Go Live" link.
 
 = Why does updating the domain break some plugins? =
 
-Some plugins will store the data in the database serialized which does not allow for easy updating of the data. You may un-check tables used by such plugins to avoid breakage and then update the urls manually for those plugins. Currently the options, postmeta, usermeta, commentmeta, and sitemeta tables are serialization safe. The <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> supports updating these tables created by plugins.
+Some plugins will store the serialized or JSON data in the database which does not allow for easy updating of the data. You may un-check tables used by such plugins and then update the urls manually for those plugins. Currently, the options, postmeta, usermeta, commentmeta, blogmeta, and sitemeta tables are serialization safe. The <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> supports updating all tables created by plugins, including ones with serialized or JSON data.
 
 = How do I know which tables I should not update? =
 
 Most tables will be just fine to update. This plugin will tell you which ones not to update.
-If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues with custom tables, you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
+If you wish to try to update tables mentioned as "not safe" anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues with custom tables, you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
 
 == Screenshots ==
 
