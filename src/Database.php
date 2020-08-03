@@ -122,7 +122,7 @@ class Database {
 			'tinytext',
 			'varchar',
 		];
-		return apply_filters( 'go-live-update-urls/database/core-tables', $types, $this );
+		return apply_filters( 'go-live-update-urls/database/column-types', $types, $this );
 	}
 
 
