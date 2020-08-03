@@ -107,7 +107,7 @@ class Serialized {
 		$primary_key_column = $pk[0]->Column_name;
 
 		// Get all serialized rows.
-		$rows = $wpdb->get_results( "SELECT $primary_key_column, {$column} FROM {$table} WHERE {$column} LIKE 'a:%' OR {$column} LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		foreach ( $rows as $k => $row ) {
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
@@ -121,7 +121,7 @@ class Serialized {
 
 			if ( ! $this->dry_run ) {
 				//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}`=%s", $clean, $row->{$primary_key_column} ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
 			}
 		}
 
