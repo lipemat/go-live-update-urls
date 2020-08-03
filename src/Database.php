@@ -3,8 +3,6 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Traits\Singleton;
-use Go_Live_Update_Urls\Updaters\Repo;
-use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Database manipulation.
@@ -106,6 +104,29 @@ class Database {
 
 
 	/**
+	 * Get types of MySQL fields which may contain URLS.
+	 *
+	 * Only fields of these types will be updated.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return array
+	 */
+	public function get_column_types() {
+		$types = [
+			'char',
+			'longtext',
+			'longtext',
+			'mediumtext',
+			'text',
+			'tinytext',
+			'varchar',
+		];
+		return apply_filters( 'go-live-update-urls/database/core-tables', $types, $this );
+	}
+
+
+	/**
 	 * Get the names of every table in this blog
 	 * If we are multisite, we also get the global tables
 	 *
@@ -140,79 +161,98 @@ class Database {
 	 *
 	 * @since 5.0.0
 	 *
-	 * @return bool
+	 * @return int[]
 	 */
 	public function update_the_database( $old_url, $new_url, array $tables ) {
-		global $wpdb;
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
-		$updaters = (array) Repo::instance()->get_updaters();
 
-		// If the new domain is the old one with a new sub-domain like www.
-		if ( strpos( $new_url, $old_url ) !== false ) {
-			list( $subdomain ) = explode( '.', $new_url );
-			$double_subdomain = $subdomain . '.' . $new_url;
-		}
-
-		$serialized = new Serialized( $old_url, $new_url );
-		$serialized->update_all_serialized_tables( $tables );
-		if ( ! empty( $double_subdomain ) ) {
-			$serialized = new Serialized( $double_subdomain, $new_url );
-			$serialized->update_all_serialized_tables( $tables );
-		}
-
-		$get_columns_query = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s";
-
-		foreach ( (array) $tables as $table ) {
-			$columns = $wpdb->get_col( $wpdb->prepare( $get_columns_query, $table ) );
-			foreach ( $columns as $_column ) {
-				$this->update_column( $table, $_column, $old_url, $new_url );
-
-				foreach ( $updaters as $_updater_class ) {
-					if ( class_exists( $_updater_class ) ) {
-						/* @var Updaters_Abstract $_updater - Individual updater class */
-						$_updater = $_updater_class::factory( $table, $_column, $old_url, $new_url );
-						$_updater->update_data();
-						if ( ! empty( $double_subdomain ) ) {
-							$_updater = new $_updater_class( $table, $_column, $double_subdomain, $new_url );
-							$_updater->update_data();
-						}
-					}
-				}
-
-				// Fix the double up if this was the old domain with a new subdomain.
-				if ( ! empty( $double_subdomain ) ) {
-					$this->update_column( $table, $_column, $double_subdomain, $new_url );
-					// Fix the emails breaking by being appended the new subdomain.
-					$this->update_column( $table, $_column, '@' . $new_url, '@' . $old_url );
-				}
+		$updates = Updates::factory( $old_url, $new_url, $tables );
+		$counts = $updates->update_serialized_values();
+		foreach ( (array) $tables as $_table ) {
+			if ( ! array_key_exists( $_table, $counts ) ) {
+				$counts[ $_table ] = 0;
 			}
+			$counts[ $_table ] += $updates->update_table_columns( $_table );
 		}
 
 		wp_cache_flush();
 
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
-		return true;
+		return apply_filters( 'go-live-update-urls/database/updated/counts', $counts, $old_url, $new_url, $tables, $this );
+	}
+
+
+	/**
+	 * Count all occurrences of the old URL within a provided
+	 * list of tables.
+	 *
+	 * @param string $old_url - the old URL.
+	 * @param string $new_url - the new URL.
+	 * @param array  $tables  - the tables we are going to update.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return int[]
+	 */
+	public function count_database_urls( $old_url, $new_url, array $tables ) {
+		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
+
+		$updates = Updates::factory( $old_url, $new_url, $tables );
+		$counts = [];
+		foreach ( (array) $tables as $_table ) {
+			$counts[ $_table ] = $updates->count_table_urls( $_table );
+		}
+
+		return apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
 	}
 
 
 	/**
 	 * Update an individual table's column.
 	 *
-	 * @param string $table   Table to update.
-	 * @param string $column  Column to update.
-	 * @param string $old_url Old URL.
-	 * @param string $new_url New URL.
+	 * @param string $table   -  Table to update.
+	 * @param string $column  - Column to update.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 *
 	 * @since 5.3.0
 	 *
-	 * @return void
+	 * @return int
 	 */
 	public function update_column( $table, $column, $old_url, $new_url ) {
 		global $wpdb;
 
+		$count = $this->count_column_urls( $table, $column, $old_url );
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
+		return $count;
+	}
+
+
+	/**
+	 * Count of number of rows in a table which contain the old URL.
+	 *
+	 * When updating, the serialized data is updated first and this
+	 * counts the left overs.
+	 *
+	 * When dry-run counting, this will count all occurrences in the
+	 * database.
+	 *
+	 * @param string $table   - Table to update.
+	 * @param string $column  - Column to update.
+	 * @param string $old_url - Old URL.
+	 *
+	 * @since 6.1.0
+	 *
+	 * @return int
+	 */
+	public function count_column_urls( $table, $column, $old_url ) {
+		global $wpdb;
+
+		$update_query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
+
+		return (int) $wpdb->get_var( $wpdb->prepare( $update_query, [ $old_url, $old_url ] ) );
 	}
 }

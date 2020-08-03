@@ -9,8 +9,6 @@ use Go_Live_Update_Urls\Traits\Singleton;
  *
  * @author  OnPoint Plugins
  * @since   6.0.0
- *
- * @package Go_Live_Update_Urls\Updates
  */
 class Repo {
 	use Singleton;
@@ -18,8 +16,6 @@ class Repo {
 	/**
 	 * Get all registered updaters by classname
 	 * This list will grow over time as things are converted over
-	 *
-	 * @filter go_live_update_urls_updaters
 	 *
 	 * @return Updaters_Abstract[]
 	 */

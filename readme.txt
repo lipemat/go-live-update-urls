@@ -3,9 +3,9 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 4.8.0
-Tested up to: 5.4.2
+Tested up to: 5.5.0
 Requires PHP: 5.6.0
-Stable tag: 6.0.1
+Stable tag: 6.1.0
 
 == Description ==
 
@@ -70,12 +70,12 @@ Send pull requests via the <a href="https://github.com/lipemat/go-live-update-ur
 
 Use the standard WordPress plugins search and installer.
 Activate the plugin.
-Use the plugin under the Tools menu in the WordPress admin
+Use the "Go Live" page, located under the Tools menu, in the WordPress admin.
 
 Manual Installation
 
-1. Upload the `go-live-upload-urls` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
+1. Upload the `go-live-upload-urls` folder to the `/wp-content/plugins/` directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 
 == Frequently Asked Questions ==
@@ -91,13 +91,21 @@ Some plugins will store the data in the database serialized which does not allow
 = How do I know which tables I should not update? =
 
 Most tables will be just fine to update. This plugin will tell you which ones not to update.
-If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues often with custom table you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
+If you wish to try to update tables mentioned as not safe anyway, you may make a backup of your database, run this on all tables and if you run into trouble, restore your database, un-check tables in sections, and rerun this until you find the culprit. If you find you are running into issues with custom tables, you may want to check out the <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro Version</a> of this plugin which works with any table.
 
 == Screenshots ==
 
-1. Typical settings page. The verbiage will change slightly depending on your database structure
+1. Typical settings page. The verbiage will change slightly depending on your database structure.
 
 == Changelog ==
+= 6.1.0 =
+* Automatically exclude non text database columns.
+* Support email addresses within serialized data.
+* Greatly improve database update performance.
+* Split database update steps into their own class.
+* Support URL counting for upcoming <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">PRO</a> enhancements.
+* Tested to WordPress version 5.5.0
+
 = 6.0.0 =
 * Entirely new code structure.
 * Removed all deprecated code and filters.
@@ -123,7 +131,7 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 = 5.1.0 =
 * Added new languages including French, German, and Spanish
 * Support upcoming blogmeta table in WP 5.0.0+
-* Support updating urlencdode urls
+* Support updating urlencoded urls
 * Improved support for Visual Composer
 * Add PHP composer support
 
@@ -163,10 +171,10 @@ If you wish to try to update tables mentioned as not safe anyway, you may make a
 Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
 
 = 5.0.6 =
-Fixes bug with submit button in a small number of browsers
+Fixes bug with the submit button in some browsers
 
 = 5.0.4 =
-Fixes bug with database not updating properly
+Fixes bug with the database not updating properly
 
 = 5.0.1 =
 For full functionality of PRO version 2.2.0

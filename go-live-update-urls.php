@@ -5,13 +5,13 @@
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
  * Author: OnPoint Plugins
  * Author URI: https://onpointplugins.com/
- * Version: 6.0.1
+ * Version: 6.1.0
  * Text Domain: go-live-update-urls
  *
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.0.1' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.1.0' );
 define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.0.0' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -19,10 +19,11 @@ use Go_Live_Update_Urls\Admin;
 use Go_Live_Update_Urls\Core;
 use Go_Live_Update_Urls\Database;
 use Go_Live_Update_Urls\Serialized;
-use Go_Live_Update_Urls\Updaters\Repo;
 use Go_Live_Update_Urls\Traits\Singleton;
+use Go_Live_Update_Urls\Updaters\Repo;
 use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 use Go_Live_Update_Urls\Updaters\Url_Encoded;
+use Go_Live_Update_Urls\Updates;
 
 /**
  * Load the plugin
@@ -62,6 +63,7 @@ function go_live_update_urls_autoload( $class ) {
 		Repo::class              => 'Updaters/Repo.php',
 		Serialized::class        => 'Serialized.php',
 		Singleton::class         => 'Traits/Singleton.php',
+		Updates::class           => 'Updates.php',
 		Updaters_Abstract::class => 'Updaters/Updaters_Abstract.php',
 		Url_Encoded::class       => 'Updaters/Url_Encoded.php',
 	];

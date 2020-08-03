@@ -29,17 +29,15 @@ class Url_Encoded extends Updaters_Abstract {
 	 * Update the old encoded URL with the new encoded URL if the entered
 	 * old URL is different than the encoded version.
 	 *
-	 * @return bool
+	 * @return int
 	 */
 	public function update_data() {
 		$old = self::apply_rule_to_url( $this->old );
 		if ( $old === $this->old ) {
-			return false;
+			return 0;
 		}
 
-		$this->update_column( $old, self::apply_rule_to_url( $this->new ) );
-
-		return true;
+		return $this->update_column( $old, self::apply_rule_to_url( $this->new ) );
 	}
 
 }

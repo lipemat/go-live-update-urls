@@ -69,7 +69,7 @@ class Core {
 	 *
 	 * @since 5.0.1
 	 *
-	 * @return bool
+	 * @return int[]
 	 */
 	public function update( $old_url, $new_url ) {
 		$db = Database::instance();
