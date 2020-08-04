@@ -13,6 +13,7 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const INPUTS_WRAP      = 'go-live-update-urls/admin/url-fields';
 	const OLD_URL          = 'old_url';
 	const NEW_URL          = 'new_url';
 	const NONCE            = 'go-live-update-urls/nonce/update-tables';
@@ -214,7 +215,7 @@ class Admin {
 
 				?>
 				<hr />
-				<table class="form-table" data-js="go-live-update-urls/admin/url-fields">
+				<table class="form-table" data-js="<?php echo esc_attr( static::INPUTS_WRAP ); ?>">
 					<tr>
 						<th scope="row" style="width:150px;">
 							<label for="old_url">
@@ -248,14 +249,15 @@ class Admin {
 						</td>
 					</tr>
 				</table>
-				<p class="description" data-js="go-live-update-urls/admin/only-checked-tables">
-					<strong>
-						<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
-					</strong>
-				</p>
+
 				<?php
 				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 					?>
+					<p class="description">
+						<strong>
+							<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
+						</strong>
+					</p>
 					<p class="description" style="color:#23282d">
 						<strong>
 							<?php
@@ -291,7 +293,6 @@ class Admin {
 			class="go-live-update-urls/checkboxes go-live-update-urls/checkboxes/<?php echo esc_attr( $list ); ?>"
 			data-list="<?php echo esc_attr( $list ); ?>">
 			<?php
-
 			foreach ( $tables as $_table ) {
 				?>
 				<li>
@@ -301,7 +302,6 @@ class Admin {
 				</li>
 				<?php
 			}
-
 			?>
 		</ul>
 		<?php
