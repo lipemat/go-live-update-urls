@@ -13,6 +13,7 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const FORM_WRAP        = 'go-live-update-urls/admin/form';
 	const INPUTS_WRAP      = 'go-live-update-urls/admin/url-fields';
 	const OLD_URL          = 'old_url';
 	const NEW_URL          = 'new_url';
@@ -90,7 +91,7 @@ class Admin {
 	 * @return void
 	 */
 	public function failure_message() {
-		add_action( 'admin_notices', function () {
+		add_action( 'admin_notices', static function () {
 			?>
 			<div id="message" class="error fade">
 				<p>
@@ -154,7 +155,10 @@ class Admin {
 			}
 			?>
 
-			<form method="post" class="go-live-update-urls/admin/checkbox-form">
+			<form
+				method="post"
+				class="go-live-update-urls/admin/checkbox-form"
+				data-js="<?php echo esc_attr( static::FORM_WRAP ); ?>">
 				<?php
 				wp_nonce_field( self::NONCE, self::NONCE );
 
@@ -279,8 +283,8 @@ class Admin {
 	/**
 	 * Creates a list of checkboxes for each table
 	 *
-	 * @param array  $tables - List of all tables.
-	 * @param string $list - Used by js to separate lists.
+	 * @param array  $tables  - List of all tables.
+	 * @param string $list    - Used by js to separate lists.
 	 * @param bool   $checked - Should all checkboxes be checked.
 	 *
 	 * @since  5.0.0
