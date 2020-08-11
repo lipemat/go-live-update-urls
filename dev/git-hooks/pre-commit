@@ -1,92 +1,145 @@
-#!/bin/sh
+#!/bin/bash
 
 #######################################################################################
 #
-# This script is setup for PHP 5.5, 5.6 and PHP 7.4
+# This script is setup for PHP 5.5, 5.6 AND 7.4 and submodules .git/modules/{dir}/hooks/pre-commit
+# Change the php version is desired, otherwise works just fine by renaming
+#  @see pre-commit for root project .git/modules
 #
-#######################################################################################
+#####################################################################################
+GREEN="$(tput setaf 2)"
+WHITE="$(tput setaf 7)"
+YELLOW="$(tput setaf 3)"
+RED="$(tput setaf 1)"
+BLUE="$(tput setaf 6)"
+RESET_COLOR="$(tput sgr0)"
+
 PROJECT="."
-
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
-STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \\\\.php`
-
-# Check for phpcs config
-if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
-  echo "${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
-  exit 1;
+JS_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$")
+PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
+if [[ ! "$PHP_FILES" ]] && [[ ! "$JS_FILES" ]]; then
+	echo "${YELLOW}[pre-commit]${BLUE} No Testable Files Changed ${RESET_COLOR}"
+	exit 0
+fi
+if [[ ! "$PHP_FILES" ]]; then
+	echo "${YELLOW}[pre-commit]${BLUE} No PHP Files Changed ${WHITE}"
+fi
+if [[ ! "$JS_FILES" ]]; then
+	echo "${YELLOW}[pre-commit]${BLUE} No JS Files Changed ${WHITE}"
 fi
 
-# Run phpunit (PHP5).
-## Use SSH script instead of a PHP call so no $PHP
-echo "Running PHP Unit (PHP5.6)."
-phpunit 5.6 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
-if [[ $? != 0 ]]; then
-  echo "Fix the error before commit!"
-  exit 1
-fi
+function exit_reset_colors() {
+	echo ${RESET_COLOR}
+	exit 1
+}
 
-# Run phpunit (PHP7).
-echo "Running PHP Unit (PHP7) multi."
-phpunit 7.4 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml
-if [[ $? != 0 ]]; then
-  echo "Fix the error before commit!"
-  exit 1
-fi
+# Must run them consecutively to prevent conflicts.
+function php_units() {
+	php_unit 'phpunit 5.6'
+	php_unit 'phpunit 7.4'
+}
 
-# Run phpunit (PHP7).
-echo "Running PHP Unit (PHP7) single."
-phpunit 7.4 --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit-single.xml
-if [[ $? != 0 ]]; then
-  echo "Fix the error before commit!"
-  exit 1
-fi
+function php_unit() {
+	if [[ "$PHP_FILES" ]]; then
+		echo "Running ${1} ..."
+		if [[ ! -f ${PROJECT}/dev/wp-unit/phpunit.xml ]]; then
+			echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/dev/wp-unit/phpunit.xml not found! (Probably not setup yet!).${WHITE}"
+		else
+			# Run phpunit.
+			echo "${YELLOW}[pre-commit]${BLUE} Running PHP Unit... ${WHITE}"
+			OUTPUT=$(${1} --configuration ${PROJECT}/dev/wp-unit/phpunit.xml)
+			if [[ $? != 0 ]]; then
+				echo
+				echo "${BLUE}PHP Unit Failed! Fix the error before commit!"
+				echo "${RED}$OUTPUT"
+				exit_reset_colors
+			fi
+			echo "${YELLOW}[pre-commit]${GREEN} PHP Unit Tests Passed!${WHITE}"
+		fi
+	fi
+}
+php_units &
 
+function php_lint() {
+	if [[ "$PHP_FILES" ]]; then
+		echo "Checking ${1} Lint..."
+		# Run php lint.
+		echo "${YELLOW}[pre-commit]${BLUE} Checking PHP Lint... ${WHITE}"
+		for FILE in ${PHP_FILES}; do
+			OUTPUT=$(${1} -l -d display_errors=0 ${PROJECT}/${FILE})
+			if [[ $? != 0 ]]; then
+				echo
+				echo "${BLUE}PHP Lint Failed. Fix the error before commit."
+				echo "${RED}$OUTPUT"
+				exit_reset_colors
+			fi
+		done
+		echo "${YELLOW}[pre-commit]${GREEN} PHP Lint Passed!${WHITE}"
+	fi
+}
+php_lint 'php 5.6' &
+php_lint 'php 7.4' &
 
-# Determine if a file list is passed.
-if [[ "$#" -eq 1 ]]; then
-  oIFS=$IFS
-  IFS='
-  '
-  SFILES="$1"
-  IFS=${oIFS}
-fi
-SFILES=${SFILES:-$STAGED_FILES_CMD}
+function php_code_sniffer() {
+	if [[ "$PHP_FILES" != "" ]]; then
+		# Check for phpcs config
+		if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
+			echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
+			exit_reset_colors
+		fi
+		for FILE in ${PHP_FILES}; do
+			FILES="$FILES ${PROJECT}/${FILE}"
+		done
+		echo "${YELLOW}[pre-commit]${BLUE} Running PHPCS... ${WHITE}"
+		OUTPUT=$(phpcs --encoding=utf-8 -s -n -p ${FILES})
+		if [[ $? != 0 ]]; then
+			echo
+			echo "${BLUE}PHPCS failed. Fix the error before commit!"
+			echo "${RED}$OUTPUT"
+			echo
+			echo "${YELLOW}For automatic fixes run"
+			echo
+			echo "${WHITE}phpcbf $FILES"
+			echo
+			exit_reset_colors
+		fi
+		echo "${YELLOW}[pre-commit]${GREEN} PHPCS Passed!${WHITE}"
+	fi
+}
+php_code_sniffer &
 
-# Run php lint (PHP5).
-echo "Checking PHP5.5 Lint..."
-for FILE in ${SFILES}; do
-  php 5.5 -l -d display_errors=0 ${PROJECT}/${FILE}
-  if [[ $? != 0 ]]; then
-    echo "Fix the error before commit."
-    exit 1
-  fi
-  FILES="${FILES} ${PROJECT}/${FILE}"
+function js_tests() {
+	# Run JS tests
+	if [[ "$JS_FILES" ]]; then
+		echo "${YELLOW}[pre-commit]${BLUE} Running JS Tests... ${WHITE}"
+		cd ${PROJECT}/js
+		OUTPUT=$(yarn run test --bail --passWithNoTests --findRelatedTests ${JS_FILES//js\//} 2>&1)
+		if [[ $? != 0 ]]; then
+			echo
+			echo "${BLUE}JS Tests failed. Fix the error before commit!"
+			echo "${RED}$OUTPUT"
+			exit_reset_colors
+		fi
+		echo "${YELLOW}[pre-commit]${GREEN} JS Tests Passed!${WHITE}"
+	fi
+}
+js_tests &
+
+# Go through each background task
+# If it sent exit code 1, it failed and the result from `wait` will be false.
+FAIL=0
+for job in $(jobs -p); do
+	wait $job || let "FAIL+=1"
 done
 
-# Run php lint (PHP7.4).
-echo "Checking PHP7.4 Lint..."
-for FILE in ${SFILES}; do
-  php 7.4 -l -d display_errors=0 ${PROJECT}/${FILE}
-  if [[ $? != 0 ]]; then
-    echo "Fix the error before commit."
-    exit 1
-  fi
-  FILES="${FILES} ${PROJECT}/${FILE}"
-done
+echo ${RESET_COLOR}
 
-# Run phpcs.
-if [[ "${FILES}" != "" ]]; then
-  echo "Running Code Sniffer..."
-  phpcs --encoding=utf-8 -s -n -p ${FILES}
-  if [[ $? != 0 ]]; then
-    echo "Fix the error before commit!"
-    echo "Run"
-    echo "  phpcbf ${FILES}"
-    echo "for automatic fix or fix it manually."
-    exit 1
-  fi
+# If any of the background tasks failed, we exit 1
+if [[ $FAIL -ne 0 ]]; then
+	exit 1
+else
+	exit 0
 fi
-
-exit $?
