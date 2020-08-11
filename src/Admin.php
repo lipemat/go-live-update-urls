@@ -13,6 +13,8 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const FORM_WRAP        = 'go-live-update-urls/admin/form';
+	const INPUTS_WRAP      = 'go-live-update-urls/admin/url-fields';
 	const OLD_URL          = 'old_url';
 	const NEW_URL          = 'new_url';
 	const NONCE            = 'go-live-update-urls/nonce/update-tables';
@@ -89,7 +91,7 @@ class Admin {
 	 * @return void
 	 */
 	public function failure_message() {
-		add_action( 'admin_notices', function () {
+		add_action( 'admin_notices', static function () {
 			?>
 			<div id="message" class="error fade">
 				<p>
@@ -153,7 +155,10 @@ class Admin {
 			}
 			?>
 
-			<form method="post" class="go-live-update-urls/admin/checkbox-form">
+			<form
+				method="post"
+				class="go-live-update-urls/admin/checkbox-form"
+				data-js="<?php echo esc_attr( static::FORM_WRAP ); ?>">
 				<?php
 				wp_nonce_field( self::NONCE, self::NONCE );
 
@@ -214,7 +219,7 @@ class Admin {
 
 				?>
 				<hr />
-				<table class="form-table" data-js="go-live-update-urls/admin/url-fields">
+				<table class="form-table" data-js="<?php echo esc_attr( static::INPUTS_WRAP ); ?>">
 					<tr>
 						<th scope="row" style="width:150px;">
 							<label for="old_url">
@@ -248,14 +253,15 @@ class Admin {
 						</td>
 					</tr>
 				</table>
-				<p class="description" data-js="go-live-update-urls/admin/only-checked-tables">
-					<strong>
-						<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
-					</strong>
-				</p>
+
 				<?php
 				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 					?>
+					<p class="description">
+						<strong>
+							<?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?>
+						</strong>
+					</p>
 					<p class="description" style="color:#23282d">
 						<strong>
 							<?php
@@ -277,8 +283,8 @@ class Admin {
 	/**
 	 * Creates a list of checkboxes for each table
 	 *
-	 * @param array  $tables - List of all tables.
-	 * @param string $list - Used by js to separate lists.
+	 * @param array  $tables  - List of all tables.
+	 * @param string $list    - Used by js to separate lists.
 	 * @param bool   $checked - Should all checkboxes be checked.
 	 *
 	 * @since  5.0.0
@@ -291,7 +297,6 @@ class Admin {
 			class="go-live-update-urls/checkboxes go-live-update-urls/checkboxes/<?php echo esc_attr( $list ); ?>"
 			data-list="<?php echo esc_attr( $list ); ?>">
 			<?php
-
 			foreach ( $tables as $_table ) {
 				?>
 				<li>
@@ -301,7 +306,6 @@ class Admin {
 				</li>
 				<?php
 			}
-
 			?>
 		</ul>
 		<?php
