@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.0
 Requires PHP: 5.6.0
-Stable tag: 6.1.1
+Stable tag: 6.1.2
 
 == Description ==
 
@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 <strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, priority support, and so much more!</strong>
 
-<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.0.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
+<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.1.0</a> is now available with a greatly improved testing and updating experience!</blockquote>
 
 
 <h3>Features</h3>
@@ -98,6 +98,12 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 1. Typical settings page. The verbiage will change slightly depending on your database structure.
 
 == Changelog ==
+= 6.1.2 =
+* Improve admin form and selectors.
+* Fix filter name for `go-live-update-urls/database/column-types`.
+* Improve FAQs.
+* Support for PRO version 6.1.0.
+
 = 6.1.0 =
 * Automatically exclude non text database columns.
 * Support email addresses within serialized data.
@@ -108,8 +114,8 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 
 = 6.0.1 -
 * Improve compatibility with very old versions of PRO.
-* Improve readme.
-* Add links for documenation and troubleshooting.
+* Improve the readme.
+* Add links for the documentation and troubleshooting.
 
 = 6.0.0 =
 * Entirely new code structure.
@@ -172,6 +178,9 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 
 
 == Upgrade Notice ==
+= 6.1.2 =
+Update to support PRO version 6.1.0.
+
 = 6.0.1 =
 Major version update. Not backward compatible with version 5 filters or code. Please remove any custom filters or extensions before updating.
 
