@@ -1,0 +1,11 @@
+/.wordpress-org
+/.github
+/.git
+/dev
+
+.editorconfig
+composer.json
+phpcs.xml
+.distignore
+.gitignore
+Readme.md
