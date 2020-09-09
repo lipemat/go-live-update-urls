@@ -98,6 +98,9 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 1. Typical settings page. The verbiage will change slightly depending on your database structure.
 
 == Changelog ==
+= 6.1.3 = 
+* Support WordPress version 5.5.1
+
 = 6.1.2 =
 * Improve admin form and selectors.
 * Fix filter name for `go-live-update-urls/database/column-types`.
