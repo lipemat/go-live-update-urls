@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.1
 Requires PHP: 5.6.0
-Stable tag: 6.1.2
+Stable tag: 6.1.3
 
 == Description ==
 
