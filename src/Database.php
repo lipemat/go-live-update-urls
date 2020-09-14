@@ -27,6 +27,7 @@ class Database {
 			$wpdb->options     => 'option_value',
 			$wpdb->postmeta    => 'meta_value',
 			$wpdb->commentmeta => 'meta_value',
+			$wpdb->signups     => 'meta',
 			$wpdb->termmeta    => 'meta_value',
 			$wpdb->usermeta    => 'meta_value',
 		];
