@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.1
 Requires PHP: 5.6.0
-Stable tag: 6.1.3
+Stable tag: 6.1.4
 
 == Description ==
 
@@ -98,6 +98,10 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 1. Typical settings page. The verbiage will change slightly depending on your database structure.
 
 == Changelog ==
+= 6.1.4 = 
+* Support updating `registration_log` and `signups` tables.
+* Make `get_doubled_up_subdomain` method public.
+
 = 6.1.3 = 
 * Support WordPress version 5.5.1
 
