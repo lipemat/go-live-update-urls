@@ -213,7 +213,7 @@ class Updates {
 	 *
 	 * @return string|null
 	 */
-	protected function get_doubled_up_subdomain() {
+	public function get_doubled_up_subdomain() {
 		if ( strpos( $this->new_url, $this->old_url ) !== false ) {
 			list( $subdomain ) = explode( '.', $this->new_url );
 			return $subdomain . '.' . $this->new_url;
