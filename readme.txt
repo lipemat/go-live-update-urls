@@ -11,9 +11,9 @@ Stable tag: 6.1.4
 
 Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, priority support, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
 
-<blockquote><a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Pro version 6.1.1</a> is now available with a greatly improved testing and updating experience!</blockquote>
+<blockquote><a href=" https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/#url-counting" target="_blank">Pro version 6.2.0</a> is now available with real time reporting of urls which will be and were updated!</blockquote>
 
 
 <h3>Features</h3>
@@ -36,15 +36,16 @@ Goes through entire site and replaces all instances of an old url with a new one
 <h3>Pro Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
+* Ability to choose between a full table or sections.
 * Updates serialized data across any table.
 * Updates JSON data across any table.
-* Improved admin page.
 * Ability to test URL changes before running them.
 * URL testing report is provided for peace of mind.
 * Option to fix common mistakes automatically when entering a URL.
-* iew and use history of your site's address.
+* View and use history of your site's address.
 * Predictive URLs automatically fill in the "Old URL" and "New URL.".
-* Ability to choose between a full table or sections.
+* Real time reporting of count and location of urls which will be updated. **NEW**
+* Report of count and location of urls which were updated. **NEW**
 * WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
