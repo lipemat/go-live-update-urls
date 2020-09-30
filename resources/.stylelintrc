@@ -1,0 +1,38 @@
+{
+	"extends": [
+		"../../go-live-update-urls-pro/js/node_modules/stylelint-config-wordpress"
+	],
+	"rules": {
+		"function-parentheses-space-inside": null,
+		"indentation": "tab",
+		"no-invalid-double-slash-comments": null,
+		"number-leading-zero": null,
+		"property-no-unknown": [
+			true,
+			{
+				"ignoreProperties": [
+					"/\/\//",
+					"/^composes/"
+				]
+			}
+		],
+		"rule-empty-line-before": [
+			"always",
+			{
+				"ignore": [
+					"after-comment",
+					"first-nested"
+				]
+			}
+		],
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": [
+					"global"
+				]
+			}
+		],
+		"string-quotes": null
+	}
+}

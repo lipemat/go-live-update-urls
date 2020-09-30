@@ -1,0 +1,86 @@
+#wpcontent {
+	padding-left: 0 !important;
+}
+
+.update-nag,
+.notice,
+div.updated,
+div.error {
+	margin-bottom: 25px;
+	margin-left: 15px;
+}
+
+.update-nag {
+	margin-top: 0;
+}
+
+.go-live-header-wrap {
+	text-align: center;
+	margin: 0 0 30px;
+	background: #fff;
+	border-bottom: 1px solid #e2e4e7;
+	padding: 10px 0 0 0;
+}
+
+.go-live-header-wrap h1::before {
+	color: #02657a;
+	font-size: 40px;
+	margin: -8px 25px 0 -25px;
+}
+
+.go-live-header-wrap a {
+	line-height: 1.1;
+	font-weight: 600;
+	font-size: 23px;
+	color: #23282d;
+	text-decoration: none;
+}
+
+.go-live-header-message {
+	font-weight: 600;
+	line-height: 20px;
+	margin: 0 10px 20px;
+}
+
+.go-live-checkbox-form {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.go-live-checkbox-form h3 {
+	padding: 0;
+	font-weight: 400;
+	color: #23282d;
+	font-size: 1.3em;
+	margin: 1em 0;
+}
+
+.go-live-section {
+	margin: 15px 0;
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	display: block;
+}
+
+.go-live-only-checked {
+	padding: 1px 0 0;
+	color: #666;
+	font-weight: 600;
+	display: inline-block;
+	position: relative;
+	top: 2px;
+}
+
+.go-live-checkbox-form th {
+	width: 75px;
+	padding-right: 0;
+}
+
+
+@media only screen and (max-width: 1004px) {
+	.go-live-checkbox-form {
+		margin: 0 22px;
+		width: auto;
+	}
+}
