@@ -12,7 +12,7 @@
  */
 
 define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.1.4' );
-define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.0.0' );
+define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.2.0' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
 use Go_Live_Update_Urls\Admin;
@@ -31,8 +31,6 @@ use Go_Live_Update_Urls\Updates;
  * @return void
  */
 function go_live_update_urls_load() {
-	require __DIR__ . '/deprecated/Go_Live_Update_Urls_Database.php';
-
 	load_plugin_textdomain( 'go-live-update-urls', false, 'go-live-update-urls/languages' );
 
 	Admin::init();
