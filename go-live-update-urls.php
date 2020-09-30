@@ -40,6 +40,7 @@ function go_live_update_urls_load() {
 
 	if ( defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) && version_compare( GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION, GO_LIVE_UPDATE_URLS_PRO_VERSION, '>' ) ) {
 		add_action( 'admin_notices', 'go_live_update_urls_pro_plugin_notice' );
+		remove_action( 'plugins_loaded', 'go_live_update_urls_pro_load', 9 );
 	}
 }
 
