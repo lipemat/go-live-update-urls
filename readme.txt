@@ -98,7 +98,7 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 
 1. Tools page. The list of tables will changed depending on your database structure.
 2. Successfully updated urls.
-3. Update prevents due to incomplete data entered.
+3. Update prevented due to incomplete data entered.
 
 == Changelog ==
 = 6.2.0 = 
