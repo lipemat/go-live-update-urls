@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update Urls\n"
-"POT-Creation-Date: 2020-06-10 12:21-0600\n"
-"PO-Revision-Date: 2020-06-10 12:21-0600\n"
+"POT-Creation-Date: 2020-09-30 12:02-0600\n"
+"PO-Revision-Date: 2020-09-30 12:03-0600\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: go-live-update-urls.php:86
+#: go-live-update-urls.php:87
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid ""
@@ -39,82 +39,74 @@ msgid "The URLS in the checked tables have been updated."
 msgstr "Las URL en las tablas comprobadas se han actualizado."
 
 #: src/Admin.php:97
-msgid "You must fill out both URLs and select tables to update URLs!"
-msgstr "¡Debe completar ambas URL para hacer la actualización !"
+msgid ""
+"You must select tables and fill out both the Old URL and New URL to update "
+"urls!"
+msgstr ""
+"Debe seleccionar tablas y rellenar tanto la URL antigua como la nueva URL "
+"para actualizar las URL!"
 
 #. Plugin Name of the plugin/theme
-#: src/Admin.php:130
+#: src/Admin.php:137
 msgid "Go Live Update Urls"
 msgstr "Go Live Update Urls"
 
-#: src/Admin.php:140
-#, php-format
-msgctxt "{<strong>} {</strong>}"
+#: src/Admin.php:142
 msgid ""
-"This will replace all occurrences %1$sin the entire database%2$s of the Old "
-"URL with the New URL."
+"Replaces all occurrences in the entire database of the Old URL with a New "
+"URL."
 msgstr ""
-"Esto reemplazará todas las ocurrencias%1$ sin toda la base de datos%2$ s de "
-"la URL anterior con la Nueva URL."
+"Reemplaza todas las apariciones de toda la base de datos de la dirección URL "
+"antigua por una nueva dirección URL."
 
-#: src/Admin.php:146
-msgid ""
-"Like any other database updating tool, you should always perform a backup "
-"before running."
-msgstr ""
-"Al igual que cualquier otra herramienta de actualización de base de datos, "
-"siempre debe realizar una copia de seguridad antes de ejecutar."
+#: src/Admin.php:156
+msgid "WordPress core tables"
+msgstr "Tablas principales de WordPress"
 
-#: src/Admin.php:165
-msgid "WordPress Core Tables"
-msgstr "Tablas centrales"
+#: src/Admin.php:161
+msgid "These tables are safe to update."
+msgstr "Todas las tablas son seguras para actualizar."
 
-#: src/Admin.php:169
-msgid "These tables are safe to update with the basic version of this plugin."
-msgstr ""
-"Estas tablas son seguras para actualizarse con la versión básica de este "
-"complemento."
-
-#: src/Admin.php:190
-msgid "Tables Created By Plugins"
-msgstr "Tablas creadas por complementos"
-
-#: src/Admin.php:196
-#, php-format
-msgctxt "{<br />}{<a>}{</a>}"
-msgid ""
-"These tables are probably NOT SAFE to update with the basic version of this "
-"plugin. %1$sTo support tables created by plugins use the %2$sPro Version%3$s."
-msgstr ""
-"Estas tablas probablemente NO SON SEGURAS para actualizar con la versión "
-"básica de este complemento. %1$sPara soportar tablas creadas por plugins use"
-"%2$sPro Version%3$s."
-
-#: src/Admin.php:221 src/Admin.php:231
-msgid "Old URL"
-msgstr "URL antigua"
-
-#: src/Admin.php:237 src/Admin.php:247
-msgid "New URL"
-msgstr "Nueva URL"
-
-#: src/Admin.php:253
+#: src/Admin.php:170 src/Admin.php:200
 msgid "Only the checked tables will be updated."
 msgstr "Solo las tablas comprobadas serán actualizadas."
 
-#: src/Admin.php:263
+#: src/Admin.php:184
+msgid "Tables created by plugins"
+msgstr "Tablas creadas por plugins"
+
+#: src/Admin.php:191
+#, php-format
+msgctxt "{<br />}{<a>}{</a>}"
+msgid ""
+"These tables are not safe to update with the basic version of this plugin! "
+"%1$sTo update tables created by plugins, use the %2$sPRO version%3$s."
+msgstr ""
+"Estas tablas no son seguras para actualizar con la versión básica de este "
+"plugin! %1$sPara actualizar tablas creadas por plugins, utilice la versión "
+"%2$sPRO%3$s."
+
+#: src/Admin.php:219 src/Admin.php:229
+msgid "Old URL"
+msgstr "URL antigua"
+
+#: src/Admin.php:235 src/Admin.php:245
+msgid "New URL"
+msgstr "Nueva URL"
+
+#: src/Admin.php:258
 #, php-format
 msgctxt "{<a>}{</a>}"
-msgid "Use the %1$sPRO version%2$s to test the updates before making them."
+msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
 msgstr ""
-"Utilice la versión %1$sPRO%2$s para probar las actualizaciones antes de "
+"Utilice %1$sPRO versión%2$s para probar las actualizaciones de URL antes de "
 "realizarlas."
 
-#: src/Admin.php:270
-msgid "Update URLs"
-msgstr "Actualizar URL"
+#: src/Admin.php:266
+msgid "Update Urls"
+msgstr "Actualizar Urls"
 
-#: src/Updaters/Updaters_Abstract.php:90
+#: src/Updaters/Updaters_Abstract.php:104
 msgid "You must implement apply_rule_to_url with an override"
 msgstr "Debe implementar apply_rule_to_url con una invalidación"
 
@@ -137,6 +129,13 @@ msgstr "OnPoint Plugins"
 #. Author URI of the plugin/theme
 msgid "https://onpointplugins.com/"
 msgstr "https://onpointplugins.com/"
+
+#~ msgid ""
+#~ "Like any other database updating tool, you should always perform a backup "
+#~ "before running."
+#~ msgstr ""
+#~ "Al igual que cualquier otra herramienta de actualización de base de "
+#~ "datos, siempre debe realizar una copia de seguridad antes de ejecutar."
 
 #~ msgid ""
 #~ "OnPoint Plugins Author URI: https://onpointplugins.com/ Version: 5.3.0 "

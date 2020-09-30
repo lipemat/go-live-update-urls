@@ -158,7 +158,7 @@ class Admin {
 					<div class="go-live-section">
 						<p class="description" style="color:green">
 							<strong>
-								<?php esc_attr_e( 'These tables are safe to update with the basic version of this plugin.', 'go-live-update-urls' ); ?>
+								<?php esc_attr_e( 'These tables are safe to update.', 'go-live-update-urls' ); ?>
 							</strong>
 						</p>
 						<p>
