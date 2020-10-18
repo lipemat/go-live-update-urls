@@ -177,7 +177,7 @@ class Database {
 			$counts[ $_table ] += $updates->update_table_columns( $_table );
 		}
 
-		wp_cache_flush();
+		$this->flush_caches();
 
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
 
@@ -255,5 +255,24 @@ class Database {
 		$update_query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
 
 		return (int) $wpdb->get_var( $wpdb->prepare( $update_query, [ $old_url, $old_url ] ) );
+	}
+
+
+	/**
+	 * Flush any known caches which are affected by updating the database.
+	 *
+	 * 1. WP core object cache.
+	 * 2. Elementor CSS cache.
+	 *
+	 * @ticket #7751
+	 *
+	 * @see \Elementor\Settings::update_css_print_method
+	 *
+	 * @since 6.2.1
+	 */
+	protected function flush_caches() {
+		wp_cache_flush();
+		// Special flush CSS cache for Elementor #7751.
+		do_action( 'update_option_elementor_css_print_method' );
 	}
 }
