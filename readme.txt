@@ -9,7 +9,7 @@ Stable tag: 6.2.1
 
 == Description ==
 
-Goes through entire site and replaces all instances of an old url with a new one. Used to change the domain of a site. Works on both multi-site and single site installs.
+Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site. 
 
 <strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
 
@@ -17,6 +17,7 @@ Goes through entire site and replaces all instances of an old url with a new one
 
 
 <h3>Features</h3>
+* Works on both multi-site and single site installs.
 * Database table by table selection.
 * Updates serialized data in core tables.
 * Very easy to use admin page - which may be found under Tools.
