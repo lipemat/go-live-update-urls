@@ -5,13 +5,13 @@
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
  * Author: OnPoint Plugins
  * Author URI: https://onpointplugins.com/
- * Version: 6.2.0
+ * Version: 6.2.1
  * Text Domain: go-live-update-urls
  *
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.2.0' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.2.1' );
 define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.2.0' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -83,7 +83,7 @@ function go_live_update_urls_pro_plugin_notice() {
 	<div id="message" class="error">
 		<p>
 			<?php
-			/* translators: {%1$s}[<a>]{%2$s}[</a>] https://wordpress.org/plugins/go-live-update-urls/ */ //phpcs:ignore
+			/* translators: Link to plugin {%1$s}[<a href="https://onpointplugins.com/product/go-live-update-urls-pro/">]{%2$s}[</a>] */
 			printf( esc_html_x( 'Go Live Update Urls requires %1$sGo Live Update Urls PRO %3$s+%2$s. Please update or deactivate the PRO version.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a target="_blank" href="https://onpointplugins.com/product/go-live-update-urls-pro/">', '</a>', esc_attr( GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION ) );
 			?>
 		</p>

@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.1
 Requires PHP: 5.6.0
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 
 == Description ==
 
@@ -101,6 +101,14 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.2.1 =
+* Automatically flush Elementor's CSS cache during updates.
+* Update screenshots and captions.
+* Introduce new `go-live-update-urls-pro/admin/use-default-inputs` filter.
+* Add CSS classes to form elements on tools page.
+* Fix spacing of banners on tools page.
+* Improve PHPCS implementation.
+
 = 6.2.0 = 
 * Redesign tools page for a modern block look.
 * Improve various verbiage.
