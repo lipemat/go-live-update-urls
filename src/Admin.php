@@ -167,7 +167,8 @@ class Admin {
 								data-list="wp-core"
 								data-js="go-live-update-urls/checkboxes/check-all"
 								checked
-							/> <span class="go-live-only-checked"><?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?></span>
+							/>
+							<span class="go-live-only-checked"><?php esc_html_e( 'Only the checked tables will be updated.', 'go-live-update-urls' ); ?></span>
 						</p>
 						<hr />
 
@@ -211,52 +212,55 @@ class Admin {
 
 				do_action( 'go-live-update-urls-pro/admin/after-checkboxes', Database::instance() );
 
-				?>
-				<table class="form-table">
-					<tr>
-						<th scope="row">
-							<label for="old_url">
-								<?php esc_html_e( 'Old URL', 'go-live-update-urls' ); ?>
-							</label>
-						</th>
-						<td>
-							<input
-								name="<?php echo esc_attr( self::OLD_URL ); ?>"
-								type="text"
-								id="old_url"
-								value=""
-								class="regular-text"
-								title="<?php esc_attr_e( 'Old URL', 'go-live-update-urls' ); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="new_url">
-								<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>
-							</label>
-						</th>
-						<td>
-							<input
-								name="<?php echo esc_attr( self::NEW_URL ); ?>"
-								type="text"
-								id="new_url"
-								value=""
-								class="regular-text"
-								title="<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>" />
-						</td>
-					</tr>
-				</table>
+				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-inputs', true ) ) {
+					?>
+					<table class="form-table go-live-inputs">
+						<tr class="go-live-inputs-old-url">
+							<th scope="row">
+								<label for="old_url">
+									<?php esc_html_e( 'Old URL', 'go-live-update-urls' ); ?>
+								</label>
+							</th>
+							<td>
+								<input
+									name="<?php echo esc_attr( self::OLD_URL ); ?>"
+									type="text"
+									id="old_url"
+									value=""
+									class="regular-text"
+									title="<?php esc_attr_e( 'Old URL', 'go-live-update-urls' ); ?>" />
+							</td>
+						</tr>
+						<tr class="go-live-inputs-new-url">
+							<th scope="row">
+								<label for="new_url">
+									<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>
+								</label>
+							</th>
+							<td>
+								<input
+									name="<?php echo esc_attr( self::NEW_URL ); ?>"
+									type="text"
+									id="new_url"
+									value=""
+									class="regular-text"
+									title="<?php esc_attr_e( 'New URL', 'go-live-update-urls' ); ?>" />
+							</td>
+						</tr>
+					</table>
 
-				<?php
+
+					<?php
+				}
 				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 					?>
 					<p class="description">
 						<strong>
 
-								<?php
-								/* translators: <a></a> */
-								printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
-								?>
+							<?php
+							/* translators: <a></a> */
+							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+							?>
 
 						</strong>
 					</p>
