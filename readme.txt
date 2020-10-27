@@ -180,29 +180,6 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 * UI improvements
 * Use strict WP coding standards
 
-= 4.1.0 =
-* Drop PHP 5.2 support in favor of PHP 5.3
-* Support updating JSON urls
-* Support Revolution Sliders
-* Add custom updaters support
-
-= 4.0.0 =
-* Restructure admin page to separate WP Core from custom tables
-* Remove custom styles in admin
-* Improved js structure
-* Improved actions and filters
-* Improved verbiage with admin
-
-= 3.1 =
-* Add support for serialized term meta
-
-= 3.0 =
-* Greatly improve security
-* Improve code organization
-* Remove misleading UI messages
-* Clears cache when finished
-
-
 == Upgrade Notice ==
 = 6.1.2 =
 Update to support PRO version 6.1.0.
@@ -218,7 +195,4 @@ Fixes bug with the database not updating properly
 
 = 5.0.1 =
 For full functionality of PRO version 2.2.0
-
-= 3.1 =
-Upgrade to support WP 4.4's term meta.
 
