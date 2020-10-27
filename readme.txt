@@ -138,7 +138,7 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 * Support URL counting for upcoming <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">PRO</a> enhancements.
 * Tested to WordPress version 5.5.0
 
-= 6.0.1 -
+= 6.0.1 =
 * Improve compatibility with very old versions of PRO.
 * Improve the readme.
 * Add links for the documentation and troubleshooting.
