@@ -21,17 +21,13 @@ PROJECT="."
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
-JS_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$")
 PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
-if [[ ! "$PHP_FILES" ]] && [[ ! "$JS_FILES" ]]; then
+if [[ ! "$PHP_FILES" ]]; then
 	echo "${YELLOW}[pre-commit]${BLUE} No Testable Files Changed ${RESET_COLOR}"
 	exit 0
 fi
 if [[ ! "$PHP_FILES" ]]; then
 	echo "${YELLOW}[pre-commit]${BLUE} No PHP Files Changed ${WHITE}"
-fi
-if [[ ! "$JS_FILES" ]]; then
-	echo "${YELLOW}[pre-commit]${BLUE} No JS Files Changed ${WHITE}"
 fi
 
 function exit_reset_colors() {
@@ -41,26 +37,27 @@ function exit_reset_colors() {
 
 # Must run them consecutively to prevent conflicts.
 function php_units() {
-	php_unit 'phpunit 5.6'
-	php_unit 'phpunit 7.4'
+	php_unit 'phpunit 5.6' 'phpunit-single.xml'
+	php_unit 'phpunit 5.6' 'phpunit.xml'
+	php_unit 'phpunit 7.4' 'phpunit-single.xml'
+	php_unit 'phpunit 7.4' 'phpunit.xml'
 }
 
 function php_unit() {
 	if [[ "$PHP_FILES" ]]; then
-		echo "Running ${1} ..."
-		if [[ ! -f ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml ]]; then
-			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml not found! (Probably not setup yet!).${WHITE}"
+		if [[ ! -f ../go-live-update-urls-pro/dev/wp-unit/${2} ]]; then
+			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/${2} not found! (Probably not setup yet!).${WHITE}"
 		else
 			# Run phpunit.
-			echo "${YELLOW}[pre-commit]${BLUE} Running PHP Unit... ${WHITE}"
-			OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/phpunit.xml)
+			echo "${YELLOW}[pre-commit]${BLUE} Running ${1} ${2}... ${WHITE}"
+			OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/${2})
 			if [[ $? != 0 ]]; then
 				echo
 				echo "${BLUE}PHP Unit Failed! Fix the error before commit!"
 				echo "${RED}$OUTPUT"
 				exit_reset_colors
 			fi
-			echo "${YELLOW}[pre-commit]${GREEN} PHP Unit Tests Passed!${WHITE}"
+			echo "${YELLOW}[pre-commit]${GREEN} ${1} ${2} Tests Passed!${WHITE}"
 		fi
 	fi
 }
@@ -68,9 +65,8 @@ php_units &
 
 function php_lint() {
 	if [[ "$PHP_FILES" ]]; then
-		echo "Checking ${1} Lint..."
 		# Run php lint.
-		echo "${YELLOW}[pre-commit]${BLUE} Checking PHP Lint... ${WHITE}"
+		echo "${YELLOW}[pre-commit]${BLUE} Checking ${1} Lint... ${WHITE}"
 		for FILE in ${PHP_FILES}; do
 			OUTPUT=$(${1} -l -d display_errors=0 ${PROJECT}/${FILE})
 			if [[ $? != 0 ]]; then
@@ -80,7 +76,7 @@ function php_lint() {
 				exit_reset_colors
 			fi
 		done
-		echo "${YELLOW}[pre-commit]${GREEN} PHP Lint Passed!${WHITE}"
+		echo "${YELLOW}[pre-commit]${GREEN} ${1} Lint Passed!${WHITE}"
 	fi
 }
 php_lint 'php 5.6' &
@@ -113,23 +109,6 @@ function php_code_sniffer() {
 	fi
 }
 php_code_sniffer &
-
-function js_tests() {
-	# Run JS tests
-	if [[ "$JS_FILES" ]]; then
-		echo "${YELLOW}[pre-commit]${BLUE} Running JS Tests... ${WHITE}"
-		cd ../go-live-update-urls-pro/js
-		OUTPUT=$(yarn run test --bail --passWithNoTests --findRelatedTests ${JS_FILES//js\//} 2>&1)
-		if [[ $? != 0 ]]; then
-			echo
-			echo "${BLUE}JS Tests failed. Fix the error before commit!"
-			echo "${RED}$OUTPUT"
-			exit_reset_colors
-		fi
-		echo "${YELLOW}[pre-commit]${GREEN} JS Tests Passed!${WHITE}"
-	fi
-}
-js_tests &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.
