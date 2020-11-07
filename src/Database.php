@@ -271,8 +271,10 @@ class Database {
 	 * @since 6.2.1
 	 */
 	protected function flush_caches() {
-		wp_cache_flush();
 		// Special flush CSS cache for Elementor #7751.
-		do_action( 'update_option_elementor_css_print_method' );
+		$method = get_option( 'elementor_css_print_method' );
+		do_action( 'update_option_elementor_css_print_method', $method, $method, 'elementor_css_print_method' );
+
+		wp_cache_flush();
 	}
 }
