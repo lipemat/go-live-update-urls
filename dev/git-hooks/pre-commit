@@ -2,9 +2,12 @@
 
 #######################################################################################
 #
-# This script is setup for 5.6 AND 7.4 and submodules .git/modules/{dir}/hooks/pre-commit
-# Change the php version is desired, otherwise works just fine by renaming
-#  @see pre-commit for root project .git/modules
+# This script is setup for PHP 5.6 AND 7.4 and submodules
+# Change the PHP version is desired.
+#
+# @see /dev/git-hooks.sh for installation as symbolic link
+#
+# @version 2.0.0
 #
 #####################################################################################
 GREEN="$(tput setaf 2)"
