@@ -225,8 +225,7 @@ class Updates {
 	 */
 	public function get_doubled_up_subdomain() {
 		if ( static::is_subdomain( $this->old_url, $this->new_url ) ) {
-			list( $subdomain ) = explode( '.', $this->new_url );
-			return $subdomain . '.' . $this->new_url;
+			return str_replace( $this->old_url, $this->new_url, $this->new_url );
 		}
 		return null;
 	}
