@@ -177,11 +177,10 @@ class Database {
 			$counts[ $_table ] += $updates->update_table_columns( $_table );
 		}
 
-		$this->flush_caches();
+		$counts = apply_filters( 'go-live-update-urls/database/updated/counts', $counts, $old_url, $new_url, $tables, $this );
 
 		do_action( 'go-live-update-urls/database/after-update', $old_url, $new_url, $tables, $this );
-
-		return apply_filters( 'go-live-update-urls/database/updated/counts', $counts, $old_url, $new_url, $tables, $this );
+		return $counts;
 	}
 
 
@@ -198,6 +197,7 @@ class Database {
 	 * @return int[]
 	 */
 	public function count_database_urls( $old_url, $new_url, array $tables ) {
+		do_action( 'go-live-update-urls/database/before-counting', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
 		$updates = Updates::factory( $old_url, $new_url, $tables );
@@ -252,29 +252,8 @@ class Database {
 	public function count_column_urls( $table, $column, $old_url ) {
 		global $wpdb;
 
-		$update_query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
+		$query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
 
-		return (int) $wpdb->get_var( $wpdb->prepare( $update_query, [ $old_url, $old_url ] ) );
-	}
-
-
-	/**
-	 * Flush any known caches which are affected by updating the database.
-	 *
-	 * 1. WP core object cache.
-	 * 2. Elementor CSS cache.
-	 *
-	 * @ticket #7751
-	 *
-	 * @see \Elementor\Settings::update_css_print_method
-	 *
-	 * @since 6.2.1
-	 */
-	protected function flush_caches() {
-		// Special flush CSS cache for Elementor #7751.
-		$method = get_option( 'elementor_css_print_method' );
-		do_action( 'update_option_elementor_css_print_method', $method, $method, 'elementor_css_print_method' );
-
-		wp_cache_flush();
+		return (int) $wpdb->get_var( $wpdb->prepare( $query, [ $old_url, $old_url ] ) );
 	}
 }

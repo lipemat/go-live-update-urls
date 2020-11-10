@@ -72,7 +72,7 @@ class Updates {
 			$this->update_email_addresses( $table, $column );
 
 			if ( null !== $doubled ) {
-				Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
+				$count -= (int) Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
 			}
 		} );
 
@@ -88,11 +88,16 @@ class Updates {
 	 * @return int
 	 */
 	public function count_table_urls( $table ) {
+		$doubled = $this->get_doubled_up_subdomain();
 		$columns = $this->get_table_columns( $table );
 		$count = 0;
-		array_walk( $columns, function ( $column ) use ( $table, &$count ) {
+		array_walk( $columns, function ( $column ) use ( $table, $doubled, &$count ) {
 			$count += (int) Database::instance()->count_column_urls( $table, $column, $this->old_url );
 			$count += (int) $this->count_column_urls_with_updaters( $table, $column );
+
+			if ( null !== $doubled ) {
+				$count -= (int) Database::instance()->count_column_urls( $table, $column, $this->new_url );
+			}
 		} );
 
 		return $count;
@@ -191,10 +196,15 @@ class Updates {
 		$doubled = $this->get_doubled_up_subdomain();
 		if ( null !== $doubled ) {
 			$serialized = new Serialized( $doubled, $this->new_url );
-			$serialized->update_all_serialized_tables( $this->tables );
+			$counts = array_combine( array_keys( $counts ), array_map( function ( $value, $subtract ) {
+				return $value - $subtract;
+			}, $counts, $serialized->update_all_serialized_tables( $this->tables ) ) );
+
 			// Remove an prepended subdomain like www. from email addresses.
 			$serialized = new Serialized( '@' . $this->new_url, '@' . $this->old_url );
-			$serialized->update_all_serialized_tables( $this->tables );
+			$counts = array_combine( array_keys( $counts ), array_map( function ( $value, $subtract ) {
+				return $value - $subtract;
+			}, $counts, $serialized->update_all_serialized_tables( $this->tables ) ) );
 		}
 
 		return $counts;
@@ -214,7 +224,7 @@ class Updates {
 	 * @return string|null
 	 */
 	public function get_doubled_up_subdomain() {
-		if ( strpos( $this->new_url, $this->old_url ) !== false ) {
+		if ( static::is_subdomain( $this->old_url, $this->new_url ) ) {
 			list( $subdomain ) = explode( '.', $this->new_url );
 			return $subdomain . '.' . $this->new_url;
 		}
@@ -246,6 +256,21 @@ class Updates {
 			// Strip the (\d) from varchar and char with (21) and over.
 			return in_array( preg_replace( '/\((\d{3}|[3-9][\d]|[2][1-9])[\d]*?\)/', '', $column->type ), $types, true );
 		} ), 'name' );
+	}
+
+
+	/**
+	 * Is a new URL a subdomain of the old URL?
+	 *
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
+	 *
+	 * @since 6.2.4
+	 *
+	 * @return bool
+	 */
+	public static function is_subdomain( $old_url, $new_url ) {
+		return strpos( $new_url, $old_url ) !== false;
 	}
 
 
