@@ -5,14 +5,14 @@
  * Description: Updates all the URLs in the database to point to a new URL when making your site live or changing domains.
  * Author: OnPoint Plugins
  * Author URI: https://onpointplugins.com/
- * Version: 6.2.1
+ * Version: 6.2.2
  * Text Domain: go-live-update-urls
  *
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.2.1' );
-define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.2.0' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.2.2' );
+define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.2.4' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
 use Go_Live_Update_Urls\Admin;

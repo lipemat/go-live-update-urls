@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 4.8.0
 Tested up to: 5.5.3
 Requires PHP: 5.6.0
-Stable tag: 6.2.1
+Stable tag: 6.2.2
 
 == Description ==
 
@@ -102,6 +102,14 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.2.2 =
+* Pass option value when flushing Elementor cache to prevent edge case conflicts.
+* Improve counting of urls across subdomains.
+* Improve counting of urls across serialized data. 
+* Support replacing non subdomain values which duplicate because the old URL exists within the new URL.
+* Introduce `go-live-update-urls/database/after-counting` action.
+* Introduce `go-live-update-urls/database/before-counting` action
+
 = 6.2.1 =
 * Automatically flush Elementor's CSS cache during updates.
 * Update screenshots and captions.
