@@ -206,7 +206,11 @@ class Database {
 			$counts[ $_table ] = $updates->count_table_urls( $_table );
 		}
 
-		return apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
+		$counts = apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
+
+		do_action( 'go-live-update-urls/database/after-counting', $old_url, $new_url, $tables, $this );
+
+		return $counts;
 	}
 
 
