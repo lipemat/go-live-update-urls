@@ -104,23 +104,23 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 == Changelog ==
 = 6.2.2 =
 * Pass option value when flushing Elementor cache to prevent edge case conflicts.
-* Improve counting of urls across subdomains.
-* Improve counting of urls across serialized data. 
+* Improved counting of urls across subdomains.
+* Improved counting of urls across serialized data. 
 * Support replacing non subdomain values which duplicate because the old URL exists within the new URL.
-* Introduce `go-live-update-urls/database/after-counting` action.
-* Introduce `go-live-update-urls/database/before-counting` action
+* Introduced `go-live-update-urls/database/after-counting` action.
+* Introduced `go-live-update-urls/database/before-counting` action
 
 = 6.2.1 =
 * Automatically flush Elementor's CSS cache during updates.
 * Update screenshots and captions.
-* Introduce new `go-live-update-urls-pro/admin/use-default-inputs` filter.
+* Introduced new `go-live-update-urls-pro/admin/use-default-inputs` filter.
 * Add CSS classes to form elements on tools page.
 * Fix spacing of banners on tools page.
-* Improve PHPCS implementation.
+* Improved PHPCS implementation.
 
 = 6.2.0 = 
 * Redesign tools page for a modern block look.
-* Improve various verbiage.
+* Improved various verbiage.
 * Update all translations.
 * More gracefully handle version conflicts with PRO.
 * Support for PRO version 6.2.0.
@@ -133,22 +133,22 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 * Support WordPress version 5.5.1
 
 = 6.1.2 =
-* Improve admin form and selectors.
+* Improved admin form and selectors.
 * Fix filter name for `go-live-update-urls/database/column-types`.
-* Improve FAQs.
+* Improved FAQs.
 * Support for PRO version 6.1.0.
 
 = 6.1.0 =
 * Automatically exclude non text database columns.
 * Support email addresses within serialized data.
-* Greatly improve database update performance.
+* Greatly improved database update performance.
 * Split database update steps into their own class.
 * Support URL counting for upcoming <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">PRO</a> enhancements.
 * Tested to WordPress version 5.5.0
 
 = 6.0.1 =
-* Improve compatibility with very old versions of PRO.
-* Improve the readme.
+* Improved compatibility with very old versions of PRO.
+* Improved the readme.
 * Add links for the documentation and troubleshooting.
 
 = 6.0.0 =
@@ -161,8 +161,8 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 * Display error message when no tables are selected during update.
 * Fix bug when updating columns which are name the same as MySQL commands.
 * Remove confusing '- Serialized' label from checkboxes list.
-* Improve stability to modernize code some code.
-* Introduce `go-live-update-urls/views/admin-tools-page/disable-description` filter.
+* Improved stability to modernize code some code.
+* Introduced `go-live-update-urls/views/admin-tools-page/disable-description` filter.
 * Cleanup some long deprecated code.
 
 = 5.2.12 = 
@@ -183,8 +183,8 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 = 5.0.0 =
 * Bring back PHP 5.2 support
 * Restructure entire codebase
-* Greatly improve security
-* Improve performance
+* Greatly improved security
+* Improved performance
 * UI improvements
 * Use strict WP coding standards
 
