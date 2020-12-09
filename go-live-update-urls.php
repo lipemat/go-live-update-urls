@@ -7,6 +7,10 @@
  * Author URI: https://onpointplugins.com/
  * Version: 6.2.2
  * Text Domain: go-live-update-urls
+ * Domain Path: /languages/
+ * Network: false
+ * Requires at least: 4.8
+ * Requires PHP: 5.6.0
  *
  * @package go-live-update-urls
  */
