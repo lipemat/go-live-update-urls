@@ -269,7 +269,7 @@ class Updates {
 	 * @return bool
 	 */
 	public static function is_subdomain( $old_url, $new_url ) {
-		return strpos( $new_url, $old_url ) !== false;
+		return false !== strpos( $new_url, $old_url );
 	}
 
 
@@ -284,6 +284,6 @@ class Updates {
 	 * @return static
 	 */
 	public static function factory( $old_url, $new_url, array $tables ) {
-		return new static( $old_url, $new_url, $tables );
+		return new static( $old_url, $new_url, $tables ); // @phpstan-ignore-line
 	}
 }

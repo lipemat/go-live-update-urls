@@ -132,9 +132,7 @@ class Serialized {
 	/**
 	 * Replaces all the occurrences of a string in a multi-dimensional array or Object
 	 *
-	 * @param iterable|string $data - Data to change.
-	 *
-	 * @uses  itself to call each level of the array
+	 * @param object|array|string|null $data - Data to change.
 	 *
 	 * @since 5.2.0
 	 *
@@ -201,12 +199,12 @@ class Serialized {
 			return false;
 		}
 
-		if ( strpos( $mysql_value, $this->old ) !== false ) {
+		if ( false !== strpos( $mysql_value, $this->old ) ) {
 			return true;
 		}
 
 		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			if ( strpos( $mysql_value, $_updater::apply_rule_to_url( $this->old ) ) !== false ) {
+			if ( false !== strpos( $mysql_value, $_updater::apply_rule_to_url( $this->old ) ) ) {
 				return true;
 			}
 		}

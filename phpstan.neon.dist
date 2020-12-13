@@ -1,0 +1,12 @@
+parameters:
+    level: 5
+    tmpDir: E:/.phpstan
+    dynamicConstantNames:
+        - GO_LIVE_UPDATE_URLS_PRO_VERSION
+        - GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION
+    bootstrapFiles:
+        - ../go-live-update-urls-pro/go-live-update-urls-pro.php
+        - go-live-update-urls.php
+    paths:
+        - go-live-update-urls.php
+        - src

@@ -38,7 +38,7 @@ trait Singleton {
 	 */
 	public static function instance() {
 		if ( ! is_a( static::$instance, __CLASS__ ) ) {
-			static::$instance = new static();
+			static::$instance = new static(); // @phpstan-ignore-line
 		}
 		return static::$instance;
 	}

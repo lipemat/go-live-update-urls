@@ -9,3 +9,4 @@ phpcs.xml
 .distignore
 .gitignore
 Readme.md
+phpstan.neon.dist

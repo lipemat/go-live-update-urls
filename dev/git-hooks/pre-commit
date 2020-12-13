@@ -7,7 +7,7 @@
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 2.0.0
+# @version 2.1.0
 #
 #####################################################################################
 GREEN="$(tput setaf 2)"
@@ -109,6 +109,22 @@ function php_code_sniffer() {
 	fi
 }
 php_code_sniffer &
+
+function php_stan() {
+	if [[ "$PHP_FILES" ]]; then
+		# Run phpstan.
+		echo "${YELLOW}[pre-commit]${BLUE} Running PHP Stan... ${WHITE}"
+		OUTPUT=$(phpstan analyse --memory-limit=2G)
+		if [[ $? != 0 ]]; then
+			echo
+			echo "${BLUE}PHP Stan Failed. Fix the error before commit."
+			echo "${RED}$OUTPUT"
+			exit_reset_colors
+		fi
+		echo "${YELLOW}[pre-commit]${GREEN} PHP Stan Passed!${WHITE}"
+	fi
+}
+php_stan &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.

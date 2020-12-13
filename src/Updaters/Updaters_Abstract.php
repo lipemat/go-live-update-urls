@@ -119,6 +119,6 @@ abstract class Updaters_Abstract {
 	 * @return static
 	 */
 	public static function factory( $table, $column, $old_url, $new_url ) {
-		return new static( $table, $column, $old_url, $new_url );
+		return new static( $table, $column, $old_url, $new_url ); // @phpstan-ignore-line
 	}
 }
