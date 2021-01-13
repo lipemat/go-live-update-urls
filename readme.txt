@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 5.2.0
 Tested up to: 5.6.0
 Requires PHP: 5.6.0
-Stable tag: 6.2.2
+Stable tag: 6.3.0
 
 == Description ==
 
@@ -102,6 +102,11 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.3.0 =
+* Improved readme.
+* Improved plugin headers.
+* Required WordPress version 5.2.0+.
+
 = 6.2.2 =
 * Pass option value when flushing Elementor cache to prevent edge case conflicts.
 * Improved counting of urls across subdomains.
