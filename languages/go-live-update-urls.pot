@@ -1,6 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"Project: https://translate.wordpress.org/projects/wp-plugins/go-live-update-urls\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Go Live Update URLS\n"
 "POT-Creation-Date: 2020-09-30 12:02-0600\n"
