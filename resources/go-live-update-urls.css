@@ -44,6 +44,7 @@ div.error {
 .go-live-checkbox-form {
 	max-width: 800px;
 	margin: 0 auto;
+	display: block;
 }
 
 .go-live-checkbox-form h3 {
@@ -77,9 +78,8 @@ div.error {
 }
 
 
-@media only screen and (max-width: 1004px) {
+@media only screen and (max-width: 960px) {
 	.go-live-checkbox-form {
-		margin: 0 22px;
-		width: auto;
+		max-width: calc( 100% - 30px );
 	}
 }
