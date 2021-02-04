@@ -3,9 +3,9 @@ Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 5.2.0
-Tested up to: 5.6.0
+Tested up to: 5.6.1
 Requires PHP: 5.6.0
-Stable tag: 6.3.0
+Stable tag: 6.3.1
 
 == Description ==
 
@@ -102,6 +102,11 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.3.1 =
+* Tested to WordPress 5.6.1.
+* Improved translation process and documentation.
+* Improved responsiveness of admin page.
+
 = 6.3.0 =
 * Improved readme.
 * Improved plugin headers.
