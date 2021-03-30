@@ -56,7 +56,7 @@ class Admin {
 			return;
 		}
 
-		$tables = array_map( 'sanitize_text_field', \wp_unslash( $_POST[ self::TABLE_INPUT_NAME ] ) );
+		$tables = array_map( 'sanitize_text_field', (array) \wp_unslash( $_POST[ self::TABLE_INPUT_NAME ] ) );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
