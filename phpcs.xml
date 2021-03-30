@@ -15,7 +15,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
 
-    <config name="minimum_supported_wp_version" value="4.8" />
+    <config name="minimum_supported_wp_version" value="5.2" />
 
 	<!-- @see https://github.com/wimg/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
 	<config name="testVersion" value="5.6-" />
