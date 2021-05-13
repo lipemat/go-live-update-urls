@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 5.2.0
 Tested up to: 5.7.2
 Requires PHP: 5.6.0
-Stable tag: 6.3.1
+Stable tag: 6.3.2
 
 == Description ==
 
@@ -102,6 +102,11 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.3.2 =
+* Improved sanitization of table names.
+* Fully support PHP 8.
+* Tested to WordPress 5.7.2.
+
 = 6.3.1 =
 * Tested to WordPress 5.6.1.
 * Improved translation process and documentation.
