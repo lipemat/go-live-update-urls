@@ -237,7 +237,7 @@ class Updates {
 	 *
 	 * We include any varchar or char which are 21 characters
 	 * or above which takes care of a lot of core columns which
-	 * don't store URLs.
+	 * don't store Urls.
 	 *
 	 * @param string $table - Database table to retrieve from.
 	 *

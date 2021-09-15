@@ -5,7 +5,7 @@ namespace Go_Live_Update_Urls\Updaters;
 /**
  * URL Encoded
  *
- * Url encoded URLs have special characters in place of typically entered
+ * Url encoded Urls have special characters in place of typically entered
  * characters. This replaces standard characters with their encoded versions
  * during updating.
  *

@@ -185,8 +185,8 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 * Officially drop support for PHP 5.4 in favor of 5.6.0
 
 = 5.2.0 =
-* Support URL Encoded URLS within serialized data 
-* Support JSON Encoded URLS within serialized data
+* Support URL Encoded Urls within serialized data 
+* Support JSON Encoded Urls within serialized data
 
 = 5.1.0 =
 * Added new languages including French, German, and Spanish
