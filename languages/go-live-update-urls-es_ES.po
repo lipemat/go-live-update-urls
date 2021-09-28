@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update Urls\n"
-"POT-Creation-Date: 2020-09-30 12:02-0600\n"
-"PO-Revision-Date: 2020-09-30 12:03-0600\n"
+"POT-Creation-Date: 2021-09-16 15:31-0400\n"
+"PO-Revision-Date: 2021-09-16 15:31-0400\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: go-live-update-urls.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: go-live-update-urls.php:87
+#: go-live-update-urls.php:91
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid ""
@@ -35,7 +35,7 @@ msgid "Ouch! That hurt! You should not be here!"
 msgstr "¡Ay! ¡Eso duele! ¡No deberías estar aquí!"
 
 #: src/Admin.php:78
-msgid "The URLS in the checked tables have been updated."
+msgid "The urls in the checked tables have been updated."
 msgstr "Las URL en las tablas comprobadas se han actualizado."
 
 #: src/Admin.php:97
@@ -67,15 +67,15 @@ msgstr "Tablas principales de WordPress"
 msgid "These tables are safe to update."
 msgstr "Todas las tablas son seguras para actualizar."
 
-#: src/Admin.php:170 src/Admin.php:200
+#: src/Admin.php:171 src/Admin.php:201
 msgid "Only the checked tables will be updated."
 msgstr "Solo las tablas comprobadas serán actualizadas."
 
-#: src/Admin.php:184
+#: src/Admin.php:185
 msgid "Tables created by plugins"
 msgstr "Tablas creadas por plugins"
 
-#: src/Admin.php:191
+#: src/Admin.php:192
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -86,15 +86,15 @@ msgstr ""
 "plugin! %1$sPara actualizar tablas creadas por plugins, utilice la versión "
 "%2$sPRO%3$s."
 
-#: src/Admin.php:219 src/Admin.php:229
+#: src/Admin.php:221 src/Admin.php:231
 msgid "Old URL"
 msgstr "URL antigua"
 
-#: src/Admin.php:235 src/Admin.php:245
+#: src/Admin.php:237 src/Admin.php:247
 msgid "New URL"
 msgstr "Nueva URL"
 
-#: src/Admin.php:258
+#: src/Admin.php:262
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
@@ -102,7 +102,7 @@ msgstr ""
 "Utilice %1$sPRO versión%2$s para probar las actualizaciones de URL antes de "
 "realizarlas."
 
-#: src/Admin.php:266
+#: src/Admin.php:270
 msgid "Update Urls"
 msgstr "Actualizar Urls"
 
@@ -116,7 +116,7 @@ msgstr "https://onpointplugins.com/go-live-update-urls/"
 
 #. Description of the plugin/theme
 msgid ""
-"Updates all the URLs in the database to point to a new URL when making your "
+"Updates all the Urls in the database to point to a new URL when making your "
 "site live or changing domains."
 msgstr ""
 "Actualiza todas las URL en la base de datos para apuntar a una nueva URL al "

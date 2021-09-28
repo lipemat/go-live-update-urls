@@ -75,7 +75,7 @@ class Admin {
 		<div id="message" class="updated fade">
 			<p>
 				<strong>
-					<?php echo esc_html( apply_filters( 'go-live-update-urls/admin/success', __( 'The URLS in the checked tables have been updated.', 'go-live-update-urls' ) ) ); ?>
+					<?php echo esc_html( apply_filters( 'go-live-update-urls/admin/success', __( 'The urls in the checked tables have been updated.', 'go-live-update-urls' ) ) ); ?>
 				</strong>
 			</p>
 		</div>
