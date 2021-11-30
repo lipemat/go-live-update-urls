@@ -3,8 +3,6 @@
 namespace Go_Live_Update_Urls\Updaters;
 
 /**
- * URL Encoded
- *
  * Url encoded Urls have special characters in place of typically entered
  * characters. This replaces standard characters with their encoded versions
  * during updating.
@@ -27,7 +25,7 @@ class Url_Encoded extends Updaters_Abstract {
 
 	/**
 	 * Update the old encoded URL with the new encoded URL if the entered
-	 * old URL is different than the encoded version.
+	 * old URL is different from the encoded version.
 	 *
 	 * @return int
 	 */
