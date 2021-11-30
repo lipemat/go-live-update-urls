@@ -49,14 +49,17 @@ class Admin {
 			return;
 		}
 
-		$old_url = trim( sanitize_text_field( \wp_unslash( $_POST[ self::OLD_URL ] ) ) );
-		$new_url = trim( sanitize_text_field( \wp_unslash( $_POST[ self::NEW_URL ] ) ) );
+		$old_url = Core::instance()->sanitize_field( $_POST[ self::OLD_URL ] ); //phpcs:ignore
+		$new_url = Core::instance()->sanitize_field( $_POST[ self::NEW_URL ] ); //phpcs:ignore
 		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
 			$this->failure_message();
 			return;
 		}
 
-		$tables = array_map( 'sanitize_text_field', (array) \wp_unslash( $_POST[ self::TABLE_INPUT_NAME ] ) );
+		$tables = \array_filter( \array_map( [
+			Core::instance(),
+			'sanitize_field',
+		], (array) $_POST[ self::TABLE_INPUT_NAME ] ) ); //phpcs:ignore
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
