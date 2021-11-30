@@ -48,7 +48,7 @@ class Core {
 
 
 	/**
-	 * Flush any known caches which are affected by updating the database.
+	 * Flush any known caches, which are affected by updating the database.
 	 *
 	 * 1. WP core object cache.
 	 * 2. Elementor CSS cache.
@@ -60,7 +60,7 @@ class Core {
 	 * @since 6.2.1
 	 */
 	public function flush_caches() {
-		// Special flush CSS cache for Elementor #7751.
+		// Special flushing of CSS cache for Elementor #7751.
 		$method = get_option( 'elementor_css_print_method' );
 		do_action( 'update_option_elementor_css_print_method', $method, $method, 'elementor_css_print_method' );
 
@@ -79,6 +79,24 @@ class Core {
 	 */
 	public function raise_memory_limit() {
 		return self::MEMORY_LIMIT;
+	}
+
+
+	/**
+	 * Like `sanitize_text_field` except we don't remove
+	 * URL encoded characters and HTML tags.
+	 *
+	 * @param string $value - User provided value to sanitize.
+	 *
+	 * @since 6.3.4
+	 *
+	 * @return string
+	 */
+	public function sanitize_field( $value ) {
+		$filtered = wp_unslash( (string) $value );
+		$filtered = wp_check_invalid_utf8( $filtered );
+		$filtered = \preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
+		return \trim( $filtered );
 	}
 
 

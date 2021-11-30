@@ -94,4 +94,3 @@ function go_live_update_urls_pro_plugin_notice() {
 	</div>
 	<?php
 }
-
