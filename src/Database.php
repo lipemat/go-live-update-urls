@@ -129,7 +129,7 @@ class Database {
 
 	/**
 	 * Get the names of every table in this blog
-	 * If we are multisite, we also get the global tables
+	 * If we are multisite, we also get the global tables.
 	 *
 	 * @since 5.0.1
 	 *
@@ -137,17 +137,16 @@ class Database {
 	 */
 	public function get_all_table_names() {
 		global $wpdb;
-		$query = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->prefix . "%'";
+		$query = "SELECT TABLE_NAME as TableName FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->esc_like( $wpdb->prefix ) . "%'";
 
-		// Site 1's 'LIKE wp_%' will return all tables in the database
-		// so we exclude all possible sub sites e.g. wp_2, wp_3 up to 9.
+		// Site 1's 'LIKE wp_%' will return all tables in the database,
+		// so we exclude all possible sub sites (e.g., wp_2, wp_3 up to 9).
 		$not_like = null;
 		if ( 1 === (int) $wpdb->blogid && is_multisite() ) {
 			for ( $i = 1; $i <= 9; $i ++ ) {
-				$not_like .= "'" . $wpdb->prefix . $i . "',";
+				$not_like .= $wpdb->prepare( '%s,', $wpdb->prefix . $i );
 			}
-			$not_like = substr( $not_like, 0, - 1 );
-			$query .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . $not_like . ')';
+			$query .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . substr( $not_like, 0, - 1 ) . ')';
 		}
 		return $wpdb->get_col( $query );
 	}
