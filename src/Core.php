@@ -5,7 +5,7 @@ namespace Go_Live_Update_Urls;
 use Go_Live_Update_Urls\Traits\Singleton;
 
 /**
- * Core functionality for the plugin.
+ * Core functionality for the Go Live Update Urls plugin.
  *
  * @author OnPoint Plugins
  * @since  6.0.0
@@ -14,6 +14,7 @@ class Core {
 	use Singleton;
 
 	const MEMORY_LIMIT = '256M';
+	const PLUGIN_FILE  = 'go-live-update-urls/go-live-update-urls.php';
 
 
 	/**
@@ -22,11 +23,8 @@ class Core {
 	protected function hook() {
 		add_action( 'go-live-update-urls/database/before-update', [ $this, 'raise_resource_limits' ], 0, 0 );
 		add_action( 'go-live-update-urls/database/after-update', [ $this, 'flush_caches' ] );
-		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [
-			$this,
-			'raise_memory_limit',
-		], 0, 0 );
-
+		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [ $this, 'raise_memory_limit' ], 0, 0 );
+		add_filter( 'plugin_action_links_' . self::PLUGIN_FILE, [ $this, 'plugin_action_link' ] );
 	}
 
 
@@ -119,5 +117,20 @@ class Core {
 		do_action( 'go-live-update-urls/core/before-update', $old_url, $new_url, $tables );
 
 		return $db->update_the_database( $old_url, $new_url, $tables );
+	}
+
+
+	/**
+	 * Display a "Go PRO" action link in plugins list.
+	 *
+	 * @param array $actions - Array of actions and their link.
+	 *
+	 * @return array
+	 */
+	public function plugin_action_link( array $actions ) {
+		if ( ! \defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ) {
+			$actions['go-pro'] = sprintf( '<a href="%1$s" target="_blank" style="color:#3db634;font-weight:700;">%2$s</a>', 'https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=wp-plugins&utm_campaign=gopro&utm_medium=wp-dash', __( 'Go PRO', 'go-live-update-urls' ) );
+		}
+		return $actions;
 	}
 }

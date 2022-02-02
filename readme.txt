@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 5.2.0
 Tested up to: 5.9.0
 Requires PHP: 5.6.0
-Stable tag: 6.3.5
+Stable tag: 6.3.6
 
 == Description ==
 
@@ -102,6 +102,10 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.3.6 =
+* Improved internal URL utm structure.
+* Tested to WordPress 5.9.0.
+
 = 6.3.5 =
 * Tested to WordPress 5.8.3.
 * Fix issue with tables showing from other sites on multisite.

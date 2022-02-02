@@ -192,7 +192,7 @@ class Admin {
 								<strong>
 									<?php
 									/* translators: <br /> <a> </a> */
-									printf( esc_html_x( 'These tables are not safe to update with the basic version of this plugin! %1$sTo update tables created by plugins, use the %2$sPRO version%3$s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+									printf( esc_html_x( 'These tables are not safe to update with the basic version of this plugin! %1$sTo update tables created by plugins, use the %2$sPRO version%3$s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=plugin-tables&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
 									?>
 								</strong>
 							</p>
@@ -262,7 +262,7 @@ class Admin {
 
 							<?php
 							/* translators: <a></a> */
-							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">', '</a>' );
+							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=url-test&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
 							?>
 
 						</strong>
