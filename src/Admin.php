@@ -13,6 +13,8 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const NAME = 'go-live-update-urls-settings';
+
 	const OLD_URL          = 'old_url';
 	const NEW_URL          = 'new_url';
 	const NONCE            = 'go-live-update-urls/nonce/update-tables';
@@ -112,7 +114,7 @@ class Admin {
 	 * @since 5.0.0
 	 */
 	public function register_admin_page() {
-		add_management_page( 'go-live-update-urls-setting', 'Go Live', 'manage_options', 'go-live-update-urls-settings', [
+		add_management_page( 'Go Live Update Urls', 'Go Live', 'manage_options', static::NAME, [
 			$this,
 			'admin_page',
 		] );
