@@ -121,13 +121,17 @@ class Core {
 
 
 	/**
-	 * Display a "Go PRO" action link in plugins list.
+	 * Display custom action links in plugins list.
+	 *
+	 * 1. Settings.
+	 * 2. Go PRO.
 	 *
 	 * @param array $actions - Array of actions and their link.
 	 *
 	 * @return array
 	 */
 	public function plugin_action_link( array $actions ) {
+		$actions['settings'] = sprintf( '<a href="%1$s">%2$s</a>', Admin::instance()->get_url(), __( 'Settings', 'go-live-update-urls' ) );
 		if ( ! \defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) ) {
 			$actions['go-pro'] = sprintf( '<a href="%1$s" target="_blank" style="color:#3db634;font-weight:700;">%2$s</a>', 'https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=wp-plugins&utm_campaign=gopro&utm_medium=wp-dash', __( 'Go PRO', 'go-live-update-urls' ) );
 		}

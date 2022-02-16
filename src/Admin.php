@@ -13,6 +13,8 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
+	const NAME = 'go-live-update-urls-settings';
+
 	const OLD_URL          = 'old_url';
 	const NEW_URL          = 'new_url';
 	const NONCE            = 'go-live-update-urls/nonce/update-tables';
@@ -92,7 +94,7 @@ class Admin {
 	 * @return void
 	 */
 	public function failure_message() {
-		add_action( 'admin_notices', static function () {
+		add_action( 'admin_notices', function() {
 			?>
 			<div id="message" class="error fade">
 				<p>
@@ -112,7 +114,7 @@ class Admin {
 	 * @since 5.0.0
 	 */
 	public function register_admin_page() {
-		add_management_page( 'go-live-update-urls-setting', 'Go Live', 'manage_options', 'go-live-update-urls-settings', [
+		add_management_page( 'Go Live Update Urls', 'Go Live', 'manage_options', static::NAME, [
 			$this,
 			'admin_page',
 		] );
@@ -126,7 +128,7 @@ class Admin {
 	 */
 	public function admin_page() {
 		wp_enqueue_script( 'go-live-update-urls/admin/admin-page/js', GO_LIVE_UPDATE_URLS_URL . 'resources/go-live-update-urls.js', [ 'jquery' ], GO_LIVE_UPDATE_URLS_VERSION, true );
-		\wp_enqueue_style( 'go-live-update-urls/admin/admin-page/css', GO_LIVE_UPDATE_URLS_URL . 'resources/go-live-update-urls.css', [], GO_LIVE_UPDATE_URLS_VERSION );
+		wp_enqueue_style( 'go-live-update-urls/admin/admin-page/css', GO_LIVE_UPDATE_URLS_URL . 'resources/go-live-update-urls.css', [], GO_LIVE_UPDATE_URLS_VERSION );
 
 		?>
 		<div id="go-live-update-urls/admin-page">
@@ -305,5 +307,15 @@ class Admin {
 			?>
 		</ul>
 		<?php
+	}
+
+
+	/**
+	 * Get the URL of the tools page.
+	 *
+	 * @return string
+	 */
+	public function get_url() {
+		return admin_url( 'tools.php?page=' . static::NAME );
 	}
 }
