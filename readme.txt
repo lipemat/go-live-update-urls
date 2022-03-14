@@ -65,9 +65,6 @@ Troubleshooting information may be found <a target="_blank" href="https://onpoin
 <h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
-<h3>Contribute</h3>
-Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
-
 == Installation ==
 
 Use the standard WordPress plugins search and installer.
