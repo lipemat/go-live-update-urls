@@ -6,6 +6,7 @@
 .editorconfig
 composer.json
 phpcs.xml
+.phpcs.cache
 .distignore
 .gitignore
 Readme.md
