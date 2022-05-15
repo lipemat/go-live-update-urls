@@ -37,7 +37,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 <h3>Pro Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
-* Ability to choose between a full table or sections.
+* Ability to choose between tables or sections.
 * Updates serialized data across any table.
 * Updates JSON data across any table.
 * Ability to test URL changes before running them.
