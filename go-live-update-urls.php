@@ -15,8 +15,8 @@
  * @package go-live-update-urls
  */
 
-define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.3.7' );
-define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.4.0' );
+define( 'GO_LIVE_UPDATE_URLS_VERSION', '6.3.8' );
+define( 'GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION', '6.6.0' );
 define( 'GO_LIVE_UPDATE_URLS_URL', plugin_dir_url( __FILE__ ) );
 
 use Go_Live_Update_Urls\Admin;
