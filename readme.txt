@@ -2,8 +2,8 @@
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
-Requires at least: 5.4.0
-Tested up to: 5.9.3
+Requires at least: 5.2.0
+Tested up to: 6.0.0
 Requires PHP: 5.6.0
 Stable tag: 6.3.7
 
@@ -37,7 +37,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 <h3>Pro Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
-* Ability to choose between tables or sections.
+* Ability to choose between a full table or sections.
 * Updates serialized data across any table.
 * Updates JSON data across any table.
 * Ability to test URL changes before running them.
