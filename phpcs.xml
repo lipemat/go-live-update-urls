@@ -6,6 +6,9 @@
 
 	<description>Go Live Update Urls - Rules.</description>
 
+	<!-- Include when not specified -->
+	<file>./src</file>
+
 	<!-- Show file path based on project root. -->
 	<arg name="basepath" value="." />
 	<!-- Cache between runs -->

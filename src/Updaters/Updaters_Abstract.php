@@ -48,7 +48,7 @@ abstract class Updaters_Abstract {
 	 * @param string $old_url Old URL.
 	 * @param string $new_url New URL.
 	 */
-	public function __construct( $table, $column, $old_url, $new_url ) {
+	final public function __construct( $table, $column, $old_url, $new_url ) {
 		$this->table = $table;
 		$this->column = $column;
 		$this->old = $old_url;
@@ -119,6 +119,6 @@ abstract class Updaters_Abstract {
 	 * @return static
 	 */
 	public static function factory( $table, $column, $old_url, $new_url ) {
-		return new static( $table, $column, $old_url, $new_url ); // @phpstan-ignore-line
+		return new static( $table, $column, $old_url, $new_url );
 	}
 }

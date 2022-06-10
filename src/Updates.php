@@ -8,10 +8,10 @@ use Go_Live_Update_Urls\Updaters\Repo;
  * Translated provided URLS into various steps to update the database.
  *
  * While no updates to the database are done within this class,
- * all calls to the methods which update the database go through here
+ * all calls to the methods, which update the database go through here
  * except for serialized data.
  *
- * This class determines which data needs to be updated in which way
+ * This class determines, which data needs to be updated in which way
  * and makes necessary calls.
  *
  * @since 6.1.0
@@ -46,7 +46,7 @@ class Updates {
 	 * @param string   $new    - Entered new URL.
 	 * @param string[] $tables - List of tables to interact with.
 	 */
-	public function __construct( $old, $new, array $tables ) {
+	final public function __construct( $old, $new, array $tables ) {
 		$this->old_url = $old;
 		$this->new_url = $new;
 		$this->tables = $tables;
@@ -66,7 +66,7 @@ class Updates {
 		$doubled = $this->get_doubled_up_subdomain();
 		$columns = $this->get_table_columns( $table );
 		$count = 0;
-		array_walk( $columns, function ( $column ) use ( $table, $doubled, &$count ) {
+		\array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
 			$count += (int) Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
 			$count += (int) $this->update_column_with_updaters( $table, $column );
 			$this->update_email_addresses( $table, $column );
@@ -91,7 +91,7 @@ class Updates {
 		$doubled = $this->get_doubled_up_subdomain();
 		$columns = $this->get_table_columns( $table );
 		$count = 0;
-		array_walk( $columns, function ( $column ) use ( $table, $doubled, &$count ) {
+		\array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
 			$count += (int) Database::instance()->count_column_urls( $table, $column, $this->old_url );
 			$count += (int) $this->count_column_urls_with_updaters( $table, $column );
 
@@ -284,6 +284,6 @@ class Updates {
 	 * @return static
 	 */
 	public static function factory( $old_url, $new_url, array $tables ) {
-		return new static( $old_url, $new_url, $tables ); // @phpstan-ignore-line
+		return new static( $old_url, $new_url, $tables );
 	}
 }

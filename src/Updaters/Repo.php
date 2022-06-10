@@ -16,7 +16,7 @@ class Repo {
 	/**
 	 * Get all registered updaters by classname.
 	 *
-	 * @return string[]
+	 * @return array<string, class-string<Updaters_Abstract>>
 	 */
 	public function get_updaters() {
 		$updaters = apply_filters( 'go-live-update-urls/updaters/repo/updaters', [

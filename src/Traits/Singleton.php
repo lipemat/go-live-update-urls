@@ -5,10 +5,11 @@ namespace Go_Live_Update_Urls\Traits;
 trait Singleton {
 
 	/**
-	 * Actions and filters which are called during `init`.
+	 * Actions and filters, which are called during `init`.
 	 */
 	protected function hook() {
 	}
+
 
 	/**
 	 * Instance of this class for use as singleton

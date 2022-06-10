@@ -130,7 +130,7 @@ class Serialized {
 
 
 	/**
-	 * Replaces all the occurrences of a string in a multi-dimensional array or Object
+	 * Replaces all the occurrences of a string in a multidimensional array or Object
 	 *
 	 * @param object|array|string|null $data - Data to change.
 	 *
