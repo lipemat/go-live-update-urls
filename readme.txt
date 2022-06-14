@@ -17,10 +17,10 @@ Goes through entire site and replaces all instances of an old URL with a new one
 
 
 <h3>Features</h3>
-* Works on both multi-site and single site installs.
 * Database table by table selection.
 * Updates serialized data in core tables.
-* Very easy to use admin page - which may be found under Tools.
+* Easy to use admin page - which may be found under Tools.
+* Works on both multisite and single site installs.
 
 
 <h3>Updates Entire Site including</h3>
@@ -39,6 +39,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Database tables are organized into simple intuitive sections.
 * Ability to choose between a full table or sections.
 * Updates serialized data across any table.
+* Updates encoded URL across any table.
 * Updates JSON data across any table.
 * Ability to test URL changes before running them.
 * URL testing report is provided for peace of mind.
