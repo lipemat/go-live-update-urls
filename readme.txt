@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 5.4.0
 Tested up to: 6.0.1
 Requires PHP: 5.6.0
-Stable tag: 6.3.8
+Stable tag: 6.3.9
 
 == Description ==
 
@@ -100,6 +100,10 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.3.9 =
+* Tested to WordPress 6.0.1.
+* Mentioned updating encoded URL in readme.
+
 = 6.3.8 =
 * Improved translations.
 * Fix typo in the readme.
