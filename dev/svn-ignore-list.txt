@@ -1,4 +1,0 @@
-#usage `svn propset svn:ignore -F dev/svn-ignore-list.txt .`
-phpcs.xml
-dev
-.editorconfig
