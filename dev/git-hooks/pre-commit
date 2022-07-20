@@ -2,7 +2,7 @@
 
 #######################################################################################
 #
-# This script is setup for PHP 5.6 AND 8.0 and submodules
+# This script is setup for PHP 7.0 AND 8.0 and submodules
 # Change the PHP version is desired.
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
@@ -37,8 +37,8 @@ function exit_reset_colors() {
 
 # Must run them consecutively to prevent conflicts.
 function php_units() {
-	php_unit 'phpunit 5.6' 'phpunit-single.xml'
-	php_unit 'phpunit 5.6' 'phpunit.xml'
+	php_unit 'phpunit 7.0' 'phpunit-single.xml'
+	php_unit 'phpunit 7.0' 'phpunit.xml'
 	php_unit 'phpunit 8.0' 'phpunit-single.xml'
 	php_unit 'phpunit 8.0' 'phpunit.xml'
 }
@@ -79,7 +79,7 @@ function php_lint() {
 		echo "${YELLOW}[pre-commit]${GREEN} ${1} Lint Passed!${WHITE}"
 	fi
 }
-php_lint 'php 5.6' &
+php_lint 'php 7.0' &
 php_lint 'php 8.0' &
 
 function php_code_sniffer() {

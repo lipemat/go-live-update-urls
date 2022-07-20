@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
 Requires at least: 5.4.0
 Tested up to: 6.0.1
-Requires PHP: 5.6.0
+Requires PHP: 7.0.0
 Stable tag: 6.3.9
 
 == Description ==
