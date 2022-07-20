@@ -5,7 +5,7 @@ Tags: urls, launching, site changes, tools, domain, domains, domain changes, url
 Requires at least: 5.4.0
 Tested up to: 6.0.1
 Requires PHP: 7.0.0
-Stable tag: 6.3.9
+Stable tag: 6.4.0
 
 == Description ==
 
@@ -13,7 +13,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 
 <strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
 
-<blockquote><a href=" https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/#url-counting" target="_blank">PRO version 6.7.0</a> is now available with real time reporting of urls, which will be and were updated!</blockquote>
+<blockquote><a href=" https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/#url-counting" target="_blank">PRO version 6.8.0</a> is now available with real time reporting of urls, which will be and were updated!</blockquote>
 
 
 <h3>Features</h3>
@@ -100,6 +100,10 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.4.0 =
+* Dropped support for PHP 5.6 in favor of PHP 7.0.
+* Required PRO version 6.8.0+.
+
 = 6.3.9 =
 * Tested to WordPress 6.0.1.
 * Mentioned updating encoded URL in readme.
