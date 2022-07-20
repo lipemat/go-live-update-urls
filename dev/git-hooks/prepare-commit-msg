@@ -5,6 +5,9 @@
 #
 # @version 2.0.0
 #
+# @notice Changed order of message to add task number to
+#         body instead of subject.
+#
 ######################################################
 
 YELLOW="$(tput setaf 3)"
@@ -24,11 +27,11 @@ fi
 # Extract the commit message
 MESSAGE=$(cat "$1")
 
-if [[ $MESSAGE =~ ^\[#[0-9]+\] ]]; then
+if [[ $MESSAGE =~ \[#[0-9]+\] ]]; then
     # Must use -e to make the reset colors work.
     echo -e "${YELLOW}[prepare-commit-msg]${BLUE} Skipping the message prefixing because the current message already has [#${MESSAGE//[!0-9]/}] ${RESET_COLOR}"
     exit 0
 fi
 
 # Prepend the current branch name to the message
-echo "[#$FEATURE] $MESSAGE" >"$1"
+echo -e "$MESSAGE \n\n[#$FEATURE]" >"$1"
