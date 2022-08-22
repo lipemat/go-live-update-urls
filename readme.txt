@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: urls, launching, site changes, tools, domain, domains, domain changes, url changes
+Tags: domain, url, replace, database, tools, launching, domains, domain changes, url changes
 Requires at least: 5.4.0
 Tested up to: 6.0.1
 Requires PHP: 7.0.0
@@ -11,7 +11,9 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
-Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site. 
+<h3>Change the domain on your site with one click.</h3>
+
+Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site.
 
 <strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
 
