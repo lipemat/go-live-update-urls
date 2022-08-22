@@ -55,11 +55,11 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
-<h3>Currently ships with the following languages</h3>
-* English (US)
-* French (fr_FR)
-* German (de_DE)   
-* Spanish (es_ES)
+<h3>Included Language Translations</h3>
+* English (en_US).
+* French (fr_FR).
+* German (de_DE).
+* Spanish (es_ES).
 
 <h3>Developers</h3>
 Developer docs may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">here</a>.
