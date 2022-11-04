@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#####################################################################################
+#
+# Runs the `post-merge` hook when a new branch is checked out.
+#
+# @version 1.0.0
+#
+#####################################################################################
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+exec $DIR/post-merge

@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#####################################################################################
+#
+# Get our local environment's dependencies up to date when merging a branch.
+#
+# @uses PHP 8.0
+#
+# Customized for this plugin to only run `yarn dist`
+#
+# @version 4.1.1
+#
+#####################################################################################
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+GREEN="$(tput setaf 2)"
+WHITE="$(tput setaf 7)"
+YELLOW="$(tput setaf 3)"
+RED="$(tput setaf 1)"
+BLUE="$(tput setaf 6)"
+RESET_COLOR="$(tput sgr0)"
+
+RESOURCES_CHANGED=$(git diff-index --name-only "HEAD@{1}" | grep "\.pcss\|\.js$\|\.jsx$\|\.ts$\|\.tsx$")
+
+function yarn_dist() {
+    cd "$1" || exit 1
+    # If want to see output change `>/dev/null` to `</dev/tty`
+    if ! yarn dist >/dev/null; then
+        echo "${YELLOW}[post-merge]${RED} \`yarn dist\` failed for unknown reason.${WHITE}"
+    fi
+}
+
+if [[ "$RESOURCES_CHANGED" ]]; then
+    echo "${YELLOW}[post-merge]${GREEN} Resource file changes detected, running \`yarn dist\`... ${WHITE}"
+    yarn_dist "${DIR}"/../../js &
+else
+    echo "${YELLOW}[post-merge]${BLUE} No resources files changed.${WHITE}"
+fi
+
+## Wait for all the background tasks to complete
+wait
+
+wp cache flush
+
+echo "${RESET_COLOR}"
