@@ -147,6 +147,10 @@ class Serialized {
 			return $data;
 		}
 
+		if ( $this->has_missing_classes( $data ) ) {
+			return $data;
+		}
+
 		foreach ( $data as $key => $item ) {
 			if ( is_array( $data ) ) {
 				$data[ $key ] = $this->replace_tree( $item );
@@ -209,6 +213,39 @@ class Serialized {
 			}
 		}
 
+		return false;
+	}
+
+
+	/**
+	 * Wrapper around `unserialize` to support gracefully
+	 * failing to unserialize a value due to a missing class.
+	 *
+	 * If a class is not available when `unserialize` is called
+	 * PHP automatically converts the result to `__PHP_Incomplete_Class`.
+	 *
+	 * @ticket #10723
+	 *
+	 * @since 6.5.0
+	 *
+	 * @param object|array $data - Value from the database column.
+	 *
+	 * @return bool
+	 */
+	protected function has_missing_classes( $data ) {
+		if ( ! is_object( $data ) ) {
+			return false;
+		}
+		if ( is_a( $data, \__PHP_Incomplete_Class::class ) ) {
+			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
+			foreach ( (array) $data as $key => $name ) {
+				if ( '__PHP_Incomplete_Class_Name' === $key ) {
+					error_log( 'Go Live skipped row because it contains an unavailable PHP class named `' . $name . '`.' ); //phpcs:ignore
+					return true;
+				}
+			}
+			return true;
+		}
 		return false;
 	}
 
