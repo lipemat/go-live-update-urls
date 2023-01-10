@@ -74,7 +74,7 @@ class Serialized {
 			if ( ! in_array( $table, $tables, true ) ) {
 				continue;
 			}
-			$counts[ $table ] = array_sum( array_map( function ( $column ) use ( $table ) {
+			$counts[ $table ] = array_sum( array_map( function( $column ) use ( $table ) {
 				return $this->update_table( $table, $column );
 			}, (array) $columns ) );
 		}
@@ -109,20 +109,24 @@ class Serialized {
 		// Get all serialized rows.
 		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		foreach ( $rows as $k => $row ) {
+		foreach ( $rows as $row ) {
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
 				continue;
 			}
 
 			//phpcs:disable
 			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
-			$clean = @serialize( $clean );
-			//phpcs:enable
+			if ( empty( $clean ) ) {
+				continue;
+			}
 
 			if ( ! $this->dry_run ) {
-				//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
+				$clean = @serialize( $clean );
+				if ( \is_string( $clean ) && ! empty( $clean ) ) {
+					$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
+				}
 			}
+			//phpcs:enable
 		}
 
 		return $this->count;
