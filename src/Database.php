@@ -230,6 +230,13 @@ class Database {
 
 		$count = $this->count_column_urls( $table, $column, $old_url );
 		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
+
+		if ( $this->supports_skipping( $table ) ) {
+			$skip = esc_sql( implode( ',', (array) Skip_Rows::instance()->get_skipped( $table ) ) );
+			$primary = esc_sql( Skip_Rows::instance()->get_primary_key( $table ) );
+			$update_query .= " WHERE `{$primary}` NOT IN ({$skip})";
+		}
+
 		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
 		return $count;
 	}
@@ -258,5 +265,26 @@ class Database {
 		$query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
 
 		return (int) $wpdb->get_var( $wpdb->prepare( $query, [ $old_url, $old_url ] ) );
+	}
+
+
+	/**
+	 * Does this table support skipping rows?
+	 *
+	 * 1. Does it have rows to skip?
+	 * 2. Does the filter allow skipping?
+	 *
+	 * @since 6.5.0
+	 *
+	 * @param string $table - Database table.
+	 *
+	 * @return bool
+	 */
+	protected function supports_skipping( $table ) {
+		if ( empty( Skip_Rows::instance()->get_skipped( $table ) ) || null === Skip_Rows::instance()->get_primary_key( $table ) ) {
+			return false;
+		}
+
+		return (bool) apply_filters( 'go-live-update-urls-pro/database/supports-skipping', true, $table, $this );
 	}
 }

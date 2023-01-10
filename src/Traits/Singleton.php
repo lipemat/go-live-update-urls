@@ -14,7 +14,7 @@ trait Singleton {
 	/**
 	 * Instance of this class for use as singleton
 	 *
-	 * @var self
+	 * @var self|null
 	 */
 	protected static $instance;
 

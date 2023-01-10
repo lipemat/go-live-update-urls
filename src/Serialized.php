@@ -100,11 +100,11 @@ class Serialized {
 		if ( empty( $pk[0] ) ) {
 			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
 			if ( empty( $pk[0] ) ) {
-				// Fail.
-				return 0;
+				return 0;    // Fail.
 			}
 		}
 		$primary_key_column = $pk[0]->Column_name;
+		Skip_Rows::instance()->set_current_table( $table, $primary_key_column );
 
 		// Get all serialized rows.
 		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -114,6 +114,7 @@ class Serialized {
 				continue;
 			}
 
+			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
 			//phpcs:disable
 			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
 			if ( empty( $clean ) ) {
@@ -152,6 +153,7 @@ class Serialized {
 		}
 
 		if ( $this->has_missing_classes( $data ) ) {
+			Skip_Rows::instance()->skip_current();
 			return $data;
 		}
 
