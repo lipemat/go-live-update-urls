@@ -148,12 +148,12 @@ class Serialized {
 			return $this->replace( $data );
 		}
 
-		if ( ! is_array( $data ) && ! is_object( $data ) ) {
+		if ( $this->has_missing_classes( $data ) ) {
+			Skip_Rows::instance()->skip_current();
 			return $data;
 		}
 
-		if ( $this->has_missing_classes( $data ) ) {
-			Skip_Rows::instance()->skip_current();
+		if ( ! is_array( $data ) && ! is_object( $data ) ) {
 			return $data;
 		}
 
@@ -239,9 +239,6 @@ class Serialized {
 	 * @return bool
 	 */
 	protected function has_missing_classes( $data ) {
-		if ( ! is_object( $data ) ) {
-			return false;
-		}
 		if ( is_a( $data, \__PHP_Incomplete_Class::class ) ) {
 			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
 			foreach ( (array) $data as $key => $name ) {
