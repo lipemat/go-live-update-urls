@@ -2,14 +2,15 @@
 
 #######################################################################################
 #
-# This script is setup for PHP 7.0 AND 8.0 and submodules
-# Change the PHP version is desired.
+# Test our code against various unit test systems and linters and prevent commit
+# if any of them fail.
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 2.2.0
+# @version 4.5.2
 #
 #####################################################################################
+
 GREEN="$(tput setaf 2)"
 WHITE="$(tput setaf 7)"
 YELLOW="$(tput setaf 3)"
@@ -17,17 +18,16 @@ RED="$(tput setaf 1)"
 BLUE="$(tput setaf 6)"
 RESET_COLOR="$(tput sgr0)"
 
+PHPCS='phpcs 8.0'
+PHPSTAN='phpstan 8.0'
+
 PROJECT="."
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
 PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
 if [[ ! "$PHP_FILES" ]]; then
-	echo "${YELLOW}[pre-commit]${BLUE} No Testable Files Changed ${RESET_COLOR}"
-	exit 0
-fi
-if [[ ! "$PHP_FILES" ]]; then
-	echo "${YELLOW}[pre-commit]${BLUE} No PHP Files Changed ${WHITE}"
+    echo "${YELLOW}[pre-commit]${BLUE} No PHP Files Changed ${RESET_COLOR}"
 fi
 
 function exit_reset_colors() {
@@ -46,83 +46,79 @@ function php_units() {
 function php_unit() {
 	if [[ "$PHP_FILES" ]]; then
 		if [[ ! -f ../go-live-update-urls-pro/dev/wp-unit/${2} ]]; then
-			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/${2} not found! (Probably not setup yet!).${WHITE}"
-		else
-			# Run phpunit.
-			echo "${YELLOW}[pre-commit]${BLUE} Running ${1} ${2}... ${WHITE}"
-			OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/${2})
-			if [[ $? != 0 ]]; then
-				echo
-				echo "${BLUE}PHP Unit Failed! Fix the error before commit!"
-				echo "${RED}$OUTPUT"
-				exit_reset_colors
-			fi
-			echo "${YELLOW}[pre-commit]${GREEN} ${1} ${2} Tests Passed!${WHITE}"
+			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/${2} not found!"
+			exit_reset_colors
 		fi
+		echo "${YELLOW}[pre-commit]${BLUE} Running ${1} ${2}... ${WHITE}"
+		OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/${2})
+		if [[ $? != 0 ]]; then
+			echo
+			echo "${BLUE}${1} ${2} Failed! Fix the error before commit!"
+			echo "${RED}$OUTPUT"
+			exit_reset_colors
+		fi
+		echo "${YELLOW}[pre-commit]${GREEN} ${1} ${2} Tests Passed!${RESET_COLOR}"
 	fi
 }
 php_units &
 
 function php_lint() {
-	if [[ "$PHP_FILES" ]]; then
-		# Run php lint.
-		echo "${YELLOW}[pre-commit]${BLUE} Checking ${1} Lint... ${WHITE}"
-		for FILE in ${PHP_FILES}; do
-			OUTPUT=$(${1} -l -d display_errors=0 ${PROJECT}/${FILE})
-			if [[ $? != 0 ]]; then
-				echo
-				echo "${BLUE}PHP Lint Failed. Fix the error before commit."
-				echo "${RED}$OUTPUT"
-				exit_reset_colors
-			fi
-		done
-		echo "${YELLOW}[pre-commit]${GREEN} ${1} Lint Passed!${WHITE}"
-	fi
+    if [[ "$PHP_FILES" ]]; then
+        echo "${YELLOW}[pre-commit]${BLUE} Checking ${1} Lint... ${WHITE}"
+        for FILE in ${PHP_FILES}; do
+            OUTPUT=$(${1} -l -d display_errors=0 ${PROJECT}/${FILE})
+            if [[ $? != 0 ]]; then
+                echo
+                echo "${BLUE}${1} Lint Failed. Fix the error before commit."
+                echo "${RED}$OUTPUT"
+                exit_reset_colors
+            fi
+        done
+        echo "${YELLOW}[pre-commit]${GREEN} ${1} Lint Passed!${RESET_COLOR}"
+    fi
 }
 php_lint 'php 7.0' &
 php_lint 'php 8.0' &
 
 function php_code_sniffer() {
-	if [[ "$PHP_FILES" != "" ]]; then
-		# Check for phpcs config
-		if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
-			echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
-			exit_reset_colors
-		fi
-		for FILE in ${PHP_FILES}; do
-			FILES="$FILES ${PROJECT}/${FILE}"
-		done
-		echo "${YELLOW}[pre-commit]${BLUE} Running PHPCS... ${WHITE}"
-		OUTPUT=$(phpcs --encoding=utf-8 -s -n -p ${FILES})
-		if [[ $? != 0 ]]; then
-			echo
-			echo "${BLUE}PHPCS failed. Fix the error before commit!"
-			echo "${RED}$OUTPUT"
-			echo
-			echo "${YELLOW}For automatic fixes run"
-			echo
-			echo "${WHITE}phpcbf $FILES"
-			echo
-			exit_reset_colors
-		fi
-		echo "${YELLOW}[pre-commit]${GREEN} PHPCS Passed!${WHITE}"
-	fi
+    if [[ "$PHP_FILES" != "" ]]; then
+        if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
+            echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
+            exit_reset_colors
+        fi
+        for FILE in ${PHP_FILES}; do
+            FILES="$FILES ${PROJECT}/${FILE}"
+        done
+        echo "${YELLOW}[pre-commit]${BLUE} Running PHPCS... ${WHITE}"
+        OUTPUT=$(${PHPCS} --encoding=utf-8 -s -p ${FILES})
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}PHPCS failed. Fix the error before commit!"
+            echo "${RED}$OUTPUT"
+            echo
+            echo "${YELLOW}For automatic fixes run"
+            echo
+            echo "${WHITE}phpcbf $FILES"
+            echo
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} PHPCS Passed!${RESET_COLOR}"
+    fi
 }
 php_code_sniffer &
 
 function php_stan() {
-	if [[ "$PHP_FILES" ]]; then
-		# Run phpstan.
-		echo "${YELLOW}[pre-commit]${BLUE} Running PHP Stan... ${WHITE}"
-		OUTPUT=$(phpstan analyse --memory-limit=2G)
-		if [[ $? != 0 ]]; then
-			echo
-			echo "${BLUE}PHP Stan Failed. Fix the error before commit."
-			echo "${RED}$OUTPUT"
-			exit_reset_colors
-		fi
-		echo "${YELLOW}[pre-commit]${GREEN} PHP Stan Passed!${WHITE}"
-	fi
+    if [[ "$PHP_FILES" ]]; then
+        echo "${YELLOW}[pre-commit]${BLUE} Running PHP Stan... ${WHITE}"
+        OUTPUT=$(${PHPSTAN} analyse --no-progress --memory-limit=2G)
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}PHP Stan Failed. Fix the error before commit."
+            echo "${RED}$OUTPUT"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} PHP Stan Passed!${RESET_COLOR}"
+    fi
 }
 php_stan &
 
@@ -130,14 +126,14 @@ php_stan &
 # If it sent exit code 1, it failed and the result from `wait` will be false.
 FAIL=0
 for job in $(jobs -p); do
-	wait $job || let "FAIL+=1"
+    wait "$job" || (( FAIL+=1 ))
 done
 
-echo ${RESET_COLOR}
+echo "${RESET_COLOR}"
 
 # If any of the background tasks failed, we exit 1
 if [[ $FAIL -ne 0 ]]; then
-	exit 1
+    exit 1
 else
-	exit 0
+    exit 0
 fi
