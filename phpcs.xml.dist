@@ -25,6 +25,18 @@
 		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
 	</rule>
 
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.InvalidPrefixPassed" />
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="Go_Live_Update_Urls" />
+				<element value="OnPoint_Plugins" />
+				<element value="go_live" />
+				<element value="go-live" />
+			</property>
+		</properties>
+	</rule>
+
 	<!-- Translations -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>

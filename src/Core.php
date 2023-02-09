@@ -60,6 +60,7 @@ class Core {
 	public function flush_caches() {
 		// Special flushing of CSS cache for Elementor #7751.
 		$method = get_option( 'elementor_css_print_method' );
+		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'update_option_elementor_css_print_method', $method, $method, 'elementor_css_print_method' );
 
 		wp_cache_flush();
