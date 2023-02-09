@@ -30,8 +30,8 @@
 			<property name="prefixes" type="array">
 				<element value="Go_Live_Update_Urls" />
 				<element value="OnPoint_Plugins" />
-				<element value="go_live" />
-				<element value="go-live" />
+				<element value="go_live_update_urls" />
+				<element value="go-live-update-urls" />
 			</property>
 		</properties>
 	</rule>
