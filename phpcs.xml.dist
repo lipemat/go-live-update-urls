@@ -26,7 +26,6 @@
 	</rule>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.InvalidPrefixPassed" />
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="Go_Live_Update_Urls" />
