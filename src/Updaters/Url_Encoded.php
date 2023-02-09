@@ -30,12 +30,12 @@ class Url_Encoded extends Updaters_Abstract {
 	 * @return int
 	 */
 	public function update_data() {
-		$old = self::apply_rule_to_url( $this->old );
+		$old = static::apply_rule_to_url( $this->old );
 		if ( $old === $this->old ) {
 			return 0;
 		}
 
-		return $this->update_column( $old, self::apply_rule_to_url( $this->new ) );
+		return $this->update_column( $old, static::apply_rule_to_url( $this->new ) );
 	}
 
 }

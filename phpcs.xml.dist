@@ -20,8 +20,6 @@
 	<config name="testVersion" value="7.0-" />
 
 	<rule ref="LipePlugin">
-		<exclude name="LipePlugin.CodeAnalysis.SelfInClass" />
-
 		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />
 		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching" />
 		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />

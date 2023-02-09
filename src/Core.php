@@ -24,7 +24,7 @@ class Core {
 		add_action( 'go-live-update-urls/database/before-update', [ $this, 'raise_resource_limits' ], 0, 0 );
 		add_action( 'go-live-update-urls/database/after-update', [ $this, 'flush_caches' ] );
 		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [ $this, 'raise_memory_limit' ], 0, 0 );
-		add_filter( 'plugin_action_links_' . self::PLUGIN_FILE, [ $this, 'plugin_action_link' ] );
+		add_filter( 'plugin_action_links_' . static::PLUGIN_FILE, [ $this, 'plugin_action_link' ] );
 	}
 
 
@@ -76,7 +76,7 @@ class Core {
 	 * @return string
 	 */
 	public function raise_memory_limit() {
-		return self::MEMORY_LIMIT;
+		return static::MEMORY_LIMIT;
 	}
 
 

@@ -42,18 +42,18 @@ class Admin {
 	 * @return void
 	 */
 	public function validate_update_submission() {
-		if ( ! isset( $_POST[ self::NONCE ] ) || ! wp_verify_nonce( $_POST[ self::NONCE ], self::NONCE ) ) {
+		if ( ! isset( $_POST[ static::NONCE ] ) || ! wp_verify_nonce( $_POST[ static::NONCE ], static::NONCE ) ) {
 			wp_die( esc_html__( 'Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
-		if ( empty( $_POST[ self::OLD_URL ] ) || empty( $_POST[ self::NEW_URL ] ) ) {
+		if ( empty( $_POST[ static::OLD_URL ] ) || empty( $_POST[ static::NEW_URL ] ) ) {
 			$this->failure_message();
 			return;
 		}
 
 		$old_url = Core::instance()->sanitize_field( $_POST[ self::OLD_URL ] ); //phpcs:ignore
 		$new_url = Core::instance()->sanitize_field( $_POST[ self::NEW_URL ] ); //phpcs:ignore
-		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ self::TABLE_INPUT_NAME ] ) ) {
+		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ static::TABLE_INPUT_NAME ] ) ) {
 			$this->failure_message();
 			return;
 		}
@@ -151,7 +151,7 @@ class Admin {
 				method="post"
 				class="go-live-checkbox-form">
 				<?php
-				wp_nonce_field( self::NONCE, self::NONCE );
+				wp_nonce_field( static::NONCE, static::NONCE );
 
 				do_action( 'go-live-update-urls-pro/admin/before-checkboxes', Database::instance() );
 
@@ -228,7 +228,7 @@ class Admin {
 							</th>
 							<td>
 								<input
-									name="<?php echo esc_attr( self::OLD_URL ); ?>"
+									name="<?php echo esc_attr( static::OLD_URL ); ?>"
 									type="text"
 									id="old_url"
 									value=""
@@ -244,7 +244,7 @@ class Admin {
 							</th>
 							<td>
 								<input
-									name="<?php echo esc_attr( self::NEW_URL ); ?>"
+									name="<?php echo esc_attr( static::NEW_URL ); ?>"
 									type="text"
 									id="new_url"
 									value=""
@@ -272,7 +272,7 @@ class Admin {
 					<?php
 				}
 				?>
-				<?php submit_button( __( 'Update Urls', 'go-live-update-urls' ), 'primary', self::SUBMIT ); ?>
+				<?php submit_button( __( 'Update Urls', 'go-live-update-urls' ), 'primary', static::SUBMIT ); ?>
 			</form>
 		</div>
 		<?php
@@ -299,7 +299,7 @@ class Admin {
 				?>
 				<li>
 					<?php
-					printf( '<input name="%s[]" type="checkbox" value="%s" %s/> %s', esc_attr( self::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
+					printf( '<input name="%s[]" type="checkbox" value="%s" %s/> %s', esc_attr( static::TABLE_INPUT_NAME ), esc_attr( $_table ), checked( $checked, true, false ), esc_html( $_table ) );
 					?>
 				</li>
 				<?php
