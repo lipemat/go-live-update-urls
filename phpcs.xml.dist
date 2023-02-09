@@ -8,6 +8,9 @@
 	<!-- Include when not specified -->
 	<file>./src</file>
 
+	<!-- Show file path based on project root. -->
+	<arg name="basepath" value="." />
+
 	<!-- Cache between runs -->
 	<arg name="cache" value="./.phpcs.cache" />
 
