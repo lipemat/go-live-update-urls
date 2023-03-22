@@ -4,8 +4,6 @@
 #
 # Get our local environment's dependencies up to date when merging a branch.
 #
-# @uses PHP 8.0
-#
 # Customized for this plugin to only run `yarn dist`
 #
 # @version 4.1.1

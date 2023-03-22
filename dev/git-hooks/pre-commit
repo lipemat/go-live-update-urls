@@ -18,8 +18,8 @@ RED="$(tput setaf 1)"
 BLUE="$(tput setaf 6)"
 RESET_COLOR="$(tput sgr0)"
 
-PHPCS='phpcs 8.0'
-PHPSTAN='phpstan 8.0'
+PHPCS='phpcs 8.1'
+PHPSTAN='phpstan 8.1'
 
 PROJECT="."
 ## Fix windows paths
@@ -39,8 +39,8 @@ function exit_reset_colors() {
 function php_units() {
 	php_unit 'phpunit 7.0' 'phpunit-single.xml'
 	php_unit 'phpunit 7.0' 'phpunit.xml'
-	php_unit 'phpunit 8.0' 'phpunit-single.xml'
-	php_unit 'phpunit 8.0' 'phpunit.xml'
+	php_unit 'phpunit 8.1' 'phpunit-single.xml'
+	php_unit 'phpunit 8.1' 'phpunit.xml'
 }
 
 function php_unit() {
@@ -78,7 +78,7 @@ function php_lint() {
     fi
 }
 php_lint 'php 7.0' &
-php_lint 'php 8.0' &
+php_lint 'php 8.1' &
 
 function php_code_sniffer() {
     if [[ "$PHP_FILES" != "" ]]; then
