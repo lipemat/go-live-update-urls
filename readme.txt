@@ -5,7 +5,7 @@ Tags: domain, url, replace, database, tools, launching, domains, domain changes,
 Requires at least: 5.4.0
 Tested up to: 6.2.0
 Requires PHP: 7.0.0
-Stable tag: 6.5.1
+Stable tag: 6.5.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -104,6 +104,14 @@ If you wish to try to update tables mentioned as "not safe" anyway, you may make
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.5.2 =
+* Modernized the tools page JavaScript.
+* Improved extendability by removing all `private` access modifiers.
+* Improved extendability by converting all `self` to `static`.
+* Improved PHPCS scanning.
+* Fully support PHP 8.1.
+* Tested to WordPress Core 6.2.0.
+
 = 6.5.1 =
 * Fixed handling of row skipping for PHP 7.0.
 
