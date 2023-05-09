@@ -38,7 +38,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Options and settings
 * And much more
 
-<h3>Pro Features</h3>
+<h3>PRO Features</h3>
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
 * Ability to choose between a full table or sections.
@@ -55,6 +55,9 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * WP-CLI support for updating URLs from the command line.
 * Priority Support with access to members only support area.
 
+<h3>Domain Update Process</h3>
+Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">may be found here</a>.
+
 <h3>Included Language Translations</h3>
 * English (en_US).
 * French (fr_FR).
@@ -62,10 +65,10 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Spanish (es_ES).
 
 <h3>Developers</h3>
-Developer docs may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">here</a>.
+Developer docs <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/developer-docs-go-live-update-urls/">may be found here</a>.
 
 <h3>Troubleshooting</h3>
-Troubleshooting information may be found <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">here</a>.
+Troubleshooting information <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">may be found here</a>.
 
 <h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
