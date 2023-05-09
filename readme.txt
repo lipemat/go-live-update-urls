@@ -56,7 +56,7 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Priority Support with access to members only support area.
 
 <h3>Domain Update Process</h3>
-Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-troubleshooting/">may be found here</a>.
+Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/how-to-change-your-domain-name-on-wordpress/">may be found here</a>.
 
 <h3>Included Language Translations</h3>
 * English (en_US).
