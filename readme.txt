@@ -5,7 +5,7 @@ Tags: domain, url, replace, database, tools, launching, domains, domain changes,
 Requires at least: 5.4.0
 Tested up to: 6.2.2
 Requires PHP: 7.0.0
-Stable tag: 6.5.2
+Stable tag: 6.5.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -116,6 +116,10 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.5.3 =
+* Improved plugin readme.
+* Tested to WordPress version 6.2.2.
+
 = 6.5.2 =
 * Modernized the tools page JavaScript.
 * Improved extendability by removing all `private` access modifiers.
