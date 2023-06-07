@@ -1,7 +1,8 @@
 name: Create GitHub Release
 run-name: Create release for ${{ github.ref }} on GitHub.
 env:
-  VERSION: 1.0.0
+  VERSION: 1.0.1
+  TZ: 'America/Chicago'
 
 on:
   push:

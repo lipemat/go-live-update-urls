@@ -1,4 +1,9 @@
 name: Deploy to WordPress.org
+
+env:
+  # Can't specify VERSION, or the plugin will deploy in that version.  
+  TZ: 'America/Chicago'
+
 on:
   push:
     tags:
