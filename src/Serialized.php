@@ -137,14 +137,14 @@ class Serialized {
 	/**
 	 * Replaces all the occurrences of a string in a multidimensional array or Object
 	 *
-	 * @param object|array|string|null $data - Data to change.
-	 *
 	 * @since 5.2.0
 	 *
-	 * @return mixed
+	 * @param object|array|string|null $data - Data to change.
+	 *
+	 * @return array|null|object|string
 	 */
 	public function replace_tree( $data ) {
-		if ( is_string( $data ) ) {
+		if ( \is_string( $data ) ) {
 			return $this->replace( $data );
 		}
 
@@ -153,12 +153,12 @@ class Serialized {
 			return $data;
 		}
 
-		if ( ! is_array( $data ) && ! is_object( $data ) ) {
+		if ( ! \is_array( $data ) && ! \is_object( $data ) ) {
 			return $data;
 		}
 
 		foreach ( $data as $key => $item ) {
-			if ( is_array( $data ) ) {
+			if ( \is_array( $data ) ) {
 				$data[ $key ] = $this->replace_tree( $item );
 			} else {
 				$data->{$key} = $this->replace_tree( $item );
@@ -243,7 +243,7 @@ class Serialized {
 			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
 			foreach ( (array) $data as $key => $name ) {
 				if ( '__PHP_Incomplete_Class_Name' === $key ) {
-					error_log( 'Go Live skipped row because it contains an unavailable PHP class named `' . $name . '`.' ); //phpcs:ignore
+					Skip_Rows::instance()->log_error( $name );
 					return true;
 				}
 			}

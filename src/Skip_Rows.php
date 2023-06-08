@@ -86,7 +86,7 @@ class Skip_Rows {
 		if ( '' === $this->table || 0 === $this->row_id ) {
 			_doing_it_wrong( __METHOD__, esc_html__( 'You must set a table and DB id before skipping a row.', 'go-live-update-urls' ), '6.5.0' );
 		}
-		if ( empty( $this->skip[ $this->table ] ) || ! in_array( $this->row_id, $this->skip[ $this->table ], true ) ) {
+		if ( empty( $this->skip[ $this->table ] ) || ! \in_array( $this->row_id, $this->skip[ $this->table ], true ) ) {
 			$this->skip[ $this->table ][] = $this->row_id;
 		}
 	}
@@ -121,6 +121,26 @@ class Skip_Rows {
 			return null;
 		}
 		return $this->primary_keys[ $table ];
+	}
+
+
+	/**
+	 * Log information to the PHP Error log about a missing
+	 * class in serialized data.
+	 *
+	 * @since 6.5.4
+	 *
+	 * @param string $class_name - Name of class which does not exist.
+	 *
+	 * @return void
+	 */
+	public function log_error( string $class_name ) {
+		//phpcs:ignore -- We want to use the PHP error log.
+		error_log( vsprintf( 'Go Live skipped row `%s` in the table `%s` because it contains an unavailable PHP class named `%s`.', [
+			$this->row_id,
+			$this->table,
+			$class_name,
+		] ) );
 	}
 
 
