@@ -37,11 +37,11 @@ function exit_reset_colors() {
 
 # Must run them consecutively to prevent conflicts.
 function php_units() {
-	php_unit 'phpunit 7.0' 'phpunit-legacy.xml'
-	php_unit 'phpunit 7.0' 'phpunit-legacy-single.xml'
-	php_unit 'phpunit 7.0' 'phpunit-single.xml'
-	php_unit 'phpunit 8.1' 'phpunit-single.xml'
-	php_unit 'phpunit 8.1' 'phpunit.xml'
+	php_unit 'phpunit 7.0' 'phpunit-legacy.xml.dist'
+	php_unit 'phpunit 7.0' 'phpunit-legacy-single.xml.dist'
+	php_unit 'phpunit 7.0' 'phpunit-single.xml.dist'
+	php_unit 'phpunit 8.1' 'phpunit-single.xml.dist'
+	php_unit 'phpunit 8.1' 'phpunit.xml.dist'
 }
 
 function php_unit() {
