@@ -50,32 +50,32 @@ function php_unit() {
 			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/${2} not found!"
 			exit_reset_colors
 		fi
-		echo "${YELLOW}[pre-commit]${BLUE} Running ${1} ${2}... ${WHITE}"
+		echo "${YELLOW}[pre-commit]${BLUE} Running ${1^^} ${2}... ${WHITE}"
 		OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/${2})
 		if [[ $? != 0 ]]; then
 			echo
-			echo "${BLUE}${1} ${2} Failed! Fix the error before commit!"
+			echo "${BLUE}${1^^} ${2} Failed! Fix the error before commit!"
 			echo "${RED}$OUTPUT"
 			exit_reset_colors
 		fi
-		echo "${YELLOW}[pre-commit]${GREEN} ${1} ${2} Tests Passed!${RESET_COLOR}"
+		echo "${YELLOW}[pre-commit]${GREEN} ${1^^} ${2} Tests Passed!${RESET_COLOR}"
 	fi
 }
 php_units &
 
 function php_lint() {
     if [[ "$PHP_FILES" ]]; then
-        echo "${YELLOW}[pre-commit]${BLUE} Checking ${1} Lint... ${WHITE}"
+        echo "${YELLOW}[pre-commit]${BLUE} Checking ${1^^}... ${WHITE}"
         for FILE in ${PHP_FILES}; do
             OUTPUT=$(${1} -l -d display_errors=0 ${PROJECT}/${FILE})
             if [[ $? != 0 ]]; then
                 echo
-                echo "${BLUE}${1} Lint Failed. Fix the error before commit."
+                echo "${BLUE}${1^^} Failed. Fix the error before commit."
                 echo "${RED}$OUTPUT"
                 exit_reset_colors
             fi
         done
-        echo "${YELLOW}[pre-commit]${GREEN} ${1} Lint Passed!${RESET_COLOR}"
+        echo "${YELLOW}[pre-commit]${GREEN} ${1^^} Lint Passed!${RESET_COLOR}"
     fi
 }
 php_lint 'php 7.0' &
