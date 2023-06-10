@@ -110,18 +110,19 @@ php_code_sniffer &
 
 function php_stan() {
     if [[ "$PHP_FILES" ]]; then
-        echo "${YELLOW}[pre-commit]${BLUE} Running PHP Stan... ${WHITE}"
-        OUTPUT=$(${PHPSTAN} analyse --no-progress --memory-limit=2G)
+        echo "${YELLOW}[pre-commit]${BLUE} Running ${1^}... ${WHITE}"
+        OUTPUT=$(${1} analyse --no-progress --memory-limit=2G)
         if [[ $? != 0 ]]; then
             echo
-            echo "${BLUE}PHP Stan Failed. Fix the error before commit."
+            echo "${BLUE}${1^} Failed. Fix the error before commit."
             echo "${RED}$OUTPUT"
             exit_reset_colors
         fi
-        echo "${YELLOW}[pre-commit]${GREEN} PHP Stan Passed!${RESET_COLOR}"
+        echo "${YELLOW}[pre-commit]${GREEN} ${1^} Passed!${RESET_COLOR}"
     fi
 }
-php_stan &
+php_stan "${PHPSTAN}" &
+php_stan 'E:/SVN/wordpress-legacy/phpstan' &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.
