@@ -114,7 +114,7 @@ function php_stan() {
         OUTPUT=$(${1} analyse --no-progress --memory-limit=2G)
         if [[ $? != 0 ]]; then
             echo
-            echo "${BLUE}${1^} Failed. Fix the error before commit."
+            echo "${BLUE}${1^^} Failed. Fix the error before commit."
             echo "${RED}$OUTPUT"
             exit_reset_colors
         fi
@@ -122,7 +122,7 @@ function php_stan() {
     fi
 }
 php_stan "${PHPSTAN}" &
-php_stan 'E:/SVN/wordpress-legacy/phpstan' &
+php_stan 'E:/SVN/wordpress-legacy/phpstan-legacy' &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.
