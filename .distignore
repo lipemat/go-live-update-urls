@@ -3,11 +3,12 @@
 /.git
 /dev
 
+.distignore
 .editorconfig
+.gitignore
+.phpcs.cache
 composer.json
 phpcs.xml
-.phpcs.cache
-.distignore
-.gitignore
-Readme.md
+phpcs.xml.dist
 phpstan.neon.dist
+Readme.md
