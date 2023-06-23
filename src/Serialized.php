@@ -115,7 +115,7 @@ class Serialized {
 			}
 
 			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
-			//phpcs:disable
+			//phpcs:disable -- Using serialize to match WP core.
 			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
 			if ( empty( $clean ) ) {
 				continue;
@@ -123,7 +123,7 @@ class Serialized {
 
 			if ( ! $this->dry_run ) {
 				$clean = @serialize( $clean );
-				if ( \is_string( $clean ) && ! empty( $clean ) ) {
+				if ( '' !== $clean ) {
 					$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
 				}
 			}

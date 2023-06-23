@@ -1,6 +1,7 @@
 parameters:
     level: 5
-    tmpDir: E:/.phpstan
+    strictRules:
+        allRules: false
     dynamicConstantNames:
         - GO_LIVE_UPDATE_URLS_PRO_VERSION
         - GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION
