@@ -18,11 +18,11 @@ class Repo {
 	 *
 	 * @return array<string, class-string<Updaters_Abstract>>
 	 */
-	public function get_updaters() {
+	public function get_updaters() : array {
 		$updaters = apply_filters( 'go-live-update-urls/updaters/repo/updaters', [
 			'url-encoded' => Url_Encoded::class,
 		] );
-		if ( ! is_array( $updaters ) ) {
+		if ( ! \is_array( $updaters ) ) {
 			return [];
 		}
 

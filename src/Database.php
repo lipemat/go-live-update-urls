@@ -170,7 +170,7 @@ class Database {
 		$updates = Updates::factory( $old_url, $new_url, $tables );
 		$counts = $updates->update_serialized_values();
 		foreach ( (array) $tables as $_table ) {
-			if ( ! array_key_exists( $_table, $counts ) ) {
+			if ( ! \array_key_exists( $_table, $counts ) ) {
 				$counts[ $_table ] = 0;
 			}
 			$counts[ $_table ] += $updates->update_table_columns( $_table );
@@ -246,16 +246,16 @@ class Database {
 	 * Count of number of rows in a table which contain the old URL.
 	 *
 	 * When updating, the serialized data is updated first and this
-	 * counts the left overs.
+	 * counts the leftovers.
 	 *
-	 * When dry-run counting, this will count all occurrences in the
+	 * During dry-run counting, this will count all occurrences in the
 	 * database.
+	 *
+	 * @since 6.1.0
 	 *
 	 * @param string $table   - Table to update.
 	 * @param string $column  - Column to update.
 	 * @param string $old_url - Old URL.
-	 *
-	 * @since 6.1.0
 	 *
 	 * @return int
 	 */

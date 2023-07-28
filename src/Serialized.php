@@ -71,7 +71,7 @@ class Serialized {
 
 		$counts = [];
 		foreach ( $serialized_tables as $table => $columns ) {
-			if ( ! in_array( $table, $tables, true ) ) {
+			if ( ! \in_array( $table, $tables, true ) ) {
 				continue;
 			}
 			$counts[ $table ] = array_sum( array_map( function( $column ) use ( $table ) {

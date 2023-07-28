@@ -3,6 +3,7 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Updaters\Repo;
+use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Translated provided URLS into various steps to update the database.
@@ -139,11 +140,12 @@ class Updates {
 	 *
 	 * @return int
 	 */
-	protected function update_column_with_updaters( $table, $column ) {
+	protected function update_column_with_updaters( $table, $column ) : int {
 		$doubled = $this->get_doubled_up_subdomain();
 		$count = 0;
-		array_map( function ( $class ) use ( $doubled, $table, $column, &$count ) {
-			if ( class_exists( $class ) ) {
+		\array_map( function( string $class ) use ( $doubled, $table, $column, &$count ) {
+			if ( \class_exists( $class ) ) {
+				/* @var Updaters_Abstract $updater - An updater instance. */
 				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
 				$count += (int) $updater->update_data();
 				if ( null !== $doubled ) {
@@ -170,8 +172,9 @@ class Updates {
 	 */
 	protected function count_column_urls_with_updaters( $table, $column ) {
 		$count = 0;
-		array_map( function ( $class ) use ( $table, $column, &$count ) {
-			if ( class_exists( $class ) ) {
+		\array_map( function( $class ) use ( $table, $column, &$count ) {
+			if ( \class_exists( $class ) ) {
+				/* @var Updaters_Abstract $updater - An updater instance. */
 				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
 				$count += (int) $updater->count_urls();
 			}
@@ -212,12 +215,11 @@ class Updates {
 
 
 	/**
-	 * If the new domain is the old one with a new sub-domain like www.
-	 * the first round of updates will create double sub-domains in
+	 * If the new domain is the old one with a new subdomain like www.
+	 * the first round of updates will create double subdomains in
 	 * the database like www.www.
 	 *
-	 * If we doubled up some domains we get the result, or null
-	 * if the entered values would not create doubles.
+	 * Return the doubled up subdomain if it exists, otherwise null.
 	 *
 	 * @since 6.1.0
 	 *
@@ -225,7 +227,7 @@ class Updates {
 	 */
 	public function get_doubled_up_subdomain() {
 		if ( static::is_subdomain( $this->old_url, $this->new_url ) ) {
-			return str_replace( $this->old_url, $this->new_url, $this->new_url );
+			return \str_replace( $this->old_url, $this->new_url, $this->new_url );
 		}
 		return null;
 	}
@@ -253,7 +255,7 @@ class Updates {
 
 		return wp_list_pluck( array_filter( $all, function ( $column ) use ( $types ) {
 			// Strip the (\d) from varchar and char with (21) and over.
-			return in_array( preg_replace( '/\((\d{3}|[3-9][\d]|[2][1-9])[\d]*?\)/', '', $column->type ), $types, true );
+			return \in_array( preg_replace( '/\((\d{3}|[3-9]\d|2[1-9])\d*?\)/', '', $column->type ), $types, true );
 		} ), 'name' );
 	}
 
