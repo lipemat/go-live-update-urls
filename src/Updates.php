@@ -150,7 +150,7 @@ class Updates {
 				$count += (int) $updater->update_data();
 				if ( null !== $doubled ) {
 					$updater = $class::factory( $table, $column, $doubled, $this->new_url );
-					$updater->update_data();
+					$count -= (int) $updater->update_data();
 				}
 			}
 		}, Repo::instance()->get_updaters() );

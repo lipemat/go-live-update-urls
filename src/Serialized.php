@@ -3,6 +3,7 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Updaters\Repo;
+use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Serialized data handling.
@@ -180,18 +181,22 @@ class Serialized {
 	 *
 	 * @return string
 	 */
-	protected function replace( $mysql_value ) {
-		$mysql_value = trim( str_replace( $this->old, $this->new, $mysql_value, $count ) );
+	protected function replace( string $mysql_value ) : string {
+		$mysql_value = \str_replace( $this->old, $this->new, $mysql_value, $count );
 		$this->count += $count;
-		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			$formatted = $_updater::apply_rule_to_url( $this->old );
-			if ( $formatted !== $this->old ) {
-				$mysql_value = (string) str_replace( $formatted, $_updater::apply_rule_to_url( $this->new ), $mysql_value, $count );
-				$this->count += $count;
+
+		foreach ( Repo::instance()->get_updaters() as $updater ) {
+			/* @var Updaters_Abstract $updater - Updater class instance. */
+			$formatted = $updater::get_formatted( $this->old, $this->new );
+			if ( $formatted['old'] !== $this->old ) {
+				$mysql_value = (string) str_replace( $formatted['old'], $formatted['new'], $mysql_value, $updater_count );
+				if ( ! $updater::is_appending_update( $this->old, $this->new ) ) {
+					$this->count += $updater_count;
+				}
 			}
 		}
 
-		return trim( $mysql_value );
+		return \trim( $mysql_value );
 	}
 
 

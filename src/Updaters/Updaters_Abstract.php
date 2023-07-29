@@ -57,12 +57,22 @@ abstract class Updaters_Abstract {
 
 
 	/**
-	 * The method which is called to actually run the update
+	 * The method called to actually run the update
 	 * using this updater.
 	 *
 	 * @return int
 	 */
 	abstract public function update_data();
+
+
+	/**
+	 * Filter the new or old url based on this particular updater's logic.
+	 *
+	 * @param string $url - Either the old or new URL.
+	 *
+	 * @return string
+	 */
+	abstract public static function apply_rule_to_url( $url );
 
 
 	/**
@@ -92,18 +102,42 @@ abstract class Updaters_Abstract {
 	}
 
 
-	//phpcs:disable
 	/**
-	 * Filter the new or old url based on this particular updater's logic.
+	 * Get the old and new URLs formatted for replacement.
 	 *
-	 * @param string $url - Either the old or new URL.
+	 * @since 6.10.0
 	 *
-	 * @return string
+	 * @param string $old - Old URL.
+	 * @param string $new - New URL.
+	 *
+	 * @return array{new: string, old: string}
 	 */
-	public static function apply_rule_to_url( $url ) {
-		throw new \RuntimeException( __( 'You must implement apply_rule_to_url with an override' ) );
+	public static function get_formatted( string $old, string $new ) : array {
+		$old = static::apply_rule_to_url( $old );
+		$new = static::apply_rule_to_url( $new );
+
+		return \compact( 'old', 'new' );
 	}
-	//phpcs:enable
+
+
+	/**
+	 * Is this updater appending to a previous update made by
+	 * by Database::update_column()?
+	 *
+	 * Used to prevent duplicate counts.
+	 *
+	 * @since 6.10.0
+	 *
+	 * @see   Database::update_column
+	 *
+	 * @param string $old - Old URL.
+	 * @param string $new - New URL.
+	 *
+	 * @return bool
+	 */
+	public static function is_appending_update( string $old, string $new ) : bool {
+		return false;
+	}
 
 
 	/**
