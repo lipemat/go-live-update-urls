@@ -26,6 +26,18 @@ class Repo {
 			return [];
 		}
 
+		\uasort( $updaters,
+			/**
+			 * Sort the updater classes by priority.
+			 *
+			 * @param class-string<Updaters_Abstract> $a
+			 * @param class-string<Updaters_Abstract> $b
+			 */
+			function( $a, $b ) {
+				return $a::get_priority() <=> $b::get_priority();
+			}
+		);
+
 		return $updaters;
 	}
 }

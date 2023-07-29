@@ -126,6 +126,20 @@ abstract class Updaters_Abstract {
 
 
 	/**
+	 * Get the priority of this updater.
+	 *
+	 * The higher the number, the sooner it will run in the stack.
+	 *
+	 * @since 6.10.0
+	 *
+	 * @return int
+	 */
+	public static function get_priority() : int {
+		return 100;
+	}
+
+
+	/**
 	 * Is this updater appending to a previous update made by
 	 * by Database::update_column()?
 	 *

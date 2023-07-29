@@ -12,6 +12,16 @@ namespace Go_Live_Update_Urls\Updaters;
  */
 class Url_Encoded extends Updaters_Abstract {
 	/**
+	 * Run this updater first.
+	 *
+	 * @return int
+	 */
+	public static function get_priority() : int {
+		return 1;
+	}
+
+
+	/**
 	 * Encode the URL for search and replace.
 	 *
 	 * @param string $url - Provided URL.
@@ -20,31 +30,5 @@ class Url_Encoded extends Updaters_Abstract {
 	 */
 	public static function apply_rule_to_url( $url ) {
 		return rawurlencode( $url );
-	}
-
-
-	/**
-	 * Get the old and new URL with the extra escaping applied.
-	 *
-	 * @since 9.10.0
-	 *
-	 * @param string $old - Old URL.
-	 * @param string $new - New URL.
-	 *
-	 * @return array{new: string, old: string}
-	 */
-	public static function get_formatted( string $old, string $new ) : array {
-		if ( static::is_appending_update( $old, $new ) ) {
-			$prefix = static::apply_rule_to_url( '/' );
-			return [
-				'old' => $prefix . $new,
-				'new' => $prefix . static::apply_rule_to_url( $new ),
-			];
-		}
-
-		return [
-			'old' => static::apply_rule_to_url( $old ),
-			'new' => static::apply_rule_to_url( $new ),
-		];
 	}
 }
