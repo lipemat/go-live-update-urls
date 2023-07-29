@@ -1,4 +1,10 @@
 <?php
+/* @noinspection UnserializeExploitsInspection */
+
+//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+//phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+//phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 namespace Go_Live_Update_Urls;
 
@@ -28,7 +34,7 @@ class Serialized {
 
 	/**
 	 * Hold replacement count during a table update.
-	 * We may replace multiple per table row so we count
+	 * We may replace multiple per table row, so we count
 	 * the actual str_replace() instead of mysql affected.
 	 *
 	 * @var int
@@ -108,7 +114,7 @@ class Serialized {
 		Skip_Rows::instance()->set_current_table( $table, $primary_key_column );
 
 		// Get all serialized rows.
-		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%'" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%' OR `{$column}` LIKE 's:%';" );
 
 		foreach ( $rows as $row ) {
 			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
@@ -116,7 +122,6 @@ class Serialized {
 			}
 
 			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
-			//phpcs:disable -- Using serialize to match WP core.
 			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
 			if ( empty( $clean ) ) {
 				continue;
@@ -128,7 +133,6 @@ class Serialized {
 					$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
 				}
 			}
-			//phpcs:enable
 		}
 
 		return $this->count;
@@ -195,6 +199,18 @@ class Serialized {
 	 * @return string
 	 */
 	protected function replace( string $mysql_value ) : string {
+		/**
+		 * `maybe_serialize` wraps the data in a string if passing an already
+		 * serialized item when calling functions like `add_option`.
+		 */
+		if ( is_serialized( $mysql_value ) ) {
+			$result = @unserialize( $mysql_value );
+			if ( false === $result ) {
+				return $mysql_value;
+			}
+			return @serialize( $this->replace_tree( $result ) );
+		}
+
 		$mysql_value = \str_replace( $this->old, $this->new, $mysql_value, $count );
 		$this->count += $count;
 
