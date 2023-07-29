@@ -57,15 +57,6 @@ abstract class Updaters_Abstract {
 
 
 	/**
-	 * The method called to actually run the update
-	 * using this updater.
-	 *
-	 * @return int
-	 */
-	abstract public function update_data();
-
-
-	/**
 	 * Filter the new or old url based on this particular updater's logic.
 	 *
 	 * @param string $url - Either the old or new URL.
@@ -113,10 +104,24 @@ abstract class Updaters_Abstract {
 	 * @return array{new: string, old: string}
 	 */
 	public static function get_formatted( string $old, string $new ) : array {
-		$old = static::apply_rule_to_url( $old );
-		$new = static::apply_rule_to_url( $new );
+		/**
+		 * If the old URL has a "/" in it, but the new URL doesn't, we add a / to the beginning of each URL to create a selector to look for.
+		 *
+		 * Without: domain.com
+		 * With: \\\/domain.com
+		 */
+		if ( static::is_appending_update( $old, $new ) ) {
+			$prefix = static::apply_rule_to_url( '/' );
+			return [
+				'old' => $prefix . $new,
+				'new' => $prefix . static::apply_rule_to_url( $new ),
+			];
+		}
 
-		return \compact( 'old', 'new' );
+		return [
+			'old' => static::apply_rule_to_url( $old ),
+			'new' => static::apply_rule_to_url( $new ),
+		];
 	}
 
 
@@ -124,7 +129,9 @@ abstract class Updaters_Abstract {
 	 * Is this updater appending to a previous update made by
 	 * by Database::update_column()?
 	 *
-	 * Used to prevent duplicate counts.
+	 * Used for
+	 * - Prevent duplicate counts.
+	 * - Fix previous updates which conflict with this rule.
 	 *
 	 * @since 6.10.0
 	 *
@@ -136,7 +143,27 @@ abstract class Updaters_Abstract {
 	 * @return bool
 	 */
 	public static function is_appending_update( string $old, string $new ) : bool {
-		return false === strpos( $old, '/' ) && false !== strpos( $new, '/' );
+		return static::apply_rule_to_url( $old ) === $old && static::apply_rule_to_url( $new ) !== $new;
+	}
+
+
+	/**
+	 * Update the old over escaped URL with the new over escaped URL if the entered
+	 * old URL or new URL has a "/" in it.
+	 * If no URL has a "/" in it, we don't need to run this.
+	 *
+	 * @return int
+	 */
+	public function update_data() {
+		if ( false === strpos( $this->old, '/' ) && false === strpos( $this->new, '/' ) ) {
+			return 0;
+		}
+		$formatted = static::get_formatted( $this->old, $this->new );
+		$count = $this->update_column( $formatted['old'], $formatted['new'] );
+		if ( static::is_appending_update( $this->old, $this->new ) ) {
+			return 0;
+		}
+		return $count;
 	}
 
 
