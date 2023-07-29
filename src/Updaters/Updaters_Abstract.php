@@ -136,7 +136,7 @@ abstract class Updaters_Abstract {
 	 * @return bool
 	 */
 	public static function is_appending_update( string $old, string $new ) : bool {
-		return false;
+		return false === strpos( $old, '/' ) && false !== strpos( $new, '/' );
 	}
 
 
