@@ -215,14 +215,15 @@ class Serialized {
 
 	/**
 	 * Do we have any urls to actually update?
-	 * Check first for serialized data,
-	 * Then check for occurrences of any urls formatted by an updater
+	 *
+	 * - Check the old URL as is.
+	 * - Check the old URL formatted by any updater.
 	 *
 	 * @param string $mysql_value - Original value from the database.
 	 *
 	 * @return bool
 	 */
-	protected function has_data_to_update( $mysql_value ) {
+	protected function has_data_to_update( $mysql_value ) : bool {
 		if ( ! is_serialized( $mysql_value ) ) {
 			return false;
 		}
@@ -232,7 +233,9 @@ class Serialized {
 		}
 
 		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			if ( false !== strpos( $mysql_value, $_updater::apply_rule_to_url( $this->old ) ) ) {
+			/* @var Updaters_Abstract $_updater - Updater class instance. */
+			$formatted = $_updater::get_formatted( $this->old, $this->new );
+			if ( false !== strpos( $mysql_value, $formatted['old'] ) ) {
 				return true;
 			}
 		}
