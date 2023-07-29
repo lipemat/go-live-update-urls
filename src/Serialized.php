@@ -159,7 +159,20 @@ class Serialized {
 		}
 
 		foreach ( $data as $key => $item ) {
-			if ( \is_array( $data ) ) {
+			$updated_key = '';
+			if ( \is_string( $key ) ) {
+				$updated_key = $this->replace( $key );
+			}
+			// The key was updated.
+			if ( '' !== $updated_key && $updated_key !== $key ) {
+				if ( \is_array( $data ) ) {
+					$data[ $updated_key ] = $this->replace_tree( $item );
+					unset( $data[ $key ] );
+				} else {
+					$data->{$updated_key} = $this->replace_tree( $item );
+					unset( $data->{$key} );
+				}
+			} elseif ( \is_array( $data ) ) {
 				$data[ $key ] = $this->replace_tree( $item );
 			} else {
 				$data->{$key} = $this->replace_tree( $item );
