@@ -42,7 +42,7 @@ class Admin {
 	 * @return void
 	 */
 	public function validate_update_submission() {
-		if ( ! isset( $_POST[ static::NONCE ] ) || ! wp_verify_nonce( $_POST[ static::NONCE ], static::NONCE ) ) {
+		if ( ! isset( $_POST[ static::NONCE ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ static::NONCE ] ) ), static::NONCE ) ) {
 			wp_die( esc_html__( 'Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
@@ -264,7 +264,7 @@ class Admin {
 
 							<?php
 							/* translators: <a></a> */
-							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=url-test&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
+							printf( esc_html_x( 'Use the %1$sPRO version%2$s to test URL updates before making them.', '{<a>}{</a>}', 'go-live-update-urls' ), '<a href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/go-live-update-urls-pro-url-testing/?utm_source=url-test&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
 							?>
 
 						</strong>
