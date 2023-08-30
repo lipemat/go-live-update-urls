@@ -117,7 +117,7 @@ If you find you are running into issues with custom tables, you may want to chec
 
 == Changelog ==
 = 6.6.1 =
-* Update documentation links.
+* Updated documentation links.
 * Tested to WordPress version 6.3.1.
 
 = 6.6.0 =
