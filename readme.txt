@@ -5,7 +5,7 @@ Tags: domain, url, replace, database, tools, launching, domains, domain changes,
 Requires at least: 5.8.0
 Tested up to: 6.3.1
 Requires PHP: 7.0.0
-Stable tag: 6.6.0
+Stable tag: 6.6.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -116,6 +116,10 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.6.1 =
+* Update documentation links.
+* Tested to WordPress version 6.3.1.
+
 = 6.6.0 =
 * Added support for updating keys in serialized data.
 * Added support for updating sub serialized data values.
