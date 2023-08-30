@@ -15,9 +15,9 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site.
 
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
+<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
 
-<blockquote><a href=" https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/#url-counting" target="_blank">PRO version 6.8.0</a> is now available with real time reporting of urls, which will be and were updated!</blockquote>
+<blockquote><a href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/go-live-update-urls-pro-url-counting/?utm_source=readme&utm_campaign=url-counting&utm_medium=dot-org" target="_blank">PRO version 6.10.0</a> is now available with real time reporting of urls, which will be and were updated!</blockquote>
 
 
 <h3>Features</h3>
