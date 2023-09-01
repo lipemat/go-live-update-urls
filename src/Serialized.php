@@ -198,7 +198,7 @@ class Serialized {
 	 *
 	 * @return string
 	 */
-	protected function replace( string $mysql_value ) : string {
+	protected function replace( string $mysql_value ): string {
 		/**
 		 * `maybe_serialize` wraps the data in a string if passing an already
 		 * serialized item when calling functions like `add_option`.
@@ -239,7 +239,7 @@ class Serialized {
 	 *
 	 * @return bool
 	 */
-	protected function has_data_to_update( $mysql_value ) : bool {
+	protected function has_data_to_update( $mysql_value ): bool {
 		if ( ! is_serialized( $mysql_value ) ) {
 			return false;
 		}

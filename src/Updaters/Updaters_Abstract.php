@@ -75,7 +75,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return int
 	 */
-	abstract public static function get_priority() : int;
+	abstract public static function get_priority(): int;
 
 
 	/**
@@ -115,7 +115,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return array{new: string, old: string}
 	 */
-	public static function get_formatted( string $old, string $new ) : array {
+	public static function get_formatted( string $old, string $new ): array {
 		/**
 		 * If the old URL has a "/" in it, but the new URL doesn't, we add a / to the beginning of each URL to create a selector to look for.
 		 *
@@ -154,7 +154,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return bool
 	 */
-	public static function is_appending_update( string $old, string $new ) : bool {
+	public static function is_appending_update( string $old, string $new ): bool {
 		return static::apply_rule_to_url( $old ) === $old && static::apply_rule_to_url( $new ) !== $new;
 	}
 

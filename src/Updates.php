@@ -140,7 +140,7 @@ class Updates {
 	 *
 	 * @return int
 	 */
-	protected function update_column_with_updaters( $table, $column ) : int {
+	protected function update_column_with_updaters( $table, $column ): int {
 		$doubled = $this->get_doubled_up_subdomain();
 		$count = 0;
 		\array_map( function( string $class ) use ( $doubled, $table, $column, &$count ) {

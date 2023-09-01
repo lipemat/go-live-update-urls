@@ -16,7 +16,7 @@ class Url_Encoded extends Updaters_Abstract {
 	 *
 	 * @return int
 	 */
-	public static function get_priority() : int {
+	public static function get_priority(): int {
 		return 1;
 	}
 

@@ -14,8 +14,11 @@
 	<!-- Cache between runs -->
 	<arg name="cache" value="./.phpcs.cache" />
 
-	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
+	<!-- @see https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#various-sniffs-set-the-minimum-supported-wp-version -->
 	<config name="minimum_supported_wp_version" value="5.8" />
+	<config name="minimum_wp_version" value="5.8" />
+
+	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
 	<config name="testVersion" value="7.0-" />
 
 	<rule ref="LipePlugin">
