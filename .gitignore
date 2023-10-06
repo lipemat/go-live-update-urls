@@ -1,3 +1,103 @@
+################################
+#
+# @version 6.0.1
+#
+################################
+
+# Project specific
+#### Put project specific exclusions here so they may be easily transferred when updating gitignore.
+
+# Language files compliled during deployment.
+languages/*.json
+# JS dist files
+js/dist
+# Composer files
+dev/translate-cli/vendor
+
+
+
 # system/hidden files
+*.bak
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+.DS_Store
+.DS_Store?
+.Trashes
+.cvs
 .phpcs.cache
 .phpunit.result.cache
+.project
+.ready
+.sass-cache
+.svn
+Thumbs.db
+ehthumbs.db
+
+# log files
+*.log
+
+# local configs
+local-config.php
+local-config.json
+phpcs.xml
+phpstan.neon
+phpunit.xml
+
+# WordPress specific
+wp-content/backup-db
+wp-content/blogs.dir
+wp-content/cache
+wp-content/cache/supercache
+wp-content/logs
+wp-content/upgrade
+wp-content/uploads/*
+!wp-content/uploads/.htaccess
+
+# vendor files
+wp-content/plugins/core/vendor
+wp-content/plugins/core/wp-content
+
+# Yarn Berry files
+install-state.gz
+build-state.yml
+node_modules
+
+# theme - compiled files
+wp-content/themes/core/js/dist
+wp-content/themes/core/_css-modules-json
+wp-content/themes/core/css/dist
+.revision
+deploy
+
+# keep files (must be last).
+!.gitkeep
+!.keep
+
+# PHPStorm files
+# https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/csv-editor.xml
+.idea/csv-plugin.xml
+.idea/php.xml
+.idea/sshConfigs.xml
+# Generated files
+.idea/**/contentModel.xml
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+# JIRA plugin
+atlassian-ide-plugin.xml
+# Editor-based Rest Client
+.idea/httpRequests

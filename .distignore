@@ -1,14 +1,30 @@
-/.wordpress-org
-/.github
 /.git
-/dev
+/.github
+/.wordpress-org
 
+# dev related
 .distignore
 .editorconfig
+.gitattributes
 .gitignore
 .phpcs.cache
-composer.json
-phpcs.xml
+/dev
+Readme.md
 phpcs.xml.dist
 phpstan.neon.dist
-Readme.md
+
+# Node related
+.eslintrc
+.nvmrc
+.pnp.cjs
+.pnp.loader.mjs
+.stylelintrc
+.yarnrc.yml
+/.yarn
+/config
+/js/src
+/js/jest
+node_modules
+package.json
+tsconfig.json
+yarn.lock

@@ -14,11 +14,11 @@ div.error {
 }
 
 .go-live-header-wrap {
-	text-align: center;
-	margin: 0 0 30px;
 	background: #fff;
 	border-bottom: 1px solid #e2e4e7;
+	margin: 0 0 30px;
 	padding: 10px 0 0 0;
+	text-align: center;
 }
 
 .go-live-header-wrap h1::before {
@@ -28,10 +28,10 @@ div.error {
 }
 
 .go-live-header-wrap a {
-	line-height: 1.1;
-	font-weight: 600;
-	font-size: 23px;
 	color: #23282d;
+	font-size: 23px;
+	font-weight: 600;
+	line-height: 1.1;
 	text-decoration: none;
 }
 
@@ -42,32 +42,32 @@ div.error {
 }
 
 .go-live-checkbox-form {
-	max-width: 800px;
-	margin: 0 auto;
 	display: block;
+	margin: 0 auto;
+	max-width: 800px;
 }
 
 .go-live-checkbox-form h3 {
-	padding: 0;
-	font-weight: 400;
 	color: #23282d;
 	font-size: 1.3em;
+	font-weight: 400;
 	margin: 1em 0;
+	padding: 0;
 }
 
 .go-live-section {
-	margin: 15px 0;
 	background: #fff;
-	padding: 20px;
 	border: 1px solid #ccd0d4;
 	display: block;
+	margin: 15px 0;
+	padding: 20px;
 }
 
 .go-live-only-checked {
-	padding: 1px 0 0;
 	color: #666;
-	font-weight: 600;
 	display: inline-block;
+	font-weight: 600;
+	padding: 1px 0 0;
 	position: relative;
 	top: 2px;
 }
