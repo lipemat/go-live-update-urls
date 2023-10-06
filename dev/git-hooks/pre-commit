@@ -1,14 +1,21 @@
 #!/bin/bash
 
-#######################################################################################
+#####################################################################################
 #
 # Test our code against various unit test systems and linters and prevent commit
 # if any of them fail.
 #
+# @notice Customized to support multiple versions of PHP is same runs.
+#
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 4.5.2
-#
+# @version 5.2.3
+
+JEST_CONFIG="jest/jest.config.ts"
+LEGACY_PHP_VERSION="7.0"
+PHP_VERSION="8.1"
+UNIT_TESTS="../go-live-update-urls-pro/dev/wp-unit"
+
 #####################################################################################
 
 GREEN="$(tput setaf 2)"
@@ -18,17 +25,32 @@ RED="$(tput setaf 1)"
 BLUE="$(tput setaf 6)"
 RESET_COLOR="$(tput sgr0)"
 
-PHPCS='phpcs 8.1'
-PHPSTAN='phpstan 8.1'
-
+# Point to specific version of PHP if supported via environmental variables.
+if [[ "true" == "$PHP_MULTI_VERSION_SUPPORT" ]]; then
+    PHP="php ${PHP_VERSION}"
+    PHPCS="phpcs ${PHP_VERSION}"
+    PHPSTAN="phpstan ${PHP_VERSION}"
+    PHPUNIT="phpunit ${PHP_VERSION}"
+else
+    PHP='php'
+    PHPCS='phpcs'
+    PHPSTAN='phpstan'
+    PHPUNIT='phpunit'
+fi
 PROJECT="."
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
+JS_FILES=$(git diff-index --cached --name-only "HEAD@{1}" | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$")
 PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
+
 if [[ ! "$PHP_FILES" ]]; then
-    echo "${YELLOW}[pre-commit]${BLUE} No PHP Files Changed ${RESET_COLOR}"
+    echo "${YELLOW}[pre-commit]${BLUE} No Lintable PHP Files Changed ${RESET_COLOR}"
 fi
+if [[ ! "$JS_FILES" ]]; then
+    echo "${YELLOW}[pre-commit]${BLUE} No JS Files Changed ${RESET_COLOR}"
+fi
+
 
 function exit_reset_colors() {
 	echo ${RESET_COLOR}
@@ -37,29 +59,27 @@ function exit_reset_colors() {
 
 # Must run them consecutively to prevent conflicts.
 function php_units() {
-	php_unit 'phpunit 7.0' 'phpunit-legacy.xml.dist'
-	php_unit 'phpunit 7.0' 'phpunit-legacy-single.xml.dist'
-	php_unit 'phpunit 7.0' 'phpunit-single.xml.dist'
-	php_unit 'phpunit 8.1' 'phpunit-single.xml.dist'
-	php_unit 'phpunit 8.1' 'phpunit.xml.dist'
+	php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit-legacy.xml.dist'
+	php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit.xml.dist'
+	php_unit "phpunit ${PHP_VERSION}" 'phpunit.xml.dist'
 }
 
 function php_unit() {
-	if [[ "$PHP_FILES" ]]; then
-		if [[ ! -f ../go-live-update-urls-pro/dev/wp-unit/${2} ]]; then
-			echo "${YELLOW}[pre-commit]${RED} ../go-live-update-urls-pro/dev/wp-unit/${2} not found!"
-			exit_reset_colors
-		fi
-		echo "${YELLOW}[pre-commit]${BLUE} Running ${1^^} ${2}... ${WHITE}"
-		OUTPUT=$(${1} --configuration ../go-live-update-urls-pro/dev/wp-unit/${2})
-		if [[ $? != 0 ]]; then
-			echo
-			echo "${BLUE}${1^^} ${2} Failed! Fix the error before commit!"
-			echo "${RED}$OUTPUT"
-			exit_reset_colors
-		fi
-		echo "${YELLOW}[pre-commit]${GREEN} ${1^^} ${2} Tests Passed!${RESET_COLOR}"
-	fi
+    if [[ "$PHP_FILES" ]]; then
+        if [[ ! -f ${UNIT_TESTS}/phpunit.xml ]] && [[ ! -f ${UNIT_TESTS}/phpunit.xml.dist ]]; then
+            echo "${YELLOW}[pre-commit]${RED} ${UNIT_TESTS}/phpunit.xml or ${UNIT_TESTS}/phpunit.xml.dist not found!"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${BLUE} Running ${1^^} ${2}... ${WHITE}"
+        OUTPUT=$(${1} --configuration ${UNIT_TESTS}/${2})
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}${1^^} ${2} Failed! Fix the error before commit!"
+            echo "${RED}$OUTPUT"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} ${1^^} ${2} Tests Passed!${RESET_COLOR}"
+    fi
 }
 php_units &
 
@@ -78,11 +98,11 @@ function php_lint() {
         echo "${YELLOW}[pre-commit]${GREEN} ${1^^} Lint Passed!${RESET_COLOR}"
     fi
 }
-php_lint 'php 7.0' &
-php_lint 'php 8.1' &
+php_lint "php ${LEGACY_PHP_VERSION}" &
+php_lint "php ${PHP_VERSION}" &
 
 function php_code_sniffer() {
-    if [[ "$PHP_FILES" != "" ]]; then
+    if [[ "$PHP_FILES" || "$JS_FILES" ]]; then
         if [[ ! -f ${PROJECT}/phpcs.xml ]] && [[ ! -f ${PROJECT}/phpcs.xml.dist ]]; then
             echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/phpcs.xml or ${PROJECT}/phpcs.xml.dist not found!"
             exit_reset_colors
@@ -91,7 +111,7 @@ function php_code_sniffer() {
             FILES="$FILES ${PROJECT}/${FILE}"
         done
         echo "${YELLOW}[pre-commit]${BLUE} Running PHPCS... ${WHITE}"
-        OUTPUT=$(${PHPCS} --encoding=utf-8 -s -p ${FILES})
+        OUTPUT=$(${PHPCS} --encoding=utf-8 -s -p)
         if [[ $? != 0 ]]; then
             echo
             echo "${BLUE}PHPCS failed. Fix the error before commit!"
@@ -99,7 +119,7 @@ function php_code_sniffer() {
             echo
             echo "${YELLOW}For automatic fixes run"
             echo
-            echo "${WHITE}phpcbf $FILES"
+            echo "${WHITE}phpcbf${FILES}"
             echo
             exit_reset_colors
         fi
@@ -123,6 +143,26 @@ function php_stan() {
 }
 php_stan "${PHPSTAN}" &
 php_stan 'E:/SVN/wordpress-legacy/phpstan-legacy' &
+
+function js_tests() {
+    if [[ "$JS_FILES" ]]; then
+    	if [[ ! -f "${PROJECT}/js/${JEST_CONFIG}" ]]; then
+            echo "${YELLOW}[pre-commit]${BLUE} Skipping JS tests (non-existent).${RESET_COLOR}"
+            return
+        fi
+        echo "${YELLOW}[pre-commit]${BLUE} Running JS Tests... ${WHITE}"
+        cd "${PROJECT}/js" || exit
+        OUTPUT=$(yarn run test --bail 2>&1)
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}JS Tests failed. Fix the error before commit!"
+            echo "${RED}$OUTPUT"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} JS Tests Passed!${RESET_COLOR}"
+    fi
+}
+js_tests &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.

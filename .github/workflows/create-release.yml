@@ -1,8 +1,7 @@
 name: Create GitHub Release
 run-name: Create release for ${{ github.ref }} on GitHub.
 env:
-  VERSION: 1.0.1
-  TZ: 'America/Chicago'
+  VERSION: 2.0.0
 
 on:
   push:
@@ -10,18 +9,16 @@ on:
       - "*beta*"
 
 jobs:
-  build:
+  create-release:
+    name: Create release for ${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Version ${{ github.ref }}
+          name: Version ${{ github.ref }}
           draft: false
           prerelease: false
+          files: Release.txt
