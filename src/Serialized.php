@@ -55,12 +55,12 @@ class Serialized {
 	/**
 	 * Serialized constructor.
 	 *
-	 * @param string $old - Old URL.
-	 * @param string $new - New URL.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 */
-	public function __construct( $old, $new ) {
-		$this->new = $new;
-		$this->old = $old;
+	public function __construct( $old_url, $new_url ) {
+		$this->new = $new_url;
+		$this->old = $old_url;
 	}
 
 

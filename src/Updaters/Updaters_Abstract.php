@@ -86,7 +86,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return int
 	 */
-	protected function update_column( $old_url, $new_url ) {
+	protected function update_column( $old_url, $new_url ): int {
 		return Database::instance()->update_column( $this->table, $this->column, $old_url, $new_url );
 	}
 
@@ -110,29 +110,29 @@ abstract class Updaters_Abstract {
 	 *
 	 * @since 6.10.0
 	 *
-	 * @param string $old - Old URL.
-	 * @param string $new - New URL.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 *
 	 * @return array{new: string, old: string}
 	 */
-	public static function get_formatted( string $old, string $new ): array {
+	public static function get_formatted( string $old_url, string $new_url ): array {
 		/**
 		 * If the old URL has a "/" in it, but the new URL doesn't, we add a / to the beginning of each URL to create a selector to look for.
 		 *
 		 * Without: domain.com
 		 * With: \\\/domain.com
 		 */
-		if ( static::is_appending_update( $old, $new ) ) {
+		if ( static::is_appending_update( $old_url, $new_url ) ) {
 			$prefix = static::apply_rule_to_url( '/' );
 			return [
-				'old' => $prefix . $new,
-				'new' => $prefix . static::apply_rule_to_url( $new ),
+				'old' => $prefix . $new_url,
+				'new' => $prefix . static::apply_rule_to_url( $new_url ),
 			];
 		}
 
 		return [
-			'old' => static::apply_rule_to_url( $old ),
-			'new' => static::apply_rule_to_url( $new ),
+			'old' => static::apply_rule_to_url( $old_url ),
+			'new' => static::apply_rule_to_url( $new_url ),
 		];
 	}
 
@@ -149,13 +149,13 @@ abstract class Updaters_Abstract {
 	 *
 	 * @see   Database::update_column
 	 *
-	 * @param string $old - Old URL.
-	 * @param string $new - New URL.
+	 * @param string $old_url - Old URL.
+	 * @param string $new_url - New URL.
 	 *
 	 * @return bool
 	 */
-	public static function is_appending_update( string $old, string $new ): bool {
-		return static::apply_rule_to_url( $old ) === $old && static::apply_rule_to_url( $new ) !== $new;
+	public static function is_appending_update( string $old_url, string $new_url ): bool {
+		return static::apply_rule_to_url( $old_url ) === $old_url && static::apply_rule_to_url( $new_url ) !== $new_url;
 	}
 
 
@@ -166,7 +166,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return int
 	 */
-	public function update_data() {
+	public function update_data(): int {
 		if ( false === strpos( $this->old, '/' ) && false === strpos( $this->new, '/' ) ) {
 			return 0;
 		}

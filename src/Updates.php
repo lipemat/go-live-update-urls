@@ -43,13 +43,13 @@ class Updates {
 	/**
 	 * Updates constructor.
 	 *
-	 * @param string   $old    - Entered old URL.
-	 * @param string   $new    - Entered new URL.
-	 * @param string[] $tables - List of tables to interact with.
+	 * @param string   $old_url - Entered old URL.
+	 * @param string   $new_url - Entered new URL.
+	 * @param string[] $tables  - List of tables to interact with.
 	 */
-	final public function __construct( $old, $new, array $tables ) {
-		$this->old_url = $old;
-		$this->new_url = $new;
+	final public function __construct( $old_url, $new_url, array $tables ) {
+		$this->old_url = $old_url;
+		$this->new_url = $new_url;
 		$this->tables = $tables;
 	}
 
@@ -143,13 +143,13 @@ class Updates {
 	protected function update_column_with_updaters( $table, $column ): int {
 		$doubled = $this->get_doubled_up_subdomain();
 		$count = 0;
-		\array_map( function( string $class ) use ( $doubled, $table, $column, &$count ) {
-			if ( \class_exists( $class ) ) {
+		\array_map( function( string $class_name ) use ( $doubled, $table, $column, &$count ) {
+			if ( \class_exists( $class_name ) ) {
 				/* @var Updaters_Abstract $updater - An updater instance. */
-				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
-				$count += (int) $updater->update_data();
+				$updater = $class_name::factory( $table, $column, $this->old_url, $this->new_url );
+				$count += $updater->update_data();
 				if ( null !== $doubled ) {
-					$updater = $class::factory( $table, $column, $doubled, $this->new_url );
+					$updater = $class_name::factory( $table, $column, $doubled, $this->new_url );
 					$count -= (int) $updater->update_data();
 				}
 			}
@@ -172,11 +172,11 @@ class Updates {
 	 */
 	protected function count_column_urls_with_updaters( $table, $column ) {
 		$count = 0;
-		\array_map( function( $class ) use ( $table, $column, &$count ) {
-			if ( \class_exists( $class ) ) {
+		\array_map( function( $class_name ) use ( $table, $column, &$count ) {
+			if ( \class_exists( $class_name ) ) {
 				/* @var Updaters_Abstract $updater - An updater instance. */
-				$updater = $class::factory( $table, $column, $this->old_url, $this->new_url );
-				$count += (int) $updater->count_urls();
+				$updater = $class_name::factory( $table, $column, $this->old_url, $this->new_url );
+				$count += $updater->count_urls();
 			}
 		}, Repo::instance()->get_updaters() );
 		return $count;

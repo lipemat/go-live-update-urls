@@ -54,13 +54,13 @@ add_action( 'plugins_loaded', 'go_live_update_urls_load', 8 );
  * Autoload classes from PSR4 src directory
  * Mirrored after Composer dump-autoload for performance
  *
- * @param string $class - class to load.
- *
  * @since 5.0.0
+ *
+ * @param string $class_name - class to load.
  *
  * @return void
  */
-function go_live_update_urls_autoload( $class ) {
+function go_live_update_urls_autoload( $class_name ) {
 	$classes = [
 		Admin::class             => 'Admin.php',
 		Core::class              => 'Core.php',
@@ -73,8 +73,8 @@ function go_live_update_urls_autoload( $class ) {
 		Updaters_Abstract::class => 'Updaters/Updaters_Abstract.php',
 		Url_Encoded::class       => 'Updaters/Url_Encoded.php',
 	];
-	if ( isset( $classes[ $class ] ) ) {
-		require __DIR__ . '/src/' . $classes[ $class ];
+	if ( isset( $classes[ $class_name ] ) ) {
+		require __DIR__ . '/src/' . $classes[ $class_name ];
 	}
 }
 

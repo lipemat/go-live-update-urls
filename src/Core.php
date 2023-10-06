@@ -85,13 +85,13 @@ class Core {
 	 * Like `sanitize_text_field` except we don't remove
 	 * URL encoded characters and HTML tags.
 	 *
-	 * @param string $value - User provided value to sanitize.
-	 *
 	 * @since 6.3.4
+	 *
+	 * @param string $value - User provided value to sanitize.
 	 *
 	 * @return string
 	 */
-	public function sanitize_field( $value ) {
+	public function sanitize_field( $value ): string {
 		$filtered = wp_unslash( (string) $value );
 		$filtered = wp_check_invalid_utf8( $filtered );
 		$filtered = \preg_replace( '/[\r\n\t ]+/', ' ', $filtered );

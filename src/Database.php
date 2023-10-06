@@ -225,7 +225,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	public function update_column( $table, $column, $old_url, $new_url ) {
+	public function update_column( $table, $column, $old_url, $new_url ): int {
 		global $wpdb;
 
 		$count = $this->count_column_urls( $table, $column, $old_url );
@@ -259,7 +259,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	public function count_column_urls( $table, $column, $old_url ) {
+	public function count_column_urls( $table, $column, $old_url ): int {
 		global $wpdb;
 
 		$query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";

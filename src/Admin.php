@@ -51,8 +51,8 @@ class Admin {
 			return;
 		}
 
-		$old_url = Core::instance()->sanitize_field( $_POST[ self::OLD_URL ] ); //phpcs:ignore
-		$new_url = Core::instance()->sanitize_field( $_POST[ self::NEW_URL ] ); //phpcs:ignore
+		$old_url = Core::instance()->sanitize_field( (string) $_POST[ static::OLD_URL ] ); //phpcs:ignore
+		$new_url = Core::instance()->sanitize_field( (string) $_POST[ static::NEW_URL ] ); //phpcs:ignore
 		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ static::TABLE_INPUT_NAME ] ) ) {
 			$this->failure_message();
 			return;
@@ -282,18 +282,18 @@ class Admin {
 	/**
 	 * Creates a list of checkboxes for each table
 	 *
-	 * @param array  $tables  - List of all tables.
-	 * @param string $list    - Used by js to separate lists.
-	 * @param bool   $checked - Should all checkboxes be checked.
-	 *
 	 * @since  5.0.0
+	 *
+	 * @param array  $tables  - List of all tables.
+	 * @param string $list_id - Used by JS to separate lists.
+	 * @param bool   $checked - Should all checkboxes be checked.
 	 *
 	 * @return void
 	 */
-	public function render_check_boxes( $tables, $list, $checked = true ) {
+	public function render_check_boxes( $tables, $list_id, $checked = true ) {
 		?>
 		<ul
-			data-list="<?php echo esc_attr( $list ); ?>">
+			data-list="<?php echo esc_attr( $list_id ); ?>">
 			<?php
 			foreach ( $tables as $_table ) {
 				?>

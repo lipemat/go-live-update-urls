@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <ruleset name="Go Live Update Urls - Rules.">
-	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset -->-->
 
 	<description>Ruleset for the Go Live Update Urls plugin.</description>
-	<version>4.0.5</version>
+	<version>4.2.0</version>
 
 	<!-- Include when not specified -->
-	<file>./src</file>
+	<file>./</file>
 
 	<!-- Show file path based on project root. -->
 	<arg name="basepath" value="." />
@@ -15,7 +15,6 @@
 	<arg name="cache" value="./.phpcs.cache" />
 
 	<!-- @see https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#various-sniffs-set-the-minimum-supported-wp-version -->
-	<config name="minimum_supported_wp_version" value="5.8" />
 	<config name="minimum_wp_version" value="5.8" />
 
 	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
@@ -27,6 +26,7 @@
 		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
 	</rule>
 
+	<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpressnamingconventionsprefixallglobals-prefix-everything-in-the-global-namespace -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
@@ -41,6 +41,7 @@
 	<!-- Translations -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
+			<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpresswpi18n-setting-your-text-domain -->
 			<property name="text_domain" type="array" value="go-live-update-urls" />
 		</properties>
 	</rule>
