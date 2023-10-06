@@ -17,6 +17,7 @@ phpstan.neon.dist
 .eslintrc
 .nvmrc
 .pnp.cjs
+.pnp.js
 .pnp.loader.mjs
 .stylelintrc
 .yarnrc.yml
