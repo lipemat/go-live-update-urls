@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Required to prevent phpstan callback errors.
+ *
+ * Will not be needed after we are running WP 6.2 on the legacy-wordpress project.
+ */
+
+namespace {
+
+	function go_live_update_urls_pro_load() {
+	}
+}

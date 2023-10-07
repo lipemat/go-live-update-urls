@@ -43,7 +43,6 @@ function go_live_update_urls_load() {
 
 	if ( defined( 'GO_LIVE_UPDATE_URLS_PRO_VERSION' ) && version_compare( GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION, GO_LIVE_UPDATE_URLS_PRO_VERSION, '>' ) ) {
 		add_action( 'all_admin_notices', 'go_live_update_urls_pro_plugin_notice' );
-		/* @phpstan-ignore-next-line -- TODO remove this ignores when the minimum version is 6.2. */
 		remove_action( 'plugins_loaded', 'go_live_update_urls_pro_load', 9 );
 	}
 }

@@ -68,12 +68,12 @@ class Updates {
 		$columns = $this->get_table_columns( $table );
 		$count = 0;
 		\array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
-			$count += (int) Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
-			$count += (int) $this->update_column_with_updaters( $table, $column );
+			$count += Database::instance()->update_column( $table, $column, $this->old_url, $this->new_url );
+			$count += $this->update_column_with_updaters( $table, $column );
 			$this->update_email_addresses( $table, $column );
 
 			if ( null !== $doubled ) {
-				$count -= (int) Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
+				$count -= Database::instance()->update_column( $table, $column, $doubled, $this->new_url );
 			}
 		} );
 
@@ -93,11 +93,11 @@ class Updates {
 		$columns = $this->get_table_columns( $table );
 		$count = 0;
 		\array_walk( $columns, function( $column ) use ( $table, $doubled, &$count ) {
-			$count += (int) Database::instance()->count_column_urls( $table, $column, $this->old_url );
-			$count += (int) $this->count_column_urls_with_updaters( $table, $column );
+			$count += Database::instance()->count_column_urls( $table, $column, $this->old_url );
+			$count += $this->count_column_urls_with_updaters( $table, $column );
 
 			if ( null !== $doubled ) {
-				$count -= (int) Database::instance()->count_column_urls( $table, $column, $this->new_url );
+				$count -= Database::instance()->count_column_urls( $table, $column, $this->new_url );
 			}
 		} );
 
@@ -150,7 +150,7 @@ class Updates {
 				$count += $updater->update_data();
 				if ( null !== $doubled ) {
 					$updater = $class_name::factory( $table, $column, $doubled, $this->new_url );
-					$count -= (int) $updater->update_data();
+					$count -= $updater->update_data();
 				}
 			}
 		}, Repo::instance()->get_updaters() );
@@ -170,7 +170,7 @@ class Updates {
 	 *
 	 * @return int
 	 */
-	protected function count_column_urls_with_updaters( $table, $column ) {
+	protected function count_column_urls_with_updaters( $table, $column ): int {
 		$count = 0;
 		\array_map( function( $class_name ) use ( $table, $column, &$count ) {
 			if ( \class_exists( $class_name ) ) {

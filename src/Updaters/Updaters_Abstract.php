@@ -96,7 +96,7 @@ abstract class Updaters_Abstract {
 	 *
 	 * @return int
 	 */
-	public function count_urls() {
+	public function count_urls(): int {
 		$old_url = static::apply_rule_to_url( $this->old );
 		if ( $old_url === $this->old ) {
 			return 0;

@@ -93,16 +93,18 @@ class Serialized {
 	 * Query all serialized rows from a database table and
 	 * update them one by one.
 	 *
+	 * @noinspection CallableParameterUseCaseInTypeContextInspection
+	 *
 	 * @param string $table  - Database table.
 	 * @param string $column - Database column.
 	 *
 	 * @return int
 	 */
-	protected function update_table( $table, $column ) {
+	protected function update_table( string $table, string $column ): int {
 		global $wpdb;
 		$this->count = 0;
-		$column = (string) esc_sql( $column );
-		$table = (string) esc_sql( $table );
+		$column = esc_sql( $column );
+		$table = esc_sql( $table );
 		$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . "` WHERE Key_name = 'PRIMARY'" );
 		if ( empty( $pk[0] ) ) {
 			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
@@ -218,7 +220,7 @@ class Serialized {
 			/* @var Updaters_Abstract $updater - Updater class instance. */
 			$formatted = $updater::get_formatted( $this->old, $this->new );
 			if ( $formatted['old'] !== $this->old ) {
-				$mysql_value = (string) str_replace( $formatted['old'], $formatted['new'], $mysql_value, $updater_count );
+				$mysql_value = \str_replace( $formatted['old'], $formatted['new'], $mysql_value, $updater_count );
 				if ( ! $updater::is_appending_update( $this->old, $this->new ) ) {
 					$this->count += $updater_count;
 				}

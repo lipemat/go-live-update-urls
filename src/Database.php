@@ -155,15 +155,15 @@ class Database {
 	/**
 	 * Make the actual changes to the database
 	 *
+	 * @since 5.0.0
+	 *
 	 * @param string $old_url - the old URL.
 	 * @param string $new_url - the new URL.
 	 * @param array  $tables  - the tables we are going to update.
 	 *
-	 * @since 5.0.0
-	 *
-	 * @return int[]
+	 * @return array<string, int>
 	 */
-	public function update_the_database( $old_url, $new_url, array $tables ) {
+	public function update_the_database( $old_url, $new_url, array $tables ): array {
 		do_action( 'go-live-update-urls/database/before-update', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 

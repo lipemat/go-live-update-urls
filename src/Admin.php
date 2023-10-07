@@ -65,7 +65,7 @@ class Admin {
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
-		if ( Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) {
+		if ( \count( Database::instance()->update_the_database( $old_url, $new_url, $tables ) ) > 0 ) {
 			add_action( 'admin_notices', [ $this, 'success' ] );
 			add_filter( 'go-live-update-urls/views/admin-tools-page/disable-description', '__return_true' );
 		}

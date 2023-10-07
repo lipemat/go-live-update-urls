@@ -29,17 +29,18 @@ class Core {
 
 
 	/**
-	 * 1. Set time limit to unlimited
-	 * 2. Set input time to unlimited
-	 * 3. Set memory limit to context which will use our filter
+	 * Set the following:
+	 * 1. Time limit to unlimited.
+	 * 2. Input time to unlimited.
+	 * 3. Memory limit to context which will use our filter.
 	 *
 	 * @see Core::raise_memory_limit();
 	 *
 	 * @return void
 	 */
 	public function raise_resource_limits() {
-		@set_time_limit( 0 ); //phpcs:ignore
-		@ini_set( 'max_input_time', '-1' ); //phpcs:ignore
+		set_time_limit( 0 );
+		ini_set( 'max_input_time', '-1' ); //phpcs:ignore
 
 		wp_raise_memory_limit( 'go-live-update-urls/database/memory-limit' );
 	}

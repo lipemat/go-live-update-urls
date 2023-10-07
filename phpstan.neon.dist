@@ -5,12 +5,19 @@ includes:
 parameters:
     level: 5
     strictRules:
-        disallowedConstructs: false
+        noVariableVariables: false
+    editorUrl: 'http://localhost:63342/api/file/%%relFile%%:%%line%%'
+    paths:
+        - go-live-update-urls.php
+        - src
     dynamicConstantNames:
         - GO_LIVE_UPDATE_URLS_PRO_VERSION
         - GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION
     bootstrapFiles:
         - go-live-update-urls.php
-    paths:
-        - go-live-update-urls.php
-        - src
+    scanFiles:
+        - dev/stubs/go-live-update-urls-pro.stub
+    ignoreErrors:
+        - # We must use @ with serialize in just the main Serialized class.
+            message: '#^Error suppression via "@" should not be used\.$#'
+            path: src/Serialized.php
