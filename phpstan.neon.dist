@@ -1,7 +1,11 @@
+includes:
+    # Baseline file full of @todo
+    - dev/phpstan-baseline.php
+
 parameters:
     level: 5
     strictRules:
-        allRules: false
+        disallowedConstructs: false
     dynamicConstantNames:
         - GO_LIVE_UPDATE_URLS_PRO_VERSION
         - GO_LIVE_UPDATE_URLS_REQUIRED_PRO_VERSION

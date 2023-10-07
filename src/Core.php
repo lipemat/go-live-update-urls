@@ -87,7 +87,7 @@ class Core {
 	 *
 	 * @since 6.3.4
 	 *
-	 * @param string $value - User provided value to sanitize.
+	 * @param int|float|string $value - User provided value to sanitize.
 	 *
 	 * @return string
 	 */
