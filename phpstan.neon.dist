@@ -21,3 +21,7 @@ parameters:
         - # We must use @ with serialize in just the main Serialized class.
             message: '#^Error suppression via "@" should not be used\.$#'
             path: src/Serialized.php
+        # Remove once the WP version use for wordpress-legacy >= 6.2.
+        - '#^Function apply_filters invoked with [3456789] parameters, 2 required\.$#'
+    # Remove once the WP version use for wordpress-legacy >= 6.2.
+    reportUnmatchedIgnoredErrors: false
