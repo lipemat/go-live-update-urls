@@ -1,6 +1,7 @@
 /.git
 /.github
 /.wordpress-org
+composer.json
 
 # dev related
 .distignore
