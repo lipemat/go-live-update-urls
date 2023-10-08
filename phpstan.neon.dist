@@ -1,10 +1,16 @@
 includes:
+    # Include the lipemat phpstan rules.
+    - %rootDir%/../../../rules.neon
     # Baseline file full of @todo
     - dev/phpstan-baseline.php
 
 parameters:
     level: 5
-    editorUrl: 'http://localhost:63342/api/file/%%relFile%%:%%line%%'
+    lipemat:
+        allowedToBeExtended:
+            - Go_Live_Update_Urls\Updaters\Updaters_Abstract
+        noExtends: true
+        nonDistributed: false
     paths:
         - go-live-update-urls.php
         - src
