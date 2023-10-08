@@ -4,8 +4,6 @@ includes:
 
 parameters:
     level: 5
-    strictRules:
-        noVariableVariables: false
     editorUrl: 'http://localhost:63342/api/file/%%relFile%%:%%line%%'
     paths:
         - go-live-update-urls.php
@@ -18,6 +16,9 @@ parameters:
     scanFiles:
         - dev/stubs/go-live-update-urls-pro.stub
     ignoreErrors:
+        - # Serialized data has unknown keys which require variables.
+            message: '#^Variable property access on#'
+            path: src/Serialized.php
         - # Remove once the WP version use for wordpress-legacy >= 6.2.
             message: '#^Function apply_filters invoked with [3456789] parameters, 2 required\.$#'
             reportUnmatched: false
