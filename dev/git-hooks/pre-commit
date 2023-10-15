@@ -9,12 +9,12 @@
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 5.2.3
+# @version 5.3.0
 
 JEST_CONFIG="jest/jest.config.ts"
 LEGACY_PHP_VERSION="7.0"
 PHP_VERSION="8.1"
-UNIT_TESTS="../go-live-update-urls-pro/dev/wp-unit"
+PHPUNIT_DIR="../go-live-update-urls-pro/dev/wp-unit"
 
 #####################################################################################
 
@@ -37,7 +37,7 @@ else
     PHPSTAN='phpstan'
     PHPUNIT='phpunit'
 fi
-PROJECT="."
+PROJECT=$(${PHP} -r "echo dirname(realpath('$0'), 3);")
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
@@ -65,13 +65,12 @@ function php_units() {
 }
 
 function php_unit() {
-    if [[ "$PHP_FILES" ]]; then
-        if [[ ! -f ${UNIT_TESTS}/phpunit.xml ]] && [[ ! -f ${UNIT_TESTS}/phpunit.xml.dist ]]; then
-            echo "${YELLOW}[pre-commit]${RED} ${UNIT_TESTS}/phpunit.xml or ${UNIT_TESTS}/phpunit.xml.dist not found!"
+        if [[ ! -f ${PROJECT}/${PHPUNIT_DIR}/phpunit.xml ]] && [[ ! -f ${PROJECT}/${PHPUNIT_DIR}/phpunit.xml.dist ]]; then
+            echo "${YELLOW}[pre-commit]${RED} ${PROJECT}/${PHPUNIT_DIR}/phpunit.xml or ${PROJECT}/${PHPUNIT_DIR}/phpunit.xml.dist not found!"
             exit_reset_colors
         fi
         echo "${YELLOW}[pre-commit]${BLUE} Running ${1^^} ${2}... ${WHITE}"
-        OUTPUT=$(${1} --configuration ${UNIT_TESTS}/${2})
+        OUTPUT=$(${1} --configuration ${PROJECT}/${PHPUNIT_DIR}/${2})
         if [[ $? != 0 ]]; then
             echo
             echo "${BLUE}${1^^} ${2} Failed! Fix the error before commit!"
@@ -79,7 +78,6 @@ function php_unit() {
             exit_reset_colors
         fi
         echo "${YELLOW}[pre-commit]${GREEN} ${1^^} ${2} Tests Passed!${RESET_COLOR}"
-    fi
 }
 php_units &
 
@@ -129,7 +127,6 @@ function php_code_sniffer() {
 php_code_sniffer &
 
 function php_stan() {
-    if [[ "$PHP_FILES" ]]; then
         echo "${YELLOW}[pre-commit]${BLUE} Running ${1^}... ${WHITE}"
         OUTPUT=$(${1} analyse --no-progress --memory-limit=2G)
         if [[ $? != 0 ]]; then
@@ -139,7 +136,6 @@ function php_stan() {
             exit_reset_colors
         fi
         echo "${YELLOW}[pre-commit]${GREEN} ${1^} Passed!${RESET_COLOR}"
-    fi
 }
 php_stan "${PHPSTAN}" &
 php_stan 'E:/SVN/wordpress-legacy/phpstan-legacy' &
