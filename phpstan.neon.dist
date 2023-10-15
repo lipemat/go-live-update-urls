@@ -5,7 +5,7 @@ includes:
     - dev/phpstan-baseline.php
 
 parameters:
-    level: 5
+    level: 6
     lipemat:
         allowedToBeExtended:
             - Go_Live_Update_Urls\Updaters\Updaters_Abstract
