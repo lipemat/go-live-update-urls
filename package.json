@@ -4,6 +4,9 @@
   "description": "Tools for the Go Live Update Urls plugin.",
   "author": "OnPoint Plugins <support@onpointplugins.com>",
   "license": "UNLICENSED",
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ],
   "scripts": {
     "lint": "stylelint resources/**/*.css --fix"
   },
