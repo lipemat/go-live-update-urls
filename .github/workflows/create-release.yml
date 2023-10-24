@@ -1,7 +1,9 @@
+# @notice You must enable write permissions for this action to work.
+# @see /settings/actions in your repo.
 name: Create GitHub Release
-run-name: Create release for ${{ github.ref }} on GitHub.
+run-name: Create release for ${{ github.ref_name }} on GitHub.
 env:
-  VERSION: 2.0.0
+  VERSION: 2.0.3
 
 on:
   push:
@@ -10,15 +12,12 @@ on:
 
 jobs:
   create-release:
-    name: Create release for ${{ github.ref }}
+    name: Create release for ${{ github.ref_name }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Version ${{ github.ref }}
+          name: Version ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: Release.txt
