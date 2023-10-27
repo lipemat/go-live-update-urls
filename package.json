@@ -1,6 +1,6 @@
 {
   "name": "@onpointplugins/go-live-update-urls",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "description": "Tools for the Go Live Update Urls plugin.",
   "author": "OnPoint Plugins <support@onpointplugins.com>",
   "license": "UNLICENSED",
@@ -8,7 +8,7 @@
     "extends @wordpress/browserslist-config"
   ],
   "scripts": {
-    "lint": "stylelint resources/**/*.css --fix"
+    "lint": "stylelint resources/**/*.css --fix --cache"
   },
   "devDependencies": {
     "@lipemat/stylelint-config": "^2.1.1",

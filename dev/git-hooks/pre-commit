@@ -9,7 +9,7 @@
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 5.3.0
+# @version 6.0.0
 
 JEST_CONFIG="jest/jest.config.ts"
 LEGACY_PHP_VERSION="7.0"
@@ -41,20 +41,19 @@ PROJECT=$(${PHP} -r "echo dirname(realpath('$0'), 3);")
 ## Fix windows paths
 PROJECT=${PROJECT//\\//}
 
-JS_FILES=$(git diff-index --cached --name-only "HEAD@{1}" | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$")
 PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
+RESOURCE_FILES=$(git diff-index --cached --name-only HEAD | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$\|\.pcss$")
 
 if [[ ! "$PHP_FILES" ]]; then
     echo "${YELLOW}[pre-commit]${BLUE} No Lintable PHP Files Changed ${RESET_COLOR}"
 fi
-if [[ ! "$JS_FILES" ]]; then
-    echo "${YELLOW}[pre-commit]${BLUE} No JS Files Changed ${RESET_COLOR}"
+if [[ ! "$RESOURCE_FILES" ]]; then
+    echo "${YELLOW}[pre-commit]${BLUE} No Resource Files Changed ${RESET_COLOR}"
 fi
 
-
 function exit_reset_colors() {
-	echo ${RESET_COLOR}
-	exit 1
+    echo ${RESET_COLOR}
+    exit 1
 }
 
 # Must run them consecutively to prevent conflicts.
@@ -141,13 +140,12 @@ php_stan "${PHPSTAN}" &
 php_stan 'E:/SVN/wordpress-legacy/phpstan-legacy' &
 
 function js_tests() {
-    if [[ "$JS_FILES" ]]; then
+    if [[ "$RESOURCE_FILES" ]]; then
     	if [[ ! -f "${PROJECT}/js/${JEST_CONFIG}" ]]; then
             echo "${YELLOW}[pre-commit]${BLUE} Skipping JS tests (non-existent).${RESET_COLOR}"
             return
         fi
         echo "${YELLOW}[pre-commit]${BLUE} Running JS Tests... ${WHITE}"
-        cd "${PROJECT}/js" || exit
         OUTPUT=$(yarn run test --bail 2>&1)
         if [[ $? != 0 ]]; then
             echo
@@ -159,6 +157,21 @@ function js_tests() {
     fi
 }
 js_tests &
+
+function js_css_lint() {
+    if [[ "$RESOURCE_FILES" ]]; then
+        echo "${YELLOW}[pre-commit]${BLUE} Running JS/CSS Lint... ${WHITE}"
+        OUTPUT=$(yarn run lint 2>&1)
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}JS/CSS Lint failed. Fix the error before commit!"
+            echo "${RED}$OUTPUT"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} JS/CSS Lint Passed!${RESET_COLOR}"
+    fi
+}
+js_css_lint &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.
