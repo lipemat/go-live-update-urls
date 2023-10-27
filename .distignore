@@ -1,31 +1,75 @@
-/.git
-/.github
+############################
+#
+# WordPress.org plugin deploy ignore file
+#
+# Similar to our standard .deployignore with some changes.
+# - Does not support using `!` character.
+# - Does not support using `*` character.
+# - Must include other files like .github.
+#
+# @version 2.6.4
+#
+############################
+
+# Project specific
+/config
+/js/src
+/js/jest
 /.wordpress-org
-composer.json
+
+
 
 # dev related
-.distignore
-.editorconfig
-.gitattributes
-.gitignore
-.phpcs.cache
+.deployignore
+.gitmodules
+composer.json
+composer.lock
 /dev
-Readme.md
+bin
+local-config-sample.php
+pcss
 phpcs.xml.dist
 phpstan.neon.dist
+Readme.md
 
-# Node related
+
+# System and hidden files
+*.bak
+*.shtml
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+.DS_Store
+.DS_Store?
+.cvs
+.eslintcache
+.phpunit.result.cache
+.phpcs.cache
+.project
+.sass-cache
+.stylelintcache
+.svn
+.Trashes
+Thumbs.db
+ehthumbs.db
+error_log
+
+# GitHub files
+.github
+.git
+
+# Yarn and Node files
+.editorconfig
 .eslintrc
 .nvmrc
 .pnp.cjs
 .pnp.js
 .pnp.loader.mjs
 .stylelintrc
+.yarn
 .yarnrc.yml
-/.yarn
-/config
-/js/src
-/js/jest
+jest.config.js
 node_modules
 package.json
 tsconfig.json

@@ -1,6 +1,6 @@
 ################################
 #
-# @version 6.0.1
+# @version 6.0.3
 #
 ################################
 
@@ -15,7 +15,6 @@ js/dist
 dev/translate-cli/vendor
 
 
-
 # system/hidden files
 *.bak
 *.sublime-project
@@ -26,11 +25,13 @@ dev/translate-cli/vendor
 .DS_Store?
 .Trashes
 .cvs
+.eslintcache
 .phpcs.cache
 .phpunit.result.cache
 .project
 .ready
 .sass-cache
+.stylelintcache
 .svn
 Thumbs.db
 ehthumbs.db
@@ -52,6 +53,7 @@ wp-content/cache
 wp-content/cache/supercache
 wp-content/logs
 wp-content/upgrade
+wp-content/upgrade-temp-backup
 wp-content/uploads/*
 !wp-content/uploads/.htaccess
 
