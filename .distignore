@@ -7,7 +7,7 @@
 # - Does not support using `*` character.
 # - Must include other files like .github.
 #
-# @version 2.6.4
+# @version 2.6.5
 #
 ############################
 
@@ -21,6 +21,7 @@
 
 # dev related
 .deployignore
+.distignore
 .gitmodules
 composer.json
 composer.lock
@@ -58,6 +59,8 @@ error_log
 # GitHub files
 .github
 .git
+.gitattributes
+.gitignore
 
 # Yarn and Node files
 .editorconfig
