@@ -96,7 +96,7 @@ class Core {
 		$filtered = wp_unslash( (string) $value );
 		$filtered = wp_check_invalid_utf8( $filtered );
 		$filtered = \preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
-		return \trim( $filtered );
+		return \trim( (string) $filtered );
 	}
 
 

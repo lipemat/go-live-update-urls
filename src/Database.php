@@ -141,7 +141,7 @@ class Database {
 
 		// Site 1's 'LIKE wp_%' will return all tables in the database,
 		// so we exclude all possible sub sites (e.g., wp_2, wp_3 up to 9).
-		$not_like = null;
+		$not_like = '';
 		if ( 1 === (int) $wpdb->blogid && is_multisite() ) {
 			for ( $i = 1; $i <= 9; $i ++ ) {
 				$not_like .= $wpdb->prepare( '%s,', $wpdb->prefix . $i );
@@ -233,7 +233,7 @@ class Database {
 
 		if ( $this->supports_skipping( $table ) ) {
 			$skip = esc_sql( implode( ',', (array) Skip_Rows::instance()->get_skipped( $table ) ) );
-			$primary = esc_sql( Skip_Rows::instance()->get_primary_key( $table ) );
+			$primary = esc_sql( (string) Skip_Rows::instance()->get_primary_key( $table ) );
 			$update_query .= " WHERE `{$primary}` NOT IN ({$skip})";
 		}
 

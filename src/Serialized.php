@@ -67,11 +67,11 @@ class Serialized {
 	/**
 	 * Go through every registered serialized table and update them one by one
 	 *
-	 * @param array $tables - The tables to update.
-	 *
 	 * @since 5.2.5 - Only update provided tables.
 	 *
-	 * @return int[]
+	 * @param array<int, string> $tables - The tables to update.
+	 *
+	 * @return array<string, int>
 	 */
 	public function update_all_serialized_tables( array $tables ) {
 		$serialized_tables = Database::instance()->get_serialized_tables();
@@ -81,7 +81,7 @@ class Serialized {
 			if ( ! \in_array( $table, $tables, true ) ) {
 				continue;
 			}
-			$counts[ $table ] = array_sum( array_map( function( $column ) use ( $table ) {
+			$counts[ $table ] = \array_sum( \array_map( function( $column ) use ( $table ) {
 				return $this->update_table( $table, $column );
 			}, (array) $columns ) );
 		}
@@ -293,7 +293,7 @@ class Serialized {
 	 * @return bool
 	 */
 	protected function has_missing_classes( $data ) {
-		if ( is_a( $data, \__PHP_Incomplete_Class::class ) ) {
+		if ( ! \is_array( $data ) && is_a( $data, \__PHP_Incomplete_Class::class ) ) {
 			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
 			foreach ( (array) $data as $key => $name ) {
 				if ( '__PHP_Incomplete_Class_Name' === $key ) {

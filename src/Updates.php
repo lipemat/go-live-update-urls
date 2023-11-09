@@ -190,24 +190,31 @@ class Updates {
 	 * the Serialized class. We simply provide the OLD and NEW URL and the
 	 * list of tables we are updating.
 	 *
-	 * @return int[]
+	 * @return array<string, int>
 	 */
-	public function update_serialized_values() {
+	public function update_serialized_values(): array {
 		$serialized = new Serialized( $this->old_url, $this->new_url );
 		$counts = $serialized->update_all_serialized_tables( $this->tables );
 
 		$doubled = $this->get_doubled_up_subdomain();
 		if ( null !== $doubled ) {
+			$keys = \array_keys( $counts );
 			$serialized = new Serialized( $doubled, $this->new_url );
-			$counts = array_combine( array_keys( $counts ), array_map( function ( $value, $subtract ) {
+			$counts = \array_combine( $keys, \array_map( function( $value, $subtract ) {
 				return $value - $subtract;
 			}, $counts, $serialized->update_all_serialized_tables( $this->tables ) ) );
+			if ( false === $counts ) {
+				return [];
+			}
 
-			// Remove an prepended subdomain like www. from email addresses.
+			// Remove a prepended subdomain like www. from email addresses.
 			$serialized = new Serialized( '@' . $this->new_url, '@' . $this->old_url );
-			$counts = array_combine( array_keys( $counts ), array_map( function ( $value, $subtract ) {
+			$counts = \array_combine( $keys, \array_map( function( $value, $subtract ) {
 				return $value - $subtract;
 			}, $counts, $serialized->update_all_serialized_tables( $this->tables ) ) );
+			if ( false === $counts ) {
+				return [];
+			}
 		}
 
 		return $counts;

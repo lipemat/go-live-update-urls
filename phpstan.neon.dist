@@ -3,9 +3,11 @@ includes:
     - %rootDir%/../../../rules.neon
     # Baseline file full of @todo
     - dev/phpstan-baseline.php
+    # PHP version specific ignores.
+    - dev/phpstan-phpVersion-ignores.php
 
 parameters:
-    level: 6
+    level: 8
     lipemat:
         allowedToBeExtended:
             - Go_Live_Update_Urls\Updaters\Updaters_Abstract

@@ -122,11 +122,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Serialized.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:update_all_serialized_tables\\(\\) has parameter \\$tables with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../src/Skip_Rows.php',

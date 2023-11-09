@@ -42,7 +42,7 @@ class Admin {
 	 * @return void
 	 */
 	public function validate_update_submission() {
-		if ( ! isset( $_POST[ static::NONCE ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ static::NONCE ] ) ), static::NONCE ) ) {
+		if ( ! isset( $_POST[ static::NONCE ] ) || false === wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ static::NONCE ] ) ), static::NONCE ) ) {
 			wp_die( esc_html__( 'Ouch! That hurt! You should not be here!', 'go-live-update-urls' ) );
 		}
 
