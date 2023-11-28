@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: domain, url, replace, database, tools, launching, domains, domain changes, url changes
 Requires at least: 5.8.0
 Tested up to: 6.4.1
-Requires PHP: 7.0.0
+Requires PHP: 7.2.0
 Stable tag: 6.6.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html

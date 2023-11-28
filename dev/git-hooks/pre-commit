@@ -12,7 +12,7 @@
 # @version 6.0.0
 
 JEST_CONFIG="jest/jest.config.ts"
-LEGACY_PHP_VERSION="7.1"
+LEGACY_PHP_VERSION="7.2"
 PHP_VERSION="8.1"
 PHPUNIT_DIR="../go-live-update-urls-pro/dev/wp-unit"
 

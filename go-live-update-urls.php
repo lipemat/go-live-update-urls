@@ -10,7 +10,7 @@
  * Domain Path: /languages/
  * Network: false
  * Requires at least: 5.8.0
- * Requires PHP: 7.0.0
+ * Requires PHP: 7.2.0
  *
  * @package go-live-update-urls
  */
