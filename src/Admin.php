@@ -122,6 +122,36 @@ class Admin {
 
 
 	/**
+	 * Render the tools page header.
+	 *
+	 * This is the same header used by the PRO version.
+	 *
+	 * @param string $url - URL to link the plugin name to.
+	 *
+	 * @return void
+	 */
+	public function render_admin_header( string $url ): void {
+		?>
+		<div class="go-live-header-wrap">
+			<div>
+				<h1 class="dashicons-before dashicons-update">
+					<a
+						href="<?php echo esc_url( $url ); ?>"
+						target="_blank"
+						rel="noopener noreferrer">
+						<?php esc_html_e( 'Go Live Update Urls', 'go-live-update-urls' ); ?>
+					</a>
+				</h1>
+			</div>
+			<div class="go-live-header-message">
+				<?php esc_html_e( 'Replaces all occurrences in the entire database of the Old URL with a New URL.', 'go-live-update-urls' ); ?>
+			</div>
+		</div>
+		<?php
+	}
+
+
+	/**
 	 * Output the Admin Page for using this plugin
 	 *
 	 * @since 5.0.0
@@ -132,21 +162,9 @@ class Admin {
 
 		?>
 		<div id="go-live-update-urls/admin-page">
-			<div class="go-live-header-wrap">
-				<div>
-					<h1 class="dashicons-before dashicons-update">
-						<a
-							href="https://wordpress.org/plugins/go-live-update-urls/"
-							target="_blank"
-							rel="noopener noreferrer">
-							<?php esc_html_e( 'Go Live Update Urls', 'go-live-update-urls' ); ?>
-						</a>
-					</h1>
-				</div>
-				<div class="go-live-header-message">
-					<?php esc_html_e( 'Replaces all occurrences in the entire database of the Old URL with a New URL.', 'go-live-update-urls' ); ?>
-				</div>
-			</div>
+			<?php
+			$this->render_admin_header( 'https://wordpress.org/plugins/go-live-update-urls/' );
+			?>
 			<form
 				method="post"
 				class="go-live-checkbox-form">
@@ -161,7 +179,7 @@ class Admin {
 						<?php esc_html_e( 'WordPress core tables', 'go-live-update-urls' ); ?>
 					</h3>
 					<div class="go-live-section">
-						<p class="description" style="color:green">
+						<p class="description" style="color:green;">
 							<strong>
 								<?php esc_attr_e( 'These tables are safe to update.', 'go-live-update-urls' ); ?>
 							</strong>
@@ -190,7 +208,7 @@ class Admin {
 							<?php esc_html_e( 'Tables created by plugins', 'go-live-update-urls' ); ?>
 						</h3>
 						<div class="go-live-section">
-							<p class="description" style="color:red">
+							<p class="description" style="color:red;">
 								<strong>
 									<?php
 									/* translators: <br /> <a> </a> */
