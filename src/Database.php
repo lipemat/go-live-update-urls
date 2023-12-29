@@ -75,7 +75,6 @@ class Database {
 		$tables = [
 			$wpdb->posts,
 			$wpdb->comments,
-			$wpdb->links,
 			$wpdb->options,
 			$wpdb->postmeta,
 			$wpdb->terms,
@@ -86,6 +85,10 @@ class Database {
 			$wpdb->users,
 			$wpdb->usermeta,
 		];
+
+		if ( isset( $wpdb->links ) ) {
+			$tables[] = $wpdb->links;
+		}
 
 		if ( is_multisite() ) {
 			$tables[] = $wpdb->blogs;
