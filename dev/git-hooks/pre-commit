@@ -9,7 +9,7 @@
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
-# @version 6.0.0
+# @version 6.1.0
 
 JEST_CONFIG="jest/jest.config.ts"
 LEGACY_PHP_VERSION="7.2"
@@ -158,20 +158,35 @@ function js_tests() {
 }
 js_tests &
 
-function js_css_lint() {
+function js_lint() {
     if [[ "$RESOURCE_FILES" ]]; then
-        echo "${YELLOW}[pre-commit]${BLUE} Running JS/CSS Lint... ${WHITE}"
-        OUTPUT=$(yarn run lint 2>&1)
+        echo "${YELLOW}[pre-commit]${BLUE} Running JS Lint... ${WHITE}"
+        OUTPUT=$(yarn lipemat-js-boilerplate lint --fix=false 2>&1)
         if [[ $? != 0 ]]; then
             echo
-            echo "${BLUE}JS/CSS Lint failed. Fix the error before commit!"
+            echo "${BLUE}JS Lint failed. Fix the error before commit!"
             echo "${RED}$OUTPUT"
             exit_reset_colors
         fi
-        echo "${YELLOW}[pre-commit]${GREEN} JS/CSS Lint Passed!${RESET_COLOR}"
+        echo "${YELLOW}[pre-commit]${GREEN} JS Lint Passed!${RESET_COLOR}"
     fi
 }
-js_css_lint &
+js_lint &
+
+function css_lint() {
+    if [[ "$RESOURCE_FILES" ]]; then
+        echo "${YELLOW}[pre-commit]${BLUE} Running CSS Lint... ${WHITE}"
+        OUTPUT=$(yarn stylelint js/src/**/*.pcss --cache 2>&1)
+        if [[ $? != 0 ]]; then
+            echo
+            echo "${BLUE}CSS Lint failed. Fix the error before commit!"
+            echo "${RED}$OUTPUT"
+            exit_reset_colors
+        fi
+        echo "${YELLOW}[pre-commit]${GREEN} CSS Lint Passed!${RESET_COLOR}"
+    fi
+}
+css_lint &
 
 # Go through each background task
 # If it sent exit code 1, it failed and the result from `wait` will be false.
