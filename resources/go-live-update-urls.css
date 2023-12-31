@@ -51,8 +51,13 @@ div.error {
 
 .go-live-checkbox-form {
 	display: block;
+	font-size: 13px;
 	margin: 0 auto;
 	max-width: 800px;
+}
+
+.go-live-checkbox-form * {
+	box-sizing: content-box;
 }
 
 .go-live-checkbox-form h3 {
