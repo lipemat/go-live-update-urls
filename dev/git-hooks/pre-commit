@@ -5,7 +5,11 @@
 # Test our code against various unit test systems and linters and prevent commit
 # if any of them fail.
 #
-# @notice Customized to support multiple versions of PHP is same runs.
+# @notice Customized
+# - Support multiple versions of PHP is same runs.
+# - Run PHPUnit tests on single and multisite.
+# - Do not lint JS.
+# - Custom directory and extension for CSS linting.
 #
 # @see /dev/git-hooks.sh for installation as symbolic link
 #
@@ -42,7 +46,7 @@ PROJECT=$(${PHP} -r "echo dirname(realpath('$0'), 3);")
 PROJECT=${PROJECT//\\//}
 
 PHP_FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD | grep \\.php)
-RESOURCE_FILES=$(git diff-index --cached --name-only HEAD | grep "\.js$\|\.jsx$\|\.ts$\|\.tsx$\|\.pcss$")
+RESOURCE_FILES=$(git diff-index --cached --name-only HEAD | grep "\.css$")
 
 if [[ ! "$PHP_FILES" ]]; then
     echo "${YELLOW}[pre-commit]${BLUE} No Lintable PHP Files Changed ${RESET_COLOR}"
@@ -161,25 +165,10 @@ function js_tests() {
 }
 js_tests &
 
-function js_lint() {
-    if [[ "$RESOURCE_FILES" ]]; then
-        echo "${YELLOW}[pre-commit]${BLUE} Running JS Lint... ${WHITE}"
-        OUTPUT=$(yarn lipemat-js-boilerplate lint --fix=false 2>&1)
-        if [[ $? != 0 ]]; then
-            echo
-            echo "${BLUE}JS Lint failed. Fix the error before commit!"
-            echo "${RED}$OUTPUT"
-            exit_reset_colors
-        fi
-        echo "${YELLOW}[pre-commit]${GREEN} JS Lint Passed!${RESET_COLOR}"
-    fi
-}
-js_lint &
-
 function css_lint() {
     if [[ "$RESOURCE_FILES" ]]; then
         echo "${YELLOW}[pre-commit]${BLUE} Running CSS Lint... ${WHITE}"
-        OUTPUT=$(yarn stylelint js/src/**/*.pcss --cache 2>&1)
+        OUTPUT=$(yarn resources/**/*.css --cache 2>&1)
         if [[ $? != 0 ]]; then
             echo
             echo "${BLUE}CSS Lint failed. Fix the error before commit!"
