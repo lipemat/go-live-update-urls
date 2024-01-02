@@ -44,9 +44,11 @@ div.error {
 }
 
 .go-live-header-message {
+	color: #3c434a;
 	font-weight: 600;
 	line-height: 20px;
 	margin: 0 10px 20px;
+	padding: 0 12px;
 }
 
 .go-live-checkbox-form {
@@ -93,5 +95,11 @@ div.error {
 @media only screen and (max-width: 960px) {
 	.go-live-checkbox-form {
 		max-width: calc(100% - 30px);
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.go-live-header-wrap h1::before {
+		margin-left: -10px !important;
 	}
 }
