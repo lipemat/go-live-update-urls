@@ -265,7 +265,7 @@ class Database {
 	public function count_column_urls( $table, $column, $old_url ): int {
 		global $wpdb;
 
-		$query = "SELECT SUM( ROUND( ( LENGTH( `${column}` ) - LENGTH( REPLACE( `${column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `${table}`";
+		$query = "SELECT SUM( ROUND( ( LENGTH( `{$column}` ) - LENGTH( REPLACE( `{$column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `{$table}`";
 
 		return (int) $wpdb->get_var( $wpdb->prepare( $query, [ $old_url, $old_url ] ) );
 	}
