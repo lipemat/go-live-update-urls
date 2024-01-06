@@ -6,6 +6,8 @@ trait Singleton {
 
 	/**
 	 * Actions and filters, which are called during `init`.
+	 *
+	 * @return void
 	 */
 	protected function hook() {
 	}

@@ -13,14 +13,14 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Core {
 	use Singleton;
 
-	const MEMORY_LIMIT = '256M';
-	const PLUGIN_FILE  = 'go-live-update-urls/go-live-update-urls.php';
+	public const MEMORY_LIMIT = '256M';
+	public const PLUGIN_FILE  = 'go-live-update-urls/go-live-update-urls.php';
 
 
 	/**
 	 * Actions and filters.
 	 */
-	protected function hook() {
+	protected function hook(): void {
 		add_action( 'go-live-update-urls/database/before-update', [ $this, 'raise_resource_limits' ], 0, 0 );
 		add_action( 'go-live-update-urls/database/after-update', [ $this, 'flush_caches' ] );
 		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [ $this, 'raise_memory_limit' ], 0, 0 );

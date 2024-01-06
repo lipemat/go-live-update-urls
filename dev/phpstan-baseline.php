@@ -12,11 +12,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Admin.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:hook\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:register_admin_page\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Admin.php',
@@ -33,11 +28,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Core\\:\\:flush_caches\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Core.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Core\\:\\:hook\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Core.php',
 ];
@@ -87,11 +77,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:hook\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:update_the_database\\(\\) has parameter \\$tables with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Database.php',
@@ -127,11 +112,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Skip_Rows.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Skip_Rows\\:\\:hook\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Skip_Rows.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$primary_keys type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Skip_Rows.php',
@@ -140,11 +120,6 @@ $ignoreErrors[] = [
 	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$skip type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Skip_Rows.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Updaters\\\\Repo\\:\\:hook\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Updaters/Repo.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',

@@ -13,19 +13,19 @@ use Go_Live_Update_Urls\Traits\Singleton;
 class Admin {
 	use Singleton;
 
-	const NAME = 'go-live-update-urls-settings';
+	public const NAME = 'go-live-update-urls-settings';
 
-	const OLD_URL          = 'old_url';
-	const NEW_URL          = 'new_url';
-	const NONCE            = 'go-live-update-urls/nonce/update-tables';
-	const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
-	const SUBMIT           = 'go-live-update-urls/input/submit';
+	public const OLD_URL          = 'old_url';
+	public const NEW_URL          = 'new_url';
+	public const NONCE            = 'go-live-update-urls/nonce/update-tables';
+	public const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
+	public const SUBMIT           = 'go-live-update-urls/input/submit';
 
 
 	/**
 	 * Add actions.
 	 */
-	protected function hook() {
+	protected function hook(): void {
 		if ( ! empty( $_POST[ self::SUBMIT ] ) ) { //phpcs:ignore
 			add_action( 'init', [ $this, 'validate_update_submission' ] );
 		}
