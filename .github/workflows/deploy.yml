@@ -3,7 +3,7 @@ env:
   # Can't specify VERSION, or the plugin will deploy in that version.  
   # VERSION: 3.0.0
   NODE_VERSION: '18.18.2'
-  PHP_VERSION: '8.1'
+  PHP_VERSION: '8.2'
   TZ: 'America/Chicago'
 
 on:
