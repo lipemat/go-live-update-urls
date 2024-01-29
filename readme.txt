@@ -5,7 +5,7 @@ Tags: domain, url, replace, database, tools, launching, domains, domain changes,
 Requires at least: 6.0.0
 Tested up to: 6.4.2
 Requires PHP: 7.2.0
-Stable tag: 6.7.1
+Stable tag: 6.7.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,7 +25,6 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Updates serialized data in core tables.
 * Easy to use admin page - which may be found under Tools.
 * Works on both multisite and single site installs.
-
 
 <h3>Updates Entire Site including</h3>
 * Posts
@@ -84,7 +83,6 @@ Manual Installation
 1. Upload the `go-live-upload-urls` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
-
 == Frequently Asked Questions ==
 
 = Where do you use this plugin? =
@@ -116,6 +114,12 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.7.2 =
+* Fixed deprecated notices in PHP 8.2.
+* Introduced `go_live_update_urls_sanitize_field` function.
+* Misc code improvements.
+* Tested to WordPress version 6.4.2.
+
 = 6.7.1 =
 * Made admin styles more resilient to style conflicts.
 * Added support for sites which don't include the `wp_links` table.
@@ -233,7 +237,7 @@ If you find you are running into issues with custom tables, you may want to chec
 = 6.2.2 =
 * Pass option value when flushing Elementor cache to prevent edge case conflicts.
 * Improved counting of urls across subdomains.
-* Improved counting of urls across serialized data. 
+* Improved counting of urls across serialized data.
 * Support replacing non subdomain values which duplicate because the old URL exists within the new URL.
 * Introduced `go-live-update-urls/database/after-counting` action.
 * Introduced `go-live-update-urls/database/before-counting` action
@@ -246,18 +250,18 @@ If you find you are running into issues with custom tables, you may want to chec
 * Fix spacing of banners on tools page.
 * Improved PHPCS implementation.
 
-= 6.2.0 = 
+= 6.2.0 =
 * Redesign tools page for a modern block look.
 * Improved various verbiage.
 * Update all translations.
 * More gracefully handle version conflicts with PRO.
 * Support for PRO version 6.2.0.
 
-= 6.1.4 = 
+= 6.1.4 =
 * Support updating `registration_log` and `signups` tables.
 * Make `get_doubled_up_subdomain` method public.
 
-= 6.1.3 = 
+= 6.1.3 =
 * Support WordPress version 5.5.1
 
 = 6.1.2 =
@@ -293,12 +297,12 @@ If you find you are running into issues with custom tables, you may want to chec
 * Introduced `go-live-update-urls/views/admin-tools-page/disable-description` filter.
 * Cleanup some long deprecated code.
 
-= 5.2.12 = 
+= 5.2.12 =
 * Support for WordPress version 5.3.0
 * Officially drop support for PHP 5.4 in favor of 5.6.0
 
 = 5.2.0 =
-* Support URL Encoded Urls within serialized data 
+* Support URL Encoded Urls within serialized data
 * Support JSON Encoded Urls within serialized data
 
 = 5.1.0 =
