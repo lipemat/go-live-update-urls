@@ -2,31 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
-	'count' => 7,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:admin_page\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:register_admin_page\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:render_check_boxes\\(\\) has parameter \\$tables with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Admin\\:\\:success\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Admin.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Core\\:\\:flush_caches\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Core.php',
@@ -47,27 +22,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:count_database_urls\\(\\) has parameter \\$tables with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_all_table_names\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_column_types\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_core_tables\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_custom_plugin_tables\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Database.php',
 ];

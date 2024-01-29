@@ -48,17 +48,17 @@ class Database {
 	/**
 	 * Get the list of tables that were not create by WP core
 	 *
-	 * @return array
+	 * @return string[]
 	 */
-	public function get_custom_plugin_tables() {
+	public function get_custom_plugin_tables(): array {
 		$core_tables = $this->get_core_tables();
 		$all_tables = $this->get_all_table_names();
-		$all_tables = array_flip( $all_tables );
+		$all_tables = \array_flip( $all_tables );
 		foreach ( $core_tables as $_table ) {
 			unset( $all_tables[ $_table ] );
 		}
 
-		return apply_filters( 'go-live-update-urls/database/plugin-tables', array_keys( $all_tables ) );
+		return (array) apply_filters( 'go-live-update-urls/database/plugin-tables', \array_keys( $all_tables ) );
 	}
 
 
@@ -67,7 +67,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function get_core_tables() {
 		global $wpdb;
@@ -103,7 +103,7 @@ class Database {
 			}
 		}
 
-		return apply_filters( 'go-live-update-urls/database/core-tables', $tables );
+		return (array) apply_filters( 'go-live-update-urls/database/core-tables', $tables );
 	}
 
 
@@ -114,9 +114,9 @@ class Database {
 	 *
 	 * @since 6.1.0
 	 *
-	 * @return array
+	 * @return string[]
 	 */
-	public function get_column_types() {
+	public function get_column_types(): array {
 		$types = [
 			'char',
 			'longtext',
@@ -126,7 +126,7 @@ class Database {
 			'tinytext',
 			'varchar',
 		];
-		return apply_filters( 'go-live-update-urls/database/column-types', $types, $this );
+		return (array) apply_filters( 'go-live-update-urls/database/column-types', $types, $this );
 	}
 
 
@@ -190,15 +190,15 @@ class Database {
 	 * Count all occurrences of the old URL within a provided
 	 * list of tables.
 	 *
-	 * @param string $old_url - the old URL.
-	 * @param string $new_url - the new URL.
-	 * @param array  $tables  - the tables we are going to update.
-	 *
 	 * @since 5.0.0
+	 *
+	 * @param string   $old_url - the old URL.
+	 * @param string   $new_url - the new URL.
+	 * @param string[] $tables  - the tables we are going to update.
 	 *
 	 * @return int[]
 	 */
-	public function count_database_urls( $old_url, $new_url, array $tables ) {
+	public function count_database_urls( string $old_url, string $new_url, array $tables ): array {
 		do_action( 'go-live-update-urls/database/before-counting', $old_url, $new_url, $tables, $this );
 		$tables = apply_filters( 'go-live-update-urls/database/update-tables', $tables, $this );
 
@@ -208,7 +208,7 @@ class Database {
 			$counts[ $_table ] = $updates->count_table_urls( $_table );
 		}
 
-		$counts = apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
+		$counts = (array) apply_filters( 'go-live-update-urls/database/counted/counts', $counts, $old_url, $new_url, $tables, $this );
 
 		do_action( 'go-live-update-urls/database/after-counting', $old_url, $new_url, $tables, $this );
 
@@ -219,12 +219,12 @@ class Database {
 	/**
 	 * Update an individual table's column.
 	 *
-	 * @param string $table   -  Table to update.
+	 * @since 5.3.0
+	 *
+	 * @param string $table   - Table to update.
 	 * @param string $column  - Column to update.
 	 * @param string $old_url - Old URL.
 	 * @param string $new_url - New URL.
-	 *
-	 * @since 5.3.0
 	 *
 	 * @return int
 	 */

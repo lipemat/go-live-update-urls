@@ -54,9 +54,9 @@ class Core {
 	 *
 	 * @ticket #7751
 	 *
-	 * @see   \Elementor\Settings::update_css_print_method
-	 *
 	 * @since 6.2.1
+	 *
+	 * @see   \Elementor\Settings::update_css_print_method
 	 */
 	public function flush_caches() {
 		// Special flushing of CSS cache for Elementor #7751.
@@ -105,10 +105,10 @@ class Core {
 	 *
 	 * Mostly used for unit testing and future WP-CLI command
 	 *
+	 * @since 5.0.1
+	 *
 	 * @param string $old_url - The old URL.
 	 * @param string $new_url - The new URL.
-	 *
-	 * @since 5.0.1
 	 *
 	 * @return int[]
 	 */
