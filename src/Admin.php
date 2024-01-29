@@ -51,17 +51,14 @@ class Admin {
 			return;
 		}
 
-		$old_url = Core::instance()->sanitize_field( (string) $_POST[ static::OLD_URL ] ); //phpcs:ignore
-		$new_url = Core::instance()->sanitize_field( (string) $_POST[ static::NEW_URL ] ); //phpcs:ignore
-		if ( empty( $old_url ) || empty( $new_url ) || empty( $_POST[ static::TABLE_INPUT_NAME ] ) ) {
+		$old_url = go_live_update_urls_sanitize_field( (string) $_POST[ static::OLD_URL ] );
+		$new_url = go_live_update_urls_sanitize_field( (string) $_POST[ static::NEW_URL ] );
+		if ( '' === $old_url || '' === $new_url || ! isset( $_POST[ static::TABLE_INPUT_NAME ] ) ) {
 			$this->failure_message();
 			return;
 		}
 
-		$tables = \array_filter( \array_map( [
-			Core::instance(),
-			'sanitize_field',
-		], (array) $_POST[ self::TABLE_INPUT_NAME ] ) ); //phpcs:ignore
+		$tables = \array_filter( \array_map( 'go_live_update_urls_sanitize_field', (array) $_POST[ static::TABLE_INPUT_NAME ] ) );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 

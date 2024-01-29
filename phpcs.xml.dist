@@ -18,12 +18,21 @@
 	<config name="minimum_wp_version" value="6.0.0" />
 
 	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
-    <config name="testVersion" value="7.2-" />
+	<config name="testVersion" value="7.2-" />
 
 	<rule ref="LipePlugin">
 		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />
 		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching" />
 		<exclude name="WordPress.DB.PreparedSQL.NotPrepared" />
+	</rule>
+
+	<!-- These don't require extra un-slashing and sanitization -->
+	<rule ref="WordPress.Security.ValidatedSanitizedInput">
+		<properties>
+			<property name="customUnslashingSanitizingFunctions" type="array">
+				<element value="go_live_update_urls_sanitize_field" />
+			</property>
+		</properties>
 	</rule>
 
 	<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpressnamingconventionsprefixallglobals-prefix-everything-in-the-global-namespace -->

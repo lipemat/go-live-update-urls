@@ -86,17 +86,17 @@ class Core {
 	 * Like `sanitize_text_field` except we don't remove
 	 * URL encoded characters and HTML tags.
 	 *
-	 * @since 6.3.4
+	 * @see        go_live_update_urls_sanitize_field()
+	 *
+	 * @deprecated in favor of go_live_update_urls_sanitize_field
 	 *
 	 * @param int|float|string $value - User provided value to sanitize.
 	 *
 	 * @return string
 	 */
 	public function sanitize_field( $value ): string {
-		$filtered = wp_unslash( (string) $value );
-		$filtered = wp_check_invalid_utf8( $filtered );
-		$filtered = \preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
-		return \trim( (string) $filtered );
+		_deprecated_function( __METHOD__, '6.7.2', 'go_live_update_urls_sanitize_field' );
+		return go_live_update_urls_sanitize_field( $value );
 	}
 
 

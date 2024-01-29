@@ -96,3 +96,23 @@ function go_live_update_urls_pro_plugin_notice() {
 	</div>
 	<?php
 }
+
+/**
+ * Sanitize a field in a way that PHPCS may be configured to honor
+ * the function as a sanitization callback.
+ *
+ * Like `sanitize_text_field` except we don't remove
+ * URL encoded characters and HTML tags.
+ *
+ * @since 6.7.2
+ *
+ * @param int|float|string $value - User provided value to sanitize.
+ *
+ * @return string
+ */
+function go_live_update_urls_sanitize_field( $value ): string {
+	$filtered = wp_unslash( (string) $value );
+	$filtered = wp_check_invalid_utf8( $filtered );
+	$filtered = \preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
+	return \trim( (string) $filtered );
+}
