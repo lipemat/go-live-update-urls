@@ -9,7 +9,7 @@
  * Text Domain: go-live-update-urls
  * Domain Path: /languages/
  * Network: false
- * Requires at least: 6.0.0
+ * Requires at least: 6.1.0
  * Requires PHP: 7.2.0
  *
  * @package go-live-update-urls

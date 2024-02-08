@@ -15,7 +15,7 @@
 	<arg name="cache" value="./.phpcs.cache" />
 
 	<!-- @see https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#various-sniffs-set-the-minimum-supported-wp-version -->
-	<config name="minimum_wp_version" value="6.0.0" />
+	<config name="minimum_wp_version" value="6.1.0" />
 
 	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
 	<config name="testVersion" value="7.2-" />
