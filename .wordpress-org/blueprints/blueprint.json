@@ -1,5 +1,6 @@
 {
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/admin.php?page=go-live-update-urls-settings",
   "preferredVersions": {
     "php": "8.0",
     "wp": "6.4.3"
@@ -24,6 +25,12 @@
       },
       "options": {
         "activate": true
+      }
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "Go Live Update Urls - Demo"
       }
     }
   ]
