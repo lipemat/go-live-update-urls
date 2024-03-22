@@ -1,7 +1,7 @@
 === Go Live Update Urls ===
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: domains, update urls, search and replace, database
+Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.1.0
 Tested up to: 6.4.3
 Requires PHP: 7.2.0
