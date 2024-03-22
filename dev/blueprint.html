@@ -1,0 +1,62 @@
+<!--
+To show this preview on the plugins page in wordpress.org
+update the `.wordpress-org/blueprints/blueprint.json` file.
+
+@link https://make.wordpress.org/meta/2023/11/22/plugin-directory-preview-button-revisited/
+@link https://make.wordpress.org/meta/2023/12/08/plugin-previews-are-now-available-for-opt-in/
+
+Documentation
+@link https://wordpress.github.io/wordpress-playground/blueprints-api/data-format
+
+-->
+
+
+<iframe id="wp-playground" style="width: 1200px; height: 800px"></iframe>
+<script type="module">
+	import {startPlaygroundWeb} from 'https://playground.wordpress.net/client/index.js';
+
+	const client = await startPlaygroundWeb( {
+		iframe: document.getElementById( 'wp-playground' ),
+		remoteUrl: `https://playground.wordpress.net/remote.html`,
+		blueprint: {
+			'$schema': 'https://playground.wordpress.net/blueprint-schema.json',
+			'landingPage': '/wp-admin/admin.php?page=go-live-update-urls-settings',
+			'preferredVersions': {
+				'php': '8.0',
+				'wp': '6.4.3'
+			},
+			'phpExtensionBundles': [
+				'kitchen-sink'
+			],
+			'features': {
+				'networking': true
+			},
+			'steps': [
+				{
+					'step': 'login',
+					'username': 'admin',
+					'password': 'password'
+				},
+				{
+					'step': 'installPlugin',
+					'pluginZipFile': {
+						'resource': 'wordpress.org/plugins',
+						'slug': 'go-live-update-urls'
+					},
+					'options': {
+						'activate': true
+					}
+				},
+				{
+					'step': 'setSiteOptions',
+					'options': {
+						'blogname': 'Go Live Update Urls - Demo',
+					}
+				},
+			]
+		}
+	} );
+
+	const response = await client.run();
+	console.log( response.text );
+</script>
