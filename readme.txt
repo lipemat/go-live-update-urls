@@ -51,7 +51,7 @@ Troubleshooting information <a target="_blank" href="https://onpointplugins.com/
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
 
 <h3>Go PRO</h3>
-Our [PRO Version](https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org) brings additional functionality to this plugin. Check out [the demo](https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-demo/?utm_source=demo&utm_campaign=gopro&utm_medium=dot-org) to see if the PRO version is useful for you.
+Our [PRO version](https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org) brings additional functionality to this plugin. Check out [the demo](https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-demo/?utm_source=demo&utm_campaign=gopro&utm_medium=dot-org) to see if the PRO version is useful for you.
 
 * Updates database tables created by plugins without fear of breaking.
 * Database tables are organized into simple intuitive sections.
