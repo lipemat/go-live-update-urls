@@ -1,9 +1,9 @@
 === Go Live Update Urls ===
 Contributors: Mat Lipe, onpointplugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Tags: domain, url, replace, database, tools, launching, domains, domain changes, url changes
-Requires at least: 6.0.0
-Tested up to: 6.4.2
+Tags: search and replace, database, urls, domain, update urls
+Requires at least: 6.1.0
+Tested up to: 6.4.3
 Requires PHP: 7.2.0
 Stable tag: 6.7.2
 License: GPLv3 or later
@@ -14,11 +14,6 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 <h3>Change the domain on your site with one click.</h3>
 
 Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site.
-
-<strong>Check out <a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org" target="_blank">Go Live Update Urls PRO</a> for more features including support for tables created by plugins, the ability to test a URL before updating, update history, real time reporting, priority support, and so much more!</strong>
-
-<blockquote><a href="https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-usage/go-live-update-urls-pro-url-counting/?utm_source=readme&utm_campaign=url-counting&utm_medium=dot-org" target="_blank">PRO version 6.11.0</a> is now available with real time reporting of urls, which will be and were updated!</blockquote>
-
 
 <h3>Features</h3>
 * Database table by table selection.
@@ -37,23 +32,6 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Options and settings
 * And much more
 
-<h3>PRO Features</h3>
-* Updates database tables created by plugins without fear of breaking.
-* Database tables are organized into simple intuitive sections.
-* Ability to choose between a full table or sections.
-* Updates serialized data across any table.
-* Updates encoded URL across any table.
-* Updates JSON data across any table.
-* Ability to test URL changes before running them.
-* URL testing report is provided for peace of mind.
-* Option to fix common mistakes automatically when entering a URL.
-* View and use history of your site's address.
-* Predictive URLs automatically fill in the "Old URL" and "New URL.".
-* Real time reporting of count and location of urls which will be updated. **NEW**
-* Report of count and location of urls which were updated. **NEW**
-* WP-CLI support for updating URLs from the command line.
-* Priority Support with access to members only support area.
-
 <h3>Domain Update Process</h3>
 Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/how-to-change-your-domain-name-on-wordpress/">may be found here</a>.
 
@@ -71,6 +49,25 @@ Troubleshooting information <a target="_blank" href="https://onpointplugins.com/
 
 <h3>Contribute</h3>
 Send pull requests via the <a href="https://github.com/lipemat/go-live-update-urls/">Github Repo</a>
+
+<h3>Go PRO</h3>
+Our [PRO Version](https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org) brings additional functionality to this plugin. Check out [the demo](https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-demo/?utm_source=demo&utm_campaign=gopro&utm_medium=dot-org) to see if the PRO version is useful for you.
+
+* Updates database tables created by plugins without fear of breaking.
+* Database tables are organized into simple intuitive sections.
+* Ability to choose between a full table or sections.
+* Updates serialized data across any table.
+* Updates encoded URL across any table.
+* Updates JSON data across any table.
+* Ability to test URL changes before running them.
+* URL testing report is provided for peace of mind.
+* Option to fix common mistakes automatically when entering a URL.
+* View and use history of your site's address.
+* Predictive URLs automatically fill in the "Old URL" and "New URL.".
+* Real time reporting of count and location of urls which will be updated. **NEW**
+* Report of count and location of urls which were updated. **NEW**
+* WP-CLI support for updating URLs from the command line.
+* Priority Support with access to members only support area.
 
 == Installation ==
 
