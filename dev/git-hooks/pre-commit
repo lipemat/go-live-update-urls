@@ -63,11 +63,11 @@ function exit_reset_colors() {
 # Must run them consecutively to prevent conflicts.
 function php_units() {
 	php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit-legacy.xml.dist'
-    php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit-legacy-single.xml.dist'
-    php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit.xml.dist'
-	php_unit "phpunit ${LEGACY_PHP_VERSION}" 'phpunit-single.xml.dist'
+    php_unit "phpunit ${LEGACY_PHP_VERSION}" "phpunit-legacy.xml.dist --bootstrap=${PHPUNIT_DIR}/bootstrap-legacy-single.php"
+    php_unit "phpunit ${LEGACY_PHP_VERSION}" "phpunit-legacy.xml.dist --bootstrap=${PHPUNIT_DIR}/bootstrap-single.php"
+	php_unit "phpunit ${LEGACY_PHP_VERSION}" "phpunit-legacy.xml.dist --bootstrap=${PHPUNIT_DIR}/bootstrap.php"
 	php_unit "phpunit ${PHP_VERSION}" 'phpunit.xml.dist'
-    php_unit "phpunit ${PHP_VERSION}" 'phpunit-single.xml.dist'
+    php_unit "phpunit ${PHP_VERSION}" "phpunit.xml.dist --bootstrap=${PHPUNIT_DIR}/bootstrap-single.php"
 }
 
 function php_unit() {
