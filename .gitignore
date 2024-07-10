@@ -1,6 +1,6 @@
 ################################
 #
-# @version 6.0.3
+# @version 6.2.1
 #
 ################################
 
@@ -9,6 +9,7 @@
 
 # Language files compliled during deployment.
 languages/*.json
+languages/*.php
 # JS dist files
 js/dist
 # Composer files
@@ -27,14 +28,18 @@ dev/translate-cli/vendor
 .cvs
 .eslintcache
 .phpcs.cache
+.phpunit.cache
 .phpunit.result.cache
 .project
 .ready
+.running
 .sass-cache
 .stylelintcache
 .svn
+.vscode
 Thumbs.db
 ehthumbs.db
+tsconfig.tsbuildinfo
 
 # log files
 *.log
@@ -69,6 +74,7 @@ node_modules
 # theme - compiled files
 wp-content/themes/core/js/dist
 wp-content/themes/core/_css-modules-json
+wp-content/themes/core/css/*.php
 wp-content/themes/core/css/dist
 .revision
 deploy
@@ -103,3 +109,5 @@ deploy
 atlassian-ide-plugin.xml
 # Editor-based Rest Client
 .idea/httpRequests
+# Copilot
+.idea/copilot

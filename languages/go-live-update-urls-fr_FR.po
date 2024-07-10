@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update Urls\n"
-"POT-Creation-Date: 2021-09-16 15:32-0400\n"
-"PO-Revision-Date: 2021-09-16 15:32-0400\n"
+"POT-Creation-Date: 2024-07-10 14:05-0400\n"
+"PO-Revision-Date: 2024-07-10 14:06-0400\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: .yarn\n"
 
-#: go-live-update-urls.php:91
+#: go-live-update-urls.php:93
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid ""
@@ -32,15 +32,15 @@ msgstr ""
 "Go Live Update Urls nécessite %1$sGo Live Update Urls PRO %3$s -%2$s. "
 "Veuillez mettre à jour ou désactiver la version PRO."
 
-#: src/Admin.php:44
+#: src/Admin.php:46
 msgid "Ouch! That hurt! You should not be here!"
 msgstr "Aie! Ça fait mal! Tu ne devrais pas être ici!"
 
-#: src/Admin.php:78
+#: src/Admin.php:80
 msgid "The urls in the checked tables have been updated."
 msgstr "Les URL dans les tables vérifiées ont été mises à jour."
 
-#: src/Admin.php:97
+#: src/Admin.php:99
 msgid ""
 "You must select tables and fill out both the Old URL and New URL to update "
 "urls!"
@@ -49,11 +49,11 @@ msgstr ""
 "nouvelle URL pour mettre à jour les URL!"
 
 #. Plugin Name of the plugin/theme
-#: src/Admin.php:137
+#: src/Admin.php:139
 msgid "Go Live Update Urls"
 msgstr "Go Live Update Urls"
 
-#: src/Admin.php:142
+#: src/Admin.php:144
 msgid ""
 "Replaces all occurrences in the entire database of the Old URL with a New "
 "URL."
@@ -61,23 +61,23 @@ msgstr ""
 "Remplace tous les occurrences de l’ensemble de la base de données de "
 "l’ancienne URL par une nouvelle URL."
 
-#: src/Admin.php:156
+#: src/Admin.php:176
 msgid "WordPress core tables"
 msgstr "Tables de base WordPress"
 
-#: src/Admin.php:161
+#: src/Admin.php:181
 msgid "These tables are safe to update."
 msgstr "Toutes les tables peuvent être mises à jour en toute sécurité."
 
-#: src/Admin.php:171 src/Admin.php:201
+#: src/Admin.php:191 src/Admin.php:221
 msgid "Only the checked tables will be updated."
 msgstr "Seules les tables vérifiées seront mises à jour."
 
-#: src/Admin.php:185
+#: src/Admin.php:205
 msgid "Tables created by plugins"
 msgstr "Tables créées par des plugins"
 
-#: src/Admin.php:192
+#: src/Admin.php:212
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -88,15 +88,15 @@ msgstr ""
 "plugin! %1$sPour mettre à jour les tables créées par les plugins, utilisez "
 "la version %2$sPRO%3$s."
 
-#: src/Admin.php:221 src/Admin.php:231
+#: src/Admin.php:241 src/Admin.php:251
 msgid "Old URL"
 msgstr "Ancienne URL"
 
-#: src/Admin.php:237 src/Admin.php:247
+#: src/Admin.php:257 src/Admin.php:267
 msgid "New URL"
 msgstr "Nouvelle URL"
 
-#: src/Admin.php:262
+#: src/Admin.php:282
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
@@ -104,34 +104,42 @@ msgstr ""
 "Utilisez la version %1$sPRO%2$s pour tester les mises à jour de l’URL avant "
 "de les effectuer."
 
-#: src/Admin.php:270
+#: src/Admin.php:290
 msgid "Update Urls"
 msgstr "Mettre à jour les Urls"
 
-#: src/Updaters/Updaters_Abstract.php:104
-msgid "You must implement apply_rule_to_url with an override"
-msgstr "Vous devez mettre en œuvre apply_rule_to_url avec un remplacement"
+#: src/Core.php:136
+msgid "Settings"
+msgstr "Paramètres"
+
+#: src/Core.php:138
+msgid "Go PRO"
+msgstr "Passer à la version pro"
+
+#: src/Skip_Rows.php:87
+msgid "You must set a table and DB id before skipping a row."
+msgstr ""
 
 #. Plugin URI of the plugin/theme
 msgid "https://onpointplugins.com/go-live-update-urls/"
 msgstr "https://onpointplugins.com/go-live-update-urls/"
 
 #. Description of the plugin/theme
-msgid ""
-"Updates all the Urls in the database to point to a new URL when making your "
-"site live or changing domains."
+msgid "Updates every URL on your site when going live or changing domains."
 msgstr ""
-"Met à jour toutes les URL dans la base de données pour pointer vers une "
-"nouvelle URL lors de la mise en ligne de votre site ou du changement de "
-"domaine."
+"Met à jour toutes les URL de votre site lors de la mise en ligne ou du "
+"changement de domaine."
 
 #. Author of the plugin/theme
 msgid "OnPoint Plugins"
 msgstr "OnPoint Plugins"
 
 #. Author URI of the plugin/theme
-msgid "https://onpointplugins.com/"
-msgstr "https://onpointplugins.com/"
+msgid "https://onpointplugins.com"
+msgstr "https://onpointplugins.com"
+
+#~ msgid "You must implement apply_rule_to_url with an override"
+#~ msgstr "Vous devez mettre en œuvre apply_rule_to_url avec un remplacement"
 
 #~ msgid ""
 #~ "Like any other database updating tool, you should always perform a backup "

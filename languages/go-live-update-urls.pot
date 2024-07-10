@@ -5,7 +5,7 @@ msgstr ""
 "urls\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2021-09-16 15:31-0400\n"
+"POT-Creation-Date: 2024-07-10 14:05-0400\n"
 "PO-Revision-Date: 2016-05-15 10:47-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-SearchPathExcluded-1: .yarn\n"
 
-#: go-live-update-urls.php:91
+#: go-live-update-urls.php:93
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid ""
@@ -32,48 +32,48 @@ msgid ""
 "update or deactivate the PRO version."
 msgstr ""
 
-#: src/Admin.php:44
+#: src/Admin.php:46
 msgid "Ouch! That hurt! You should not be here!"
 msgstr ""
 
-#: src/Admin.php:78
+#: src/Admin.php:80
 msgid "The urls in the checked tables have been updated."
 msgstr ""
 
-#: src/Admin.php:97
+#: src/Admin.php:99
 msgid ""
 "You must select tables and fill out both the Old URL and New URL to update "
 "urls!"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-#: src/Admin.php:137
+#: src/Admin.php:139
 msgid "Go Live Update Urls"
 msgstr ""
 
-#: src/Admin.php:142
+#: src/Admin.php:144
 msgid ""
 "Replaces all occurrences in the entire database of the Old URL with a New "
 "URL."
 msgstr ""
 
-#: src/Admin.php:156
+#: src/Admin.php:176
 msgid "WordPress core tables"
 msgstr ""
 
-#: src/Admin.php:161
+#: src/Admin.php:181
 msgid "These tables are safe to update."
 msgstr ""
 
-#: src/Admin.php:171 src/Admin.php:201
+#: src/Admin.php:191 src/Admin.php:221
 msgid "Only the checked tables will be updated."
 msgstr ""
 
-#: src/Admin.php:185
+#: src/Admin.php:205
 msgid "Tables created by plugins"
 msgstr ""
 
-#: src/Admin.php:192
+#: src/Admin.php:212
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
@@ -81,26 +81,34 @@ msgid ""
 "%1$sTo update tables created by plugins, use the %2$sPRO version%3$s."
 msgstr ""
 
-#: src/Admin.php:221 src/Admin.php:231
+#: src/Admin.php:241 src/Admin.php:251
 msgid "Old URL"
 msgstr ""
 
-#: src/Admin.php:237 src/Admin.php:247
+#: src/Admin.php:257 src/Admin.php:267
 msgid "New URL"
 msgstr ""
 
-#: src/Admin.php:262
+#: src/Admin.php:282
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
 msgstr ""
 
-#: src/Admin.php:270
+#: src/Admin.php:290
 msgid "Update Urls"
 msgstr ""
 
-#: src/Updaters/Updaters_Abstract.php:104
-msgid "You must implement apply_rule_to_url with an override"
+#: src/Core.php:136
+msgid "Settings"
+msgstr ""
+
+#: src/Core.php:138
+msgid "Go PRO"
+msgstr ""
+
+#: src/Skip_Rows.php:87
+msgid "You must set a table and DB id before skipping a row."
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -108,9 +116,7 @@ msgid "https://onpointplugins.com/go-live-update-urls/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid ""
-"Updates all the Urls in the database to point to a new URL when making your "
-"site live or changing domains."
+msgid "Updates every URL on your site when going live or changing domains."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -118,5 +124,5 @@ msgid "OnPoint Plugins"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://onpointplugins.com/"
+msgid "https://onpointplugins.com"
 msgstr ""
