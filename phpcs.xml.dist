@@ -7,7 +7,6 @@
 
 	<!-- Include when not specified -->
 	<file>./</file>
-	<exclude-pattern>*/*.l10n.php</exclude-pattern>
 
 	<!-- Show file path based on project root. -->
 	<arg name="basepath" value="." />
