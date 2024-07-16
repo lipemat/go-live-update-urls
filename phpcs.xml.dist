@@ -18,7 +18,7 @@
 	<config name="minimum_wp_version" value="6.1" />
 
 	<!-- @see https://github.com/PHPCompatibility/PHPCompatibilityWP#how-to-use -->
-	<config name="testVersion" value="7.2-" />
+	<config name="testVersion" value="7.4-" />
 
 	<rule ref="LipePlugin">
 		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />

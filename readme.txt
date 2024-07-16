@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.1.0
 Tested up to: 6.5.5
-Requires PHP: 7.2.0
+Requires PHP: 7.4.0
 Stable tag: 6.7.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
