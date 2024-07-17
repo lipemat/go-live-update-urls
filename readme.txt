@@ -5,7 +5,7 @@ Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.2.0
 Tested up to: 6.6.0
 Requires PHP: 7.4.0
-Stable tag: 6.7.3
+Stable tag: 6.8.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -111,6 +111,14 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 6.8.0 =
+* Added support for PHP based translations.
+* Bumped required WordPress version to 6.2.0.
+* Dropped support for PHP 7.2 in favor of 7.4+.
+* Tested to WordPress 6.6.0.
+* Officially added support for PHP 8.3.
+* Required PRO version 6.13.0+.
+
 = 6.7.3 =
 * Improved the readme.
 * Added a plugin domain to the translation files headers.
