@@ -32,13 +32,10 @@ class Database {
 			$wpdb->usermeta    => 'meta_value',
 		];
 
-		// We are not going to update site meta if we are not on main blog.
+		// We are not going to update site meta if we are not on the main blog.
 		if ( is_multisite() ) {
 			$serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
-			// WP 5.0.0+.
-			if ( isset( $wpdb->blogmeta ) ) {
-				$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
-			}
+			$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
 		}
 
 		return apply_filters( 'go-live-update-urls/database/serialized-tables', $serialized_tables );

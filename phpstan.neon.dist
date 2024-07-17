@@ -27,6 +27,3 @@ parameters:
         - # Serialized data has unknown keys which require variables.
             message: '#^Variable property access on#'
             path: src/Serialized.php
-        - # Remove once the WP version use for wordpress-legacy >= 6.2.
-            message: '#^Function apply_filters invoked with [3456789] parameters, 2 required\.$#'
-            reportUnmatched: false
