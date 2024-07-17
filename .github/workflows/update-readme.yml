@@ -1,7 +1,9 @@
 name: Plugin asset/readme update
 env:
+  # Can't specify the VERSION, or the plugin will deploy in that version.  
+  # VERSION: 2.0.0
   IGNORE_OTHER_FILES: true
-  TZ: 'America/Chicago'
+  TZ: 'America/New_York'
 
 on:
   push:
@@ -12,7 +14,7 @@ jobs:
     name: Push to trunk
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: WordPress.org plugin asset/readme update
         uses: 10up/action-wordpress-plugin-asset-update@stable
         env:

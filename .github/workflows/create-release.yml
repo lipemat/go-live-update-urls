@@ -3,8 +3,8 @@
 name: Create GitHub Release
 run-name: Create release for ${{ github.ref_name }} on GitHub.
 env:
-  VERSION: 2.0.3
-
+  VERSION: 2.1.0
+  
 on:
   push:
     tags-ignore:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Version ${{ github.ref_name }}
           draft: false
