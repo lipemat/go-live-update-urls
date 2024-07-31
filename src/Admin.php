@@ -15,6 +15,9 @@ class Admin {
 
 	public const NAME = 'go-live-update-urls-settings';
 
+	public const CAPABILITY  = 'manage_options';
+	public const PARENT_MENU = 'tools.php';
+
 	public const OLD_URL          = 'old_url';
 	public const NEW_URL          = 'new_url';
 	public const NONCE            = 'go-live-update-urls/nonce/update-tables';
@@ -111,10 +114,7 @@ class Admin {
 	 * @since 5.0.0
 	 */
 	public function register_admin_page(): void {
-		add_management_page( 'Go Live Update Urls', 'Go Live', 'manage_options', static::NAME, [
-			$this,
-			'admin_page',
-		] );
+		add_submenu_page( self::PARENT_MENU, 'Go Live Update Urls', 'Go Live', self::CAPABILITY, self::NAME, [ $this, 'admin_page' ] );
 	}
 
 
