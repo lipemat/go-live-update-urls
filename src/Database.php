@@ -18,7 +18,7 @@ class Database {
 	 *
 	 * @since   5.0.0
 	 *
-	 * @return array( %table_name% => %table_column% )
+	 * @return array<string, string> - array( %table_name% => %table_column% )
 	 */
 	public function get_serialized_tables() {
 		global $wpdb;
@@ -133,7 +133,7 @@ class Database {
 	 *
 	 * @since 5.0.1
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function get_all_table_names() {
 		global $wpdb;
@@ -157,9 +157,9 @@ class Database {
 	 *
 	 * @since 5.0.0
 	 *
-	 * @param string $old_url - the old URL.
-	 * @param string $new_url - the new URL.
-	 * @param array  $tables  - the tables we are going to update.
+	 * @param string   $old_url - the old URL.
+	 * @param string   $new_url - the new URL.
+	 * @param string[] $tables  - the tables we are going to update.
 	 *
 	 * @return array<string, int>
 	 */

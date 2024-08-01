@@ -188,24 +188,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_all_table_names\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:get_serialized_tables\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method Go_Live_Update_Urls\\\\Database\\:\\:update_the_database\\(\\) has parameter \\$tables with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
 	// identifier: lipemat.noUnknownProperty
 	'message' => '#^Accessing `Column_name` property on unknown `\\$pk\\[0\\]` can skip important errors\\. Make sure the type is known\\.$#',
 	'count' => 1,
