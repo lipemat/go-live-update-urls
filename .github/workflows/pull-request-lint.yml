@@ -31,11 +31,11 @@ jobs:
         multisite: [ 'no', 'yes' ]
     uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@master
     with:
-      wp: ${{ matrix.wp }}
-      php: ${{ matrix.php }}
-      multisite: ${{ matrix.multisite }}
       BASIC: go-live-update-urls
       PRO: go-live-update-urls-pro
+      multisite: ${{ matrix.multisite }}
+      php: ${{ matrix.php }}
+      wp: ${{ matrix.wp }}
     secrets: inherit
     
   phpstan:
@@ -48,9 +48,9 @@ jobs:
             wp: 6.6.1
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@master
     with:
+      BASIC: go-live-update-urls
+      DIR: content/plugins/go-live-update-urls
+      PRO: go-live-update-urls-pro
       php: ${{ matrix.combination.php }}
       wp: ${{ matrix.combination.wp }}
-      PRO: go-live-update-urls
-      BASIC: go-live-update-urls-pro
-      DIR: content/plugins/go-live-update-urls
     secrets: inherit
