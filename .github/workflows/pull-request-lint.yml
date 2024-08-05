@@ -54,3 +54,6 @@ jobs:
       php: ${{ matrix.combination.php }}
       stubs: ${{ matrix.combination.stubs }}
     secrets: inherit
+    
+  phpcs:
+    uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@master    
