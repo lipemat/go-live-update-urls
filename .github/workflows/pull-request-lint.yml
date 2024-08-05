@@ -56,4 +56,6 @@ jobs:
     secrets: inherit
     
   phpcs:
-    uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@master    
+    uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@master
+    with:
+      dir: content/plugins/go-live-update-urls
