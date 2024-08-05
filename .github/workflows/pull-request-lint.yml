@@ -39,4 +39,7 @@ jobs:
       wp: ${{ matrix.wp }}
       php: ${{ matrix.php }}
       multisite: ${{ matrix.multisite }}
+      BASIC: ${{ env.BASIC }}
+      PRO: ${{ env.PRO }}
+      DIR: ${{ env.DIR }}
     secrets: inherit
