@@ -1,0 +1,27 @@
+###################################################
+# Install and cache the dependencies when `master` is pushed
+# for other workflows to use.
+#
+# Most workflows will reuse the same cached
+# dependencies as the last release. Having master populate the
+# cache makes them accessible to all pull requests and deployments.
+#
+# Variables must be set in the calling repository.
+# https://github.com/lipemat/go-live-update-urls/settings/variables/actions
+# @see The reusable workflow for the required variables.
+#
+# @version 1.1.0
+#
+###################################################
+
+name: Populate Caches
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  populate:
+    name: Populate all caches
+    uses: lipemat/public-actions/.github/workflows/populate-caches-plugin.yml@master
