@@ -1,0 +1,42 @@
+##############################
+# Test and lint files in a pull request.
+#
+# @version 0.0.2
+#
+##############################
+
+name: Test & Lint Files
+
+env:
+  BASIC: go-live-update-urls
+  PRO: go-live-update-urls-pro
+  DIR: content/plugins/go-live-update-urls-pro
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  php-lint:
+    strategy:
+      matrix:
+        php: [ 7.4, 8.0, 8.1, 8.2, 8.3 ]
+    uses: lipemat/public-actions/.github/workflows/php-lint.yml@master
+    with:
+      php: ${{ matrix.php }}
+  
+  wp-unit:
+    strategy:
+      matrix:
+        wp: [ 6.2.6, 6.6.1 ]
+        php: [ 7.4, 8.3 ]
+        multisite: [ 'no', 'yes' ]
+    uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@master
+    with:
+      wp: ${{ matrix.wp }}
+      php: ${{ matrix.php }}
+      multisite: ${{ matrix.multisite }}
+    secrets: inherit
