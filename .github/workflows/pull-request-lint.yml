@@ -1,14 +1,11 @@
 ##############################
 # Test and lint files in a pull request.
 #
-# @version 0.0.2
+# @version 0.0.3
 #
 ##############################
 
 name: Test & Lint Files
-
-env: 
-  DIR: content/plugins/go-live-update-urls
 
 on:
   pull_request:
@@ -55,5 +52,5 @@ jobs:
       wp: ${{ matrix.combination.wp }}
       PRO: go-live-update-urls
       BASIC: go-live-update-urls-pro
-      DIR: ${{ env.DIR }}
+      DIR: content/plugins/go-live-update-urls
     secrets: inherit
