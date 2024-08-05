@@ -10,7 +10,7 @@ name: Test & Lint Files
 env:
   BASIC: go-live-update-urls
   PRO: go-live-update-urls-pro
-  DIR: content/plugins/go-live-update-urls-pro
+  DIR: content/plugins/go-live-update-urls
 
 on:
   pull_request:
