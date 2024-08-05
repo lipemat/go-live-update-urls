@@ -39,7 +39,7 @@ jobs:
       wp: ${{ matrix.wp }}
       php: ${{ matrix.php }}
       multisite: ${{ matrix.multisite }}
-      BASIC: ${{ env.BASIC }}
-      PRO: ${{ env.PRO }}
-      DIR: ${{ env.DIR }}
+      BASIC: go-live-update-urls
+      PRO: go-live-update-urls-pro
+      DIR: content/plugins/go-live-update-urls-pro
     secrets: inherit
