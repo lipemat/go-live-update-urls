@@ -24,4 +24,4 @@ on:
 jobs:
   populate:
     name: Populate all caches
-    uses: lipemat/public-actions/populate-caches-plugin@master
+    uses: lipemat/public-actions/.github/workflows/populate-caches-plugin.yml@master

@@ -8,6 +8,7 @@ Requires PHP: 7.4.0
 Stable tag: 6.8.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Change the domain on your site with one click.
 
 == Description ==
 
