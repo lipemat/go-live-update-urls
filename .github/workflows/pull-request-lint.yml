@@ -17,3 +17,4 @@ on:
 jobs:
   lint-test:
     uses: lipemat/public-actions/.github/workflows/pull-request-lint-plugin.yml@master
+    secrets: inherit
