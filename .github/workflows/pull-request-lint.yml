@@ -5,13 +5,14 @@
 # https://github.com/lipemat/go-live-update-urls/settings/variables/actions
 # vars:
 #   BASIC_BRANCH: The branch of the basic plugin.
+#   NODE_VERSION: The version of Node to install.
 #   PHPCS_VERSION: The version of `lipemat/wp-phpcs` to install.
 #   PHPSTAN_VERSION: The version of PHPStan to install.
 #   PRO_BRANCH: The branch of the pro plugin.
 # secrets:
 #   PUBLIC_ACTIONS_PRO_REPO: The token to access the pro repository.
 #
-# @version 0.0.4
+# @version 0.0.5
 #
 ##############################
 
