@@ -2,17 +2,20 @@
 # Test and lint files in a pull request.
 #
 # Variables must be set in the calling repository.
-# https://github.com/lipemat/go-live-update-urls/settings/variables/actions
+# https://github.com/lipemat/go-live-update-urls-pro/settings/variables/actions
 # vars:
+#   BASIC: The basic plugin slug.
 #   BASIC_BRANCH: The branch of the basic plugin.
+#   DIR: The directory of the plugin.
 #   NODE_VERSION: The version of Node to install.
 #   PHPCS_VERSION: The version of `lipemat/wp-phpcs` to install.
 #   PHPSTAN_VERSION: The version of PHPStan to install.
+#   PRO: The pro plugin slug.
 #   PRO_BRANCH: The branch of the pro plugin.
 # secrets:
 #   PUBLIC_ACTIONS_PRO_REPO: The token to access the pro repository.
 #
-# @version 0.0.5
+# @version 0.0.6
 #
 ##############################
 
@@ -42,13 +45,11 @@ jobs:
         multisite: [ 'single', 'multisite' ]
     uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@master
     with:
-      basic: go-live-update-urls
-      pro: go-live-update-urls-pro
       multisite: ${{ matrix.multisite }}
       php: ${{ matrix.php }}
       wp: ${{ matrix.wp }}
     secrets: inherit
-    
+  
   phpstan:
     strategy:
       matrix:
@@ -59,14 +60,9 @@ jobs:
             stubs: 6.6.0
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@master
     with:
-      basic: go-live-update-urls
-      dir: content/plugins/go-live-update-urls
-      pro: go-live-update-urls-pro
       php: ${{ matrix.combination.php }}
       stubs: ${{ matrix.combination.stubs }}
     secrets: inherit
-    
+  
   phpcs:
     uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@master
-    with:
-      dir: content/plugins/go-live-update-urls
