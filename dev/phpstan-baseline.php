@@ -182,12 +182,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	// identifier: empty.notAllowed
-	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
 	// identifier: lipemat.noUnknownProperty
 	'message' => '#^Accessing `Column_name` property on unknown `\\$pk\\[0\\]` can skip important errors\\. Make sure the type is known\\.$#',
 	'count' => 1,
@@ -256,18 +250,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: empty.notAllowed
 	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../src/Skip_Rows.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$primary_keys type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Skip_Rows.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
-	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$skip type has no value type specified in iterable type array\\.$#',
+	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$primary_keys type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Skip_Rows.php',
 ];

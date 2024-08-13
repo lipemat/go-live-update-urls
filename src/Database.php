@@ -281,7 +281,7 @@ class Database {
 	 * @return bool
 	 */
 	protected function supports_skipping( $table ) {
-		if ( empty( Skip_Rows::instance()->get_skipped( $table ) ) || null === Skip_Rows::instance()->get_primary_key( $table ) ) {
+		if ( null === Skip_Rows::instance()->get_skipped( $table ) || null === Skip_Rows::instance()->get_primary_key( $table ) ) {
 			return false;
 		}
 

@@ -41,9 +41,9 @@ class Skip_Rows {
 	/**
 	 * Full list of tables and ids to skip.
 	 *
-	 * @var array
+	 * @var array<string, int[]>
 	 */
-	protected $skip = [];
+	protected array $skip = [];
 
 
 	/**
@@ -99,8 +99,8 @@ class Skip_Rows {
 	 *
 	 * @return int[]|null
 	 */
-	public function get_skipped( $table ) {
-		if ( ! empty( $this->skip[ $table ] ) ) {
+	public function get_skipped( $table ): ?array {
+		if ( isset( $this->skip[ $table ] ) && [] !== $this->skip[ $table ] ) {
 			return $this->skip[ $table ];
 		}
 
