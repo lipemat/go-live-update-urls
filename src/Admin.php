@@ -15,14 +15,14 @@ class Admin {
 
 	public const NAME = 'go-live-update-urls-settings';
 
-	public const CAPABILITY  = 'manage_options';
-	public const PARENT_MENU = 'tools.php';
-
+	public const PARENT_MENU      = 'tools.php';
 	public const OLD_URL          = 'old_url';
 	public const NEW_URL          = 'new_url';
 	public const NONCE            = 'go-live-update-urls/nonce/update-tables';
 	public const TABLE_INPUT_NAME = 'go-live-update-urls/input/database-table';
 	public const SUBMIT           = 'go-live-update-urls/input/submit';
+
+	protected const CAPABILITY = 'manage_options';
 
 
 	/**
@@ -114,7 +114,19 @@ class Admin {
 	 * @since 5.0.0
 	 */
 	public function register_admin_page(): void {
-		add_submenu_page( self::PARENT_MENU, 'Go Live Update Urls', 'Go Live', self::CAPABILITY, self::NAME, [ $this, 'admin_page' ] );
+		add_submenu_page( self::PARENT_MENU, 'Go Live Update Urls', 'Go Live', $this->get_admin_capability(), self::NAME, [ $this, 'admin_page' ] );
+	}
+
+
+	/**
+	 * Get the filtered capability required to use the tools page.
+	 *
+	 * @since 6.9.0
+	 *
+	 * @return string
+	 */
+	public function get_admin_capability(): string {
+		return apply_filters( 'go-live-update-urls/admin/admin-capability', self::CAPABILITY, $this );
 	}
 
 
