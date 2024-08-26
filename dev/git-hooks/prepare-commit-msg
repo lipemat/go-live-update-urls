@@ -3,35 +3,11 @@
 #
 # Prepend the current branch name to every commit message.
 #
-# @version 2.0.0
+# @version 2.2.0
 #
 # @notice Changed order of message to add task number to
 #         body instead of subject.
 #
 ######################################################
 
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 6)"
-RESET_COLOR="\033[0m" # Special requirement of prepare-commit-message (else get strange characters during output)
-
-# Extract the current working branch
-BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-FEATURE="${BRANCH//[!0-9]/}" #only the ticket number
-
-if [[ ! "$FEATURE" ]]; then
-    # Must use -e to make the reset colors work.
-    echo -e "${YELLOW}[prepare-commit-msg]${BLUE} Skipping the message prefixing because the branch doesn't have a ticket number. ${RESET_COLOR}"
-    exit 0
-fi
-
-# Extract the commit message
-MESSAGE=$(cat "$1")
-
-if [[ $MESSAGE =~ \[#[0-9]+\] ]]; then
-    # Must use -e to make the reset colors work.
-    echo -e "${YELLOW}[prepare-commit-msg]${BLUE} Skipping the message prefixing because the current message already has [#${MESSAGE//[!0-9]/}] ${RESET_COLOR}"
-    exit 0
-fi
-
-# Prepend the current branch name to the message
-echo -e "$MESSAGE \n\n[#$FEATURE]" >"$1"
+source /e/scripts/git/hooks/version-1/prepare-commit-msg
