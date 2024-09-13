@@ -1,0 +1,7 @@
+{
+    "name": "go-live-update-urls/translate-cli",
+    "description": "NOOP to prevent wp-unit workflows from crashing",
+    "type": "library",
+    "license": "MIT",
+    "require": {}
+}
