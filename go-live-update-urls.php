@@ -5,7 +5,7 @@
  * Description: Updates every URL on your site when going live or changing domains.
  * Author: OnPoint Plugins
  * Author URI: https://onpointplugins.com
- * Version: 6.8.0
+ * Version: 7.0.0
  * Text Domain: go-live-update-urls
  * Domain Path: /languages/
  * Network: false
