@@ -151,6 +151,7 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+
 = 7.0.0 =
 * Introduced class constants for admin capability and parent menu.
 * Introduced `Admin::get_admin_capability` method.
