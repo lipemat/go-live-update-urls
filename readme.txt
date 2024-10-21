@@ -19,7 +19,8 @@ Goes through entire site and replaces all instances of an old URL with a new one
 ### Features
 
 * Database table by table selection.
-* Updates serialized data in core tables.
+* Updates serialized data.
+* Updates encoded URL.
 * Easy to use admin page - which may be found under Tools.
 * Works on both multisite and single site installs.
 
@@ -70,7 +71,17 @@ The Go Live Update URLs plugin has built-in support for WordPress data types, wh
 2. Updates the data.
 3. Reverts the data to its original format and saves the updated version.
 
-A feature unique to Go Live Update URLs is that the plugin identifies database rows and columns containing complex data types and updates only the necessary items. This targeted approach significantly enhances performance and minimizes the load on the database server during updates.
+#### Gracefully Handle Serialized Data
+
+WordPress stores arrays and objects in the database as serialized data. Serialized data cannot be updated using a simple search and replace method because serialized data contains a length value which would be incorrect after a simple replace.
+
+Go Live Update Urls gracefully and accurately replaces serialized data in any WordPress Core database table. The [PRO version](https://onpointplugins.com/product/go-live-update-urls-pro/) replaces serialized data in any table.
+
+Another consideration with serialized data is invalid data left behind from plugins which are no longer in use. Go Live Update Urls is the only tool capable of detecting and managing updates to invalid serialized data without failing or breaking your site.
+
+#### Performance
+
+A feature unique to Go Live Update URLs is that the plugin identifies database rows and columns containing complex data types and updates only the necessary items. This targeted approach significantly improves performance and minimizes the load on the database server during updates.
 
 <h3>Domain Update Process</h3>
 Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/how-to-change-your-domain-name-on-wordpress/">may be found here</a>.
@@ -93,9 +104,10 @@ Send pull requests via the <a href="https://github.com/lipemat/go-live-update-ur
 <h3>Go PRO</h3>
 Our [PRO version](https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=readme&utm_campaign=gopro&utm_medium=dot-org) brings additional functionality to this plugin. Check out [the demo](https://onpointplugins.com/go-live-update-urls/go-live-update-urls-pro-demo/?utm_source=demo&utm_campaign=gopro&utm_medium=dot-org) to see if the PRO version is useful for you.
 
-* Updates database tables created by plugins without fear of breaking.
+* Updates database tables created by plugins.
 * Database tables are organized into simple intuitive sections.
-* Ability to choose between a full table or sections.
+* Ability to choose between tables or sections.
+* Ability to convert relative URL into absolute URL.
 * Updates serialized data across any table.
 * Updates encoded URL across any table.
 * Updates JSON data across any table.
@@ -103,11 +115,12 @@ Our [PRO version](https://onpointplugins.com/product/go-live-update-urls-pro/?ut
 * URL testing report is provided for peace of mind.
 * Option to fix common mistakes automatically when entering a URL.
 * View and use history of your site's address.
-* Predictive URLs automatically fill in the "Old URL" and "New URL.".
-* Real time reporting of count and location of urls which will be updated. **NEW**
-* Report of count and location of urls which were updated. **NEW**
-* WP-CLI support for updating URLs from the command line.
-* Priority Support with access to members only support area.
+* Accessible update history including count and location of updated URL. **New**
+* Predictive URL automatically fill in the "Old URL" and "New URL."
+* Real time reporting of count and location of URL which will be updated.
+* Report of count and location of URL which were updated.
+* WP-CLI support for updating URL from the command line.
+* Priority support with access to members only support area.
 
 == Installation ==
 
