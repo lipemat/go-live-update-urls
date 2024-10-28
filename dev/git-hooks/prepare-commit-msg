@@ -3,10 +3,7 @@
 #
 # Prepend the current branch name to every commit message.
 #
-# @version 2.2.0
-#
-# @notice Changed order of message to add task number to
-#         body instead of subject.
+# @version 2.2.1
 #
 ######################################################
 
