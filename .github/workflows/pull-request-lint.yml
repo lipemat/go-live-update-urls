@@ -47,6 +47,7 @@ jobs:
     with:
       multisite: ${{ matrix.multisite }}
       php: ${{ matrix.php }}
+      skipDatabaseInstall: false
       wp: ${{ matrix.wp }}
     secrets: inherit
   
