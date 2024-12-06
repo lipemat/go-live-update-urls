@@ -248,9 +248,9 @@ class Updates {
 	 * or above which takes care of a lot of core columns which
 	 * don't store Urls.
 	 *
-	 * @param string $table - Database table to retrieve from.
-	 *
 	 * @since 6.1.0
+	 *
+	 * @param string $table - Database table to retrieve from.
 	 *
 	 * @return string[]
 	 */
@@ -260,7 +260,7 @@ class Updates {
 		$all = $wpdb->get_results( $wpdb->prepare( "SELECT COLUMN_NAME as name, COLUMN_TYPE as type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
 		$types = Database::instance()->get_column_types();
 
-		return wp_list_pluck( array_filter( $all, function ( $column ) use ( $types ) {
+		return wp_list_pluck( array_filter( $all, function( $column ) use ( $types ) {
 			// Strip the (\d) from varchar and char with (21) and over.
 			return \in_array( preg_replace( '/\((\d{3}|[3-9]\d|2[1-9])\d*?\)/', '', $column->type ), $types, true );
 		} ), 'name' );
@@ -270,15 +270,15 @@ class Updates {
 	/**
 	 * Is a new URL a subdomain of the old URL?
 	 *
+	 * @since 6.2.4
+	 *
 	 * @param string $old_url - Old URL.
 	 * @param string $new_url - New URL.
-	 *
-	 * @since 6.2.4
 	 *
 	 * @return bool
 	 */
 	public static function is_subdomain( $old_url, $new_url ) {
-		return false !== strpos( $new_url, $old_url );
+		return false !== \strpos( $new_url, $old_url );
 	}
 
 

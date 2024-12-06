@@ -22,6 +22,7 @@ class Core {
 	 */
 	protected function hook(): void {
 		add_action( 'go-live-update-urls/database/before-update', [ $this, 'raise_resource_limits' ], 0, 0 );
+		add_action( 'go-live-update-urls/database/before-counting', [ $this, 'raise_resource_limits' ], 0, 0 );
 		add_action( 'go-live-update-urls/database/after-update', [ $this, 'flush_caches' ] );
 		add_filter( 'go-live-update-urls/database/memory-limit_memory_limit', [ $this, 'raise_memory_limit' ], 0, 0 );
 		add_filter( 'plugin_action_links_' . static::PLUGIN_FILE, [ $this, 'plugin_action_link' ] );
