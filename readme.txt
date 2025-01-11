@@ -18,9 +18,8 @@ Goes through entire site and replaces all instances of an old URL with a new one
 
 ### Goals
 
-* Take the guesswork out of changing a domain.
-* Provide a super simple process for updating URLs.
-* Accurately update all instances of a URL on any site.
+1. Provide a super simple process for changing a domain or URL.
+2. Accurately update all instances of a domain or URL on any site.
 
 ### Features
 
