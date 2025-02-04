@@ -61,7 +61,7 @@ class Admin {
 			return;
 		}
 
-		$tables = \array_filter( \array_map( 'go_live_update_urls_sanitize_field', (array) $_POST[ static::TABLE_INPUT_NAME ] ) );
+		$tables = \array_filter( \array_map( 'go_live_update_urls_sanitize_field', (array) $_POST[ static::TABLE_INPUT_NAME ] ), fn( $value ) => '' !== $value );
 
 		do_action( 'go-live-update-urls/admin-page/before-update', $old_url, $new_url, $tables );
 
@@ -126,7 +126,7 @@ class Admin {
 	 * @return string
 	 */
 	public function get_admin_capability(): string {
-		return apply_filters( 'go-live-update-urls/admin/admin-capability', self::CAPABILITY, $this );
+		return (string) apply_filters( 'go-live-update-urls/admin/admin-capability', self::CAPABILITY, $this );
 	}
 
 
