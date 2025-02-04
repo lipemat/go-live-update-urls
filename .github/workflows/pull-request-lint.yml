@@ -56,12 +56,14 @@ jobs:
       matrix:
         combination:
           - php: 7.4
+            phpstan-version: 3.4.2
             stubs: 6.2.6
           - php: 8.3
             stubs: 6.7.1
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/1
     with:
       php: ${{ matrix.combination.php }}
+      phpstan-version: ${{ matrix.combination.phpstan-version }}
       stubs: ${{ matrix.combination.stubs }}
     secrets: inherit
   
