@@ -7,7 +7,7 @@
 # - Does not support using `*` character.
 # - Must include other files like .github.
 #
-# @version 2.6.5
+# @version 2.6.9
 #
 ############################
 
@@ -17,21 +17,6 @@
 /js/jest
 /.wordpress-org
 
-
-
-# dev related
-.deployignore
-.distignore
-.gitmodules
-composer.json
-composer.lock
-/dev
-bin
-local-config-sample.php
-pcss
-phpcs.xml.dist
-phpstan.neon.dist
-Readme.md
 
 
 # System and hidden files
@@ -61,10 +46,26 @@ error_log
 .git
 .gitattributes
 .gitignore
+DOCKER_ENV
+docker_tag
+
+# Idea files
+.idea
+.run
+
+# log files
+*.log
+
+# local configs
+local-config.php
+local-config.json
+phpcs.xml
+phpstan.neon
 
 # Yarn and Node files
 .editorconfig
 .eslintrc
+eslint.config.mjs
 .nvmrc
 .pnp.cjs
 .pnp.js
@@ -73,7 +74,23 @@ error_log
 .yarn
 .yarnrc.yml
 jest.config.js
+jest.config.ts
 node_modules
 package.json
 tsconfig.json
 yarn.lock
+
+# dev related
+.deployignore
+.deployignore-wpengine
+.distignore
+.gitmodules
+composer.json
+composer.lock
+/dev
+bin
+local-config-sample.php
+pcss
+phpcs.xml.dist
+phpstan.neon.dist
+Readme.md
