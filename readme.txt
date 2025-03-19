@@ -1,5 +1,5 @@
 === Go Live Update Urls ===
-Contributors: Mat Lipe, onpointplugins
+Contributors: onpointplugins, Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.2.0
@@ -16,10 +16,12 @@ Change the domain on your site with one click.
 
 Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site.
 
-### Goals
+**Developed and supported by <a href="https://onpointplugins.com/go-live-update-urls/" target="_blank">OnPoint Plugins</a>.**
 
-1. Provide a super simple process for changing a domain or URL.
-2. Accurately update all instances of a domain or URL on any site.
+### Purpose
+
+1. Provides a super simple process for changing a domain or URL.
+2. Accurately updates all instances of a domain or URL on any site.
 
 ### Features
 
