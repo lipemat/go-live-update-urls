@@ -16,6 +16,8 @@ Change the domain on your site with one click.
 
 Goes through entire site and replaces all instances of an old URL with a new one. Used most often when changing the domain of your site.
 
+Automatically detects and handles special domain circumstances to give you an accurate update every time without side effects.
+
 **Developed and supported by <a href="https://onpointplugins.com/go-live-update-urls/" target="_blank">OnPoint Plugins</a>.**
 
 ### Features
