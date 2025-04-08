@@ -18,15 +18,10 @@ Goes through entire site and replaces all instances of an old URL with a new one
 
 **Developed and supported by <a href="https://onpointplugins.com/go-live-update-urls/" target="_blank">OnPoint Plugins</a>.**
 
-### Purpose
-
-1. Provides a super simple process for changing a domain or URL.
-2. Accurately updates all instances of a domain or URL on any site.
-
 ### Features
 
 * Database table by table selection.
-* Updates serialized data.
+* Updates serialized data in core tables.
 * Updates encoded URL.
 * Easy to use admin page - which may be found under Tools.
 * Works on both multisite and single site installs.
@@ -42,55 +37,6 @@ Goes through entire site and replaces all instances of an old URL with a new one
 * Widgets and widget data
 * Options and settings
 * And much more
-
-### Additional Uses
-
-The plugin may also be used to update anything within the database. Including but not limited to:
-
-* Domains
-* Email addresses
-* Gutenberg blocks
-* Links
-* Shortcodes
-* Text
-* Usernames
-* Widgets
-* Really anything which can be entered in a text field.
-
-
-### What Makes Go Live Update Urls Special?
-
-#### Domain Considerations
-
-Updating a domain or URL in a database is not always as simple as just matching one text and changing it to another. Domains may include things like subdomains or email addresses which end up duplicated or broken when doing a simple replace.
-
-The Go Live Update Urls plugin automatically detects and handles special domain circumstances to give you an accurate update every time without side effects.
-
-#### WordPress Data Types
-
-WordPress stores various data types in the database, some of which do not support straightforward replacement methods. An example of this is serialized data.
-
-The Go Live Update URLs plugin has built-in support for WordPress data types, which automatically:
-
-1. Parses the data into a replaceable format.
-2. Updates the data.
-3. Restores the data to its original format and saves the updated version.
-
-#### Gracefully Handle Serialized Data
-
-WordPress stores arrays and objects in the database as serialized data. Serialized data cannot be updated using a simple search and replace method because serialized data contains a length value which would be incorrect after a simple replace.
-
-Go Live Update Urls gracefully and accurately replaces serialized data in any WordPress Core database table. The [PRO version](https://onpointplugins.com/product/go-live-update-urls-pro/) replaces serialized data in any table.
-
-Another consideration with serialized data is invalid data left behind from plugins which are no longer in use. Go Live Update Urls is the only tool capable of detecting and managing updates to invalid serialized data without failing or breaking the site.
-
-#### Performance
-
-A feature unique to Go Live Update URLs is that the plugin identifies database rows and columns containing complex data types and updates only the necessary items. This targeted approach significantly improves performance and minimizes the load on the database server during updates.
-
-#### Cache Clearing
-
-Go Live Update Urls automatically clears the WordPress cache as well as many common 3rd party plugin caches when the updates are completed. This ensures that the site is ready to go live immediately after the update.
 
 
 <h3>Domain Update Process</h3>
