@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2024-07-10 14:10-0400\n"
-"PO-Revision-Date: 2024-07-10 14:10-0400\n"
+"POT-Creation-Date: 2025-04-08 10:20-0400\n"
+"PO-Revision-Date: 2025-04-08 10:20-0400\n"
 "Last-Translator: Mat Lipe <support@onpointplugins.com>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -32,26 +32,26 @@ msgstr ""
 "Go Live Update Urls erfordert %1$sGo Live Update Urls PRO %3$s+%2$s. Bitte "
 "aktualisieren oder deaktivieren Sie die PRO-Version."
 
-#: src/Admin.php:46
+#: src/Admin.php:49
 msgid "Ouch! That hurt! You should not be here!"
 msgstr "Autsch! Das tut weh! Du solltest nicht hier sein!"
 
-#: src/Admin.php:80
+#: src/Admin.php:83
 msgid "The urls in the checked tables have been updated."
 msgstr "Die URLs in den überprüften Tabellen wurden aktualisiert."
 
-#: src/Admin.php:99
+#: src/Admin.php:102
 msgid ""
 "You must select tables and fill out both the Old URL and New URL to update "
 "urls!"
 msgstr "Sie müssen beide URLs ausfüllen, um das Update durchzuführen!"
 
 #. Plugin Name of the plugin/theme
-#: src/Admin.php:139
+#: src/Admin.php:151
 msgid "Go Live Update Urls"
 msgstr "Go Live Update Urls"
 
-#: src/Admin.php:144
+#: src/Admin.php:156
 msgid ""
 "Replaces all occurrences in the entire database of the Old URL with a New "
 "URL."
@@ -59,42 +59,42 @@ msgstr ""
 "Ersetzt alle Vorkommen in der gesamten Datenbank der alten URL durch eine "
 "neue URL."
 
-#: src/Admin.php:176
-msgid "WordPress core tables"
-msgstr "WordPress Kerntabellen"
+#: src/Admin.php:188
+msgid "WordPress Core Tables"
+msgstr "WordPress Core-Tabellen"
 
-#: src/Admin.php:181
+#: src/Admin.php:193
 msgid "These tables are safe to update."
 msgstr "Diese Tabellen können sicher aktualisiert werden."
 
-#: src/Admin.php:191 src/Admin.php:221
+#: src/Admin.php:203 src/Admin.php:233
 msgid "Only the checked tables will be updated."
 msgstr "Nur die überprüften Tabellen werden aktualisiert."
 
-#: src/Admin.php:205
-msgid "Tables created by plugins"
-msgstr "Von Plugins erstellte Tabellen"
+#: src/Admin.php:217
+msgid "Tables Created By Plugins"
+msgstr "Tabellen erstellt von Plugins"
 
-#: src/Admin.php:212
+#: src/Admin.php:224
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
 "These tables are not safe to update with the basic version of this plugin! "
-"%1$sTo update tables created by plugins, use the %2$sPRO version%3$s."
+"%1$sTo update tables created by plugins, use the %2$sPRO version.%3$s"
 msgstr ""
 "Diese Tabellen sind nicht sicher mit der Basisversion dieses Plugins zu "
 "aktualisieren! %1$sUm Tabellen zu aktualisieren, die von Plugins erstellt "
-"wurden, verwenden Sie die %2$sPRO-Version%3$s."
+"wurden, verwenden Sie die %2$sPRO-Version.%3$s"
 
-#: src/Admin.php:241 src/Admin.php:251
+#: src/Admin.php:253 src/Admin.php:263
 msgid "Old URL"
 msgstr "Alte URL"
 
-#: src/Admin.php:257 src/Admin.php:267
+#: src/Admin.php:269 src/Admin.php:279
 msgid "New URL"
 msgstr "Neue URL"
 
-#: src/Admin.php:282
+#: src/Admin.php:294
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
@@ -102,15 +102,15 @@ msgstr ""
 "Verwenden Sie die %1$sPRO-Version%2$s, um URL-Aktualisierungen zu testen, "
 "bevor Sie sie erstellen."
 
-#: src/Admin.php:290
+#: src/Admin.php:302
 msgid "Update Urls"
 msgstr "Urls aktualisieren"
 
-#: src/Core.php:136
+#: src/Core.php:119
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/Core.php:138
+#: src/Core.php:121
 msgid "Go PRO"
 msgstr "Gehen Sie PRO"
 

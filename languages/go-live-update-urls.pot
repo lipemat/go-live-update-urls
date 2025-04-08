@@ -5,7 +5,7 @@ msgstr ""
 "urls\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Go Live Update URLS\n"
-"POT-Creation-Date: 2024-07-10 14:05-0400\n"
+"POT-Creation-Date: 2025-04-08 10:20-0400\n"
 "PO-Revision-Date: 2016-05-15 10:47-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -32,78 +32,78 @@ msgid ""
 "update or deactivate the PRO version."
 msgstr ""
 
-#: src/Admin.php:46
+#: src/Admin.php:49
 msgid "Ouch! That hurt! You should not be here!"
 msgstr ""
 
-#: src/Admin.php:80
+#: src/Admin.php:83
 msgid "The urls in the checked tables have been updated."
 msgstr ""
 
-#: src/Admin.php:99
+#: src/Admin.php:102
 msgid ""
 "You must select tables and fill out both the Old URL and New URL to update "
 "urls!"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-#: src/Admin.php:139
+#: src/Admin.php:151
 msgid "Go Live Update Urls"
 msgstr ""
 
-#: src/Admin.php:144
+#: src/Admin.php:156
 msgid ""
 "Replaces all occurrences in the entire database of the Old URL with a New "
 "URL."
 msgstr ""
 
-#: src/Admin.php:176
-msgid "WordPress core tables"
+#: src/Admin.php:188
+msgid "WordPress Core Tables"
 msgstr ""
 
-#: src/Admin.php:181
+#: src/Admin.php:193
 msgid "These tables are safe to update."
 msgstr ""
 
-#: src/Admin.php:191 src/Admin.php:221
+#: src/Admin.php:203 src/Admin.php:233
 msgid "Only the checked tables will be updated."
 msgstr ""
 
-#: src/Admin.php:205
-msgid "Tables created by plugins"
+#: src/Admin.php:217
+msgid "Tables Created By Plugins"
 msgstr ""
 
-#: src/Admin.php:212
+#: src/Admin.php:224
 #, php-format
 msgctxt "{<br />}{<a>}{</a>}"
 msgid ""
 "These tables are not safe to update with the basic version of this plugin! "
-"%1$sTo update tables created by plugins, use the %2$sPRO version%3$s."
+"%1$sTo update tables created by plugins, use the %2$sPRO version.%3$s"
 msgstr ""
 
-#: src/Admin.php:241 src/Admin.php:251
+#: src/Admin.php:253 src/Admin.php:263
 msgid "Old URL"
 msgstr ""
 
-#: src/Admin.php:257 src/Admin.php:267
+#: src/Admin.php:269 src/Admin.php:279
 msgid "New URL"
 msgstr ""
 
-#: src/Admin.php:282
+#: src/Admin.php:294
 #, php-format
 msgctxt "{<a>}{</a>}"
 msgid "Use the %1$sPRO version%2$s to test URL updates before making them."
 msgstr ""
 
-#: src/Admin.php:290
+#: src/Admin.php:302
 msgid "Update Urls"
 msgstr ""
 
-#: src/Core.php:136
+#: src/Core.php:119
 msgid "Settings"
 msgstr ""
 
-#: src/Core.php:138
+#: src/Core.php:121
 msgid "Go PRO"
 msgstr ""
 

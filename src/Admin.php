@@ -185,7 +185,7 @@ class Admin {
 				if ( apply_filters( 'go-live-update-urls-pro/admin/use-default-checkboxes', true ) ) {
 					?>
 					<h3>
-						<?php esc_html_e( 'WordPress core tables', 'go-live-update-urls' ); ?>
+						<?php esc_html_e( 'WordPress Core Tables', 'go-live-update-urls' ); ?>
 					</h3>
 					<div class="go-live-section">
 						<p class="description" style="color:green;">
@@ -214,14 +214,14 @@ class Admin {
 					if ( \count( $custom_tables ) > 0 ) {
 						?>
 						<h3>
-							<?php esc_html_e( 'Tables created by plugins', 'go-live-update-urls' ); ?>
+							<?php esc_html_e( 'Tables Created By Plugins', 'go-live-update-urls' ); ?>
 						</h3>
 						<div class="go-live-section">
 							<p class="description" style="color:red;">
 								<strong>
 									<?php
 									/* translators: <br /> <a> </a> */
-									printf( esc_html_x( 'These tables are not safe to update with the basic version of this plugin! %1$sTo update tables created by plugins, use the %2$sPRO version%3$s.', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=plugin-tables&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
+									printf( esc_html_x( 'These tables are not safe to update with the basic version of this plugin! %1$sTo update tables created by plugins, use the %2$sPRO version.%3$s', '{<br />}{<a>}{</a>}', 'go-live-update-urls' ), '<br />', '<a href="https://onpointplugins.com/product/go-live-update-urls-pro/?utm_source=plugin-tables&utm_campaign=gopro&utm_medium=wp-dash" target="_blank">', '</a>' );
 									?>
 								</strong>
 							</p>
