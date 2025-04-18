@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         wp: [ 6.2.6, 6.8 ]
-        php: [ 7.4, 8.3 ]
+        php: [ 7.4, 8.4 ]
         multisite: [ 'single', 'multisite' ]
     uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@version/1
     with:
@@ -59,7 +59,7 @@ jobs:
             phpstan-version: 3.4.2
             stubs: 6.2.6
           - php: 8.3
-            stubs: 6.7.2
+            stubs: 6.8.0
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/1
     with:
       php: ${{ matrix.combination.php }}
