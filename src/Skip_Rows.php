@@ -72,7 +72,7 @@ class Skip_Rows {
 	 *
 	 * @return void
 	 */
-	public function set_current_row_id( $db_id ) {
+	public function set_current_row_id( $db_id ): void {
 		$this->row_id = $db_id;
 	}
 
@@ -82,7 +82,7 @@ class Skip_Rows {
 	 *
 	 * @return void
 	 */
-	public function skip_current() {
+	public function skip_current(): void {
 		if ( '' === $this->table || 0 === $this->row_id ) {
 			_doing_it_wrong( __METHOD__, esc_html__( 'You must set a table and DB id before skipping a row.', 'go-live-update-urls' ), '6.5.0' );
 		}
@@ -117,10 +117,7 @@ class Skip_Rows {
 	 * @return string|null
 	 */
 	public function get_primary_key( $table ) {
-		if ( ! isset( $this->primary_keys[ $table ] ) ) {
-			return null;
-		}
-		return $this->primary_keys[ $table ];
+		return $this->primary_keys[ $table ] ?? null;
 	}
 
 
@@ -134,22 +131,12 @@ class Skip_Rows {
 	 *
 	 * @return void
 	 */
-	public function log_error( string $class_name ) {
+	public function log_error( string $class_name ): void {
 		//phpcs:ignore -- We want to use the PHP error log.
-		error_log( vsprintf( 'Go Live skipped row `%s` in the table `%s` because it contains an unavailable PHP class named `%s`.', [
+		\error_log( \vsprintf( 'Go Live skipped row `%s` in the table `%s` because it contains an unavailable PHP class named `%s`.', [
 			$this->row_id,
 			$this->table,
 			$class_name,
 		] ) );
-	}
-
-
-	/**
-	 * Reset all skips for a fresh class.
-	 *
-	 * @return void
-	 */
-	public static function reset() {
-		static::$instance = null;
 	}
 }
