@@ -3,7 +3,7 @@ Contributors: onpointplugins, Mat Lipe
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40onpointplugins%2ecom&lc=US&item_name=Go%20Live%20Update%20Urls&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.2.0
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.4.0
 Stable tag: 7.0.5
 License: GPLv3 or later
@@ -39,7 +39,6 @@ Automatically detects and handles special domain circumstances to give you an ac
 * Widgets and widget data
 * Options and settings
 * And much more
-
 
 <h3>Domain Update Process</h3>
 Full step-by-step instructions for a changing a site's domain <a target="_blank" href="https://onpointplugins.com/how-to-change-your-domain-name-on-wordpress/">may be found here</a>.
@@ -132,10 +131,10 @@ If you find you are running into issues with custom tables, you may want to chec
 * Improve labels on tools page.
 * Simplified the readme.
 * Tested to WordPress 6.8.0.
-* Required PRO version 7.0.4+. 
+* Required PRO version 7.0.4+.
 
-= 7.0.3 = 
-* Added original plugin author to the readme. 
+= 7.0.3 =
+* Added original plugin author to the readme.
 * Upgraded PHPStan to version 2.
 * Updated nanoid to latest version to resolve dependency vulnerability.
 * Tested to WordPress 6.7.2.

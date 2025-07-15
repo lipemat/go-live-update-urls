@@ -52,11 +52,11 @@ jobs:
           },
           {
             php: 7.4,
-            wp: 6.8.1
+            wp: 6.8.2
           },
           {
             php: 8.4,
-            wp: 6.8.1
+            wp: 6.8.2
           },
         ]
         multisite: [ 'single', 'multisite' ]
