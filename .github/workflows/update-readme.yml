@@ -1,9 +1,13 @@
 name: Plugin asset/readme update
+
 env:
   # Can't specify the VERSION, or the plugin will deploy in that version.  
-  # VERSION: 2.0.0
+  # VERSION: 2.0.1
   IGNORE_OTHER_FILES: true
   TZ: 'America/New_York'
+  
+permissions:
+  contents: read
 
 on:
   push:

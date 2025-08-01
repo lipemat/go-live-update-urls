@@ -15,11 +15,15 @@
 # secrets:
 #   PUBLIC_ACTIONS_PRO_REPO: The token to access the pro repository.
 #
-# @version 0.0.6
+# @version 0.1.0
 #
 ##############################
 
 name: Test & Lint Files
+
+permissions:
+  actions: read
+  contents: read
 
 on:
   pull_request:

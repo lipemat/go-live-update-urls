@@ -10,11 +10,15 @@
 # https://github.com/lipemat/go-live-update-urls/settings/variables/actions
 # @see The reusable workflow for the required variables.
 #
-# @version 1.1.0
+# @version 1.1.1
 #
 ###################################################
 
 name: Populate Caches
+
+permissions:
+  actions: write
+  contents: read
 
 on:
   push:

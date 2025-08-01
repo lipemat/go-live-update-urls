@@ -8,12 +8,15 @@
 # 4. Workflow permissions
 # 5. Enable "read and write permissions"
 #
-# @version 3.0.0
+# @version 3.0.1
 #
 ###################################################
 
 name: Create GitHub Release
 run-name: Create release for ${{ github.ref_name }} on GitHub.
+
+permissions:
+  contents: write
 
 on:
   push:
