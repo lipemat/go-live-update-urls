@@ -51,7 +51,9 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#wordpresswpi18n-setting-your-text-domain -->
-			<property name="text_domain" type="array" value="go-live-update-urls" />
+			<property name="text_domain" type="array">
+				<element value="go-live-update-urls" />
+			</property>
 		</properties>
 	</rule>
 </ruleset>
