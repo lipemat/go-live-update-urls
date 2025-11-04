@@ -9,11 +9,11 @@ use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
  * Translated provided URLS into various steps to update the database.
  *
  * While no updates to the database are done within this class,
- * all calls to the methods, which update the database go through here
+ * all calls to the methods which update the database go through here
  * except for serialized data.
  *
- * This class determines, which data needs to be updated in which way
- * and makes necessary calls.
+ * This class determines which data needs to be updated in which way
+ * and makes the necessary calls.
  *
  * @since 6.1.0
  */
@@ -23,21 +23,21 @@ class Updates {
 	 *
 	 * @var string
 	 */
-	protected $old_url;
+	protected string $old_url;
 
 	/**
 	 * Entered OLD URL.
 	 *
 	 * @var string
 	 */
-	protected $new_url;
+	protected string $new_url;
 
 	/**
 	 * List of selected tables.
 	 *
 	 * @var string[]
 	 */
-	protected $tables;
+	protected array $tables;
 
 
 	/**
@@ -109,7 +109,7 @@ class Updates {
 	 * Remove any prepended subdomain from email addresses.
 	 *
 	 * If we change a domain to a subdomain like www, and an email address
-	 * is using the original domain we end up with an email address that
+	 * is using the original domain, we end up with an email address that
 	 * includes @www We remove the prepended www from email addresses
 	 * here.
 	 *
@@ -132,7 +132,7 @@ class Updates {
 	 * Using all registered updaters, replace the Updater's variation
 	 * of the URL.
 	 *
-	 * Actual translation and updating is handled by each updater.
+	 * Actual translation and updating handled by each updater.
 	 * We simply load and call them here.
 	 *
 	 * @param string $table  - Any database table.
@@ -162,7 +162,7 @@ class Updates {
 	 * Using all registered updaters, count the Updater's variation
 	 * of the URL.
 	 *
-	 * Actual counting is handled by each updater.
+	 * Actual counting handled by each updater.
 	 * We simply load and call them here.
 	 *
 	 * @param string $table  - Any database table.
@@ -223,10 +223,10 @@ class Updates {
 
 	/**
 	 * If the new domain is the old one with a new subdomain like www.
-	 * the first round of updates will create double subdomains in
+	 * The first round of updates will create double subdomains in
 	 * the database like www.www.
 	 *
-	 * Return the doubled up subdomain if it exists, otherwise null.
+	 * Return the doubled-up subdomain if it exists, otherwise null.
 	 *
 	 * @since 6.1.0
 	 *
