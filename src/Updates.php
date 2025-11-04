@@ -232,7 +232,7 @@ class Updates {
 	 *
 	 * @return string|null
 	 */
-	public function get_doubled_up_subdomain() {
+	public function get_doubled_up_subdomain(): ?string {
 		if ( static::is_subdomain( $this->old_url, $this->new_url ) ) {
 			return \str_replace( $this->old_url, $this->new_url, $this->new_url );
 		}
@@ -256,17 +256,20 @@ class Updates {
 	 */
 	protected function get_table_columns( string $table ): array {
 		$wpdb = Database::instance()->get_wpdb();
+		$supported_types = Database::instance()->get_column_types();
 
 		$all = $wpdb->get_results( $wpdb->prepare( "SELECT COLUMN_NAME as name, COLUMN_TYPE as type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
 		if ( ! \is_array( $all ) ) {
 			return [];
 		}
-		$types = Database::instance()->get_column_types();
 
-		return wp_list_pluck( \array_filter( $all, function( $column ) use ( $types ) {
+		$columns = \array_filter( $all, function( $column ) use ( $supported_types ) {
 			// Strip the (\d) from varchar and char with (21) and over.
-			return \in_array( preg_replace( '/\((\d{3}|[3-9]\d|2[1-9])\d*?\)/', '', $column->type ), $types, true );
-		} ), 'name' );
+			$data_type = \preg_replace( '/\((\d{3}|[3-9]\d|2[1-9])\d*?\)/', '', $column->type );
+			return \in_array( $data_type, $supported_types, true );
+		} );
+
+		return \wp_list_pluck( $columns, 'name' );
 	}
 
 
