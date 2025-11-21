@@ -8,18 +8,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Core.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Core\\:\\:plugin_action_link\\(\\) has parameter \\$actions with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Core.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Core\\:\\:plugin_action_link\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Core.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Access to protected property wpdb\\:\\:\\$dbname\\.$#',
 	'identifier' => 'property.protected',
 	'count' => 1,
