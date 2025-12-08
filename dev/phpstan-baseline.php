@@ -32,12 +32,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property wpdb\\:\\:\\$blogmeta \\(string\\) in isset\\(\\) is not nullable\\.$#',
-	'identifier' => 'isset.property',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Database.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property wpdb\\:\\:\\$links \\(string\\) in isset\\(\\) is not nullable\\.$#',
 	'identifier' => 'isset.property',
 	'count' => 1,

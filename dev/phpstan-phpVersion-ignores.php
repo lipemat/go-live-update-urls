@@ -16,6 +16,13 @@ if ( PHP_VERSION_ID >= 80000 ) {
 		'count'   => 2,
 		'path'    => __DIR__ . '/../src/Updates.php',
 	];
+} else {
+	$ignoreErrors[] = [
+		'message'    => '#^Property wpdb\\:\\:\\$blogmeta \\(string\\) in isset\\(\\) is not nullable\\.$#',
+		'identifier' => 'isset.property',
+		'count'      => 1,
+		'path'       => __DIR__ . '/../src/Database.php',
+	];
 }
 
 return [ 'parameters' => [ 'ignoreErrors' => $ignoreErrors ] ];
