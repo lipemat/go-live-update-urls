@@ -1,6 +1,6 @@
 {
   "name": "@onpointplugins/go-live-update-urls",
-  "version": "9.1.0",
+  "version": "11.8.1",
   "description": "Tools for the Go Live Update Urls plugin.",
   "author": "OnPoint Plugins <support@onpointplugins.com>",
   "license": "UNLICENSED",
@@ -11,8 +11,8 @@
     "lint": "stylelint resources/**/*.css --fix --cache"
   },
   "devDependencies": {
-    "@lipemat/stylelint-config": "^2.2.1",
+    "@lipemat/stylelint-config": "^2.2.2",
     "stylelint": "^14"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.10.3"
 }
