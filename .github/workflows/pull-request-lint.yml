@@ -36,7 +36,7 @@ jobs:
   php-lint:
     strategy:
       matrix:
-        php: [ 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 ]
+        php: [ 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5 ]
     uses: lipemat/public-actions/.github/workflows/php-lint.yml@version/1
     with:
       php: ${{ matrix.php }}
@@ -59,7 +59,7 @@ jobs:
             wp: 6.9.1
           },
           {
-            php: 8.4,
+            php: 8.5,
             wp: 6.9.1
           },
         ]
@@ -79,7 +79,7 @@ jobs:
           - php: 7.4
             phpstan-version: 3.4.2
             stubs: 6.2.6
-          - php: 8.4
+          - php: 8.5
             stubs: 6.9.0
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/1
     with:
