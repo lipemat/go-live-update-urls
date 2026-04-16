@@ -64,7 +64,7 @@ jobs:
           },
         ]
         multisite: [ 'single', 'multisite' ]
-    uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@version/1
+    uses: lipemat/public-actions/.github/workflows/wp-unit-plugin.yml@version/2
     with:
       multisite: ${{ matrix.multisite }}
       php: ${{ matrix.versions.php }}
