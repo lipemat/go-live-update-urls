@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         php: [ 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5 ]
-    uses: lipemat/public-actions/.github/workflows/php-lint.yml@version/1
+    uses: lipemat/public-actions/.github/workflows/php-lint.yml@version/2
     with:
       php: ${{ matrix.php }}
   
@@ -56,11 +56,11 @@ jobs:
           },
           {
             php: 7.4,
-            wp: 6.9.1
+            wp: "7.0"
           },
           {
             php: 8.5,
-            wp: 6.9.1
+            wp: "7.0"
           },
         ]
         multisite: [ 'single', 'multisite' ]
@@ -79,8 +79,8 @@ jobs:
             phpstan-version: 3.4.2
             stubs: 6.2.6
           - php: 8.5
-            stubs: 6.9.0
-    uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/1
+            stubs: 6.9.1
+    uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/2
     with:
       php: ${{ matrix.combination.php }}
       phpstan-version: ${{ matrix.combination.phpstan-version }}
@@ -88,4 +88,4 @@ jobs:
     secrets: inherit
   
   phpcs:
-    uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@version/1
+    uses: lipemat/public-actions/.github/workflows/phpcs-plugin.yml@version/2

@@ -25,4 +25,4 @@ on:
 
 jobs:
   create-release:
-    uses: lipemat/public-actions/.github/workflows/create-release.yml@version/1
+    uses: lipemat/public-actions/.github/workflows/create-release.yml@version/2
