@@ -5,7 +5,7 @@ Tags: search and replace, database, urls, domain, update urls
 Requires at least: 6.2.0
 Tested up to: 7.0
 Requires PHP: 7.4.0
-Stable tag: 7.0.7
+Stable tag: 7.0.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Change the domain on your site with one click.
@@ -121,6 +121,11 @@ If you find you are running into issues with custom tables, you may want to chec
 3. Update prevented due to incomplete data entered.
 
 == Changelog ==
+= 7.0.8 =
+* Gracefully handle `null` $wpdb table properties.
+* Officially support PHP 8.5.
+* Tested to WordPress 7.0.
+
 = 7.0.7 =
 * Added a link to documentation in the plugin list.
 * Introduced a `get_wpdb` method on the `Database` class.
