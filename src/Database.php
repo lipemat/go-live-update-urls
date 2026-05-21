@@ -20,30 +20,35 @@ class Database {
 	 *
 	 * @return array<string, string> - array( %table_name% => %table_column% )
 	 */
-	public function get_serialized_tables() {
+	public function get_serialized_tables(): array {
 		$wpdb = $this->get_wpdb();
 		// Default tables with serialized data.
 		$serialized_tables = [
 			$wpdb->options     => 'option_value',
 			$wpdb->postmeta    => 'meta_value',
 			$wpdb->commentmeta => 'meta_value',
-			$wpdb->signups     => 'meta',
 			$wpdb->termmeta    => 'meta_value',
 			$wpdb->usermeta    => 'meta_value',
 		];
 
-		// We are not going to update site meta if we are not on the main blog.
 		if ( is_multisite() ) {
-			$serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
-			$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
+			if ( isset( $wpdb->signups ) ) {
+				$serialized_tables[ $wpdb->signups ] = 'meta';
+			}
+			if ( isset( $wpdb->sitemeta ) ) {
+				$serialized_tables[ $wpdb->sitemeta ] = 'meta_value';
+			}
+			if ( isset( $wpdb->blogmeta ) ) {
+				$serialized_tables[ $wpdb->blogmeta ] = 'meta_value';
+			}
 		}
 
-		return apply_filters( 'go-live-update-urls/database/serialized-tables', $serialized_tables );
+		return (array) apply_filters( 'go-live-update-urls/database/serialized-tables', $serialized_tables );
 	}
 
 
 	/**
-	 * Get the list of tables that were not create by WP core
+	 * Get the list of tables that were not created by WP core
 	 *
 	 * @return string[]
 	 */
@@ -66,7 +71,7 @@ class Database {
 	 *
 	 * @return string[]
 	 */
-	public function get_core_tables() {
+	public function get_core_tables(): array {
 		$wpdb = $this->get_wpdb();
 
 		$tables = [
@@ -94,11 +99,10 @@ class Database {
 			$tables[] = $wpdb->sitemeta;
 			$tables[] = $wpdb->sitecategories;
 			$tables[] = $wpdb->registration_log;
-			// WP 5.0.0+.
-			if ( isset( $wpdb->blogmeta ) ) {
-				$tables[] = $wpdb->blogmeta;
-			}
+			$tables[] = $wpdb->blogmeta;
 		}
+
+		$tables = \array_filter( $tables, '\is_string' );
 
 		return (array) apply_filters( 'go-live-update-urls/database/core-tables', $tables );
 	}

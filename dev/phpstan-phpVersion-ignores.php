@@ -23,6 +23,18 @@ if ( PHP_VERSION_ID >= 80000 ) {
 		'count'      => 1,
 		'path'       => __DIR__ . '/../src/Database.php',
 	];
+	$ignoreErrors[] = [
+		'message'    => '#^Property wpdb\\:\\:\\$signups \\(string\\) in isset\\(\\) is not nullable\\.$#',
+		'identifier' => 'isset.property',
+		'count'      => 1,
+		'path'       => __DIR__ . '/../src/Database.php',
+	];
+	$ignoreErrors[] = [
+		'message'    => '#^Property wpdb\\:\\:\\$sitemeta \\(string\\) in isset\\(\\) is not nullable\\.$#',
+		'identifier' => 'isset.property',
+		'count'      => 1,
+		'path'       => __DIR__ . '/../src/Database.php',
+	];
 }
 
 return [ 'parameters' => [ 'ignoreErrors' => $ignoreErrors ] ];
