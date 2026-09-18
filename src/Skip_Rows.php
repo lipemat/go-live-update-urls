@@ -86,9 +86,28 @@ class Skip_Rows {
 		if ( '' === $this->table || 0 === $this->row_id ) {
 			_doing_it_wrong( __METHOD__, esc_html__( 'You must set a table and DB id before skipping a row.', 'go-live-update-urls' ), '6.5.0' );
 		}
-		if ( empty( $this->skip[ $this->table ] ) || ! \in_array( $this->row_id, $this->skip[ $this->table ], true ) ) {
+		if ( ! $this->is_current_skipped() ) {
 			$this->skip[ $this->table ][] = $this->row_id;
 		}
+	}
+
+
+	/**
+	 * Skip the current row and log why, only the first time
+	 * the row is skipped.
+	 *
+	 * @since 7.1.0
+	 *
+	 * @param string $reason - Completes "because ..." in the log.
+	 *
+	 * @return void
+	 */
+	public function skip_current_once( string $reason ): void {
+		if ( $this->is_current_skipped() ) {
+			return;
+		}
+		$this->skip_current();
+		$this->log_unsupported( $reason );
 	}
 
 
@@ -137,13 +156,15 @@ class Skip_Rows {
 	 * Log information to the PHP Error log about a missing
 	 * class in serialized data.
 	 *
-	 * @since 6.5.4
+	 * @since      6.5.4
+	 * @deprecated 7.1.0 Will be removed in version 8.
 	 *
 	 * @param string $class_name - Name of class which does not exist.
 	 *
 	 * @return void
 	 */
 	public function log_error( string $class_name ): void {
+		_deprecated_function( __METHOD__, '7.1.0', __CLASS__ . '::log_unsupported' );
 		$this->log_unsupported( \sprintf( 'it contains an unavailable PHP class named `%s`', $class_name ) );
 	}
 

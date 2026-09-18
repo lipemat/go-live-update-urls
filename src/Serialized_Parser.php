@@ -29,6 +29,13 @@ class Serialized_Parser {
 	protected const MAX_DEPTH = 4096;
 
 	/**
+	 * Most digits a count or length may have, so it always fits in an integer.
+	 *
+	 * @var int
+	 */
+	protected const MAX_DIGITS = 18;
+
+	/**
 	 * Patterns each scalar token's body must match to be valid.
 	 *
 	 * @var array<string, string>
@@ -202,7 +209,7 @@ class Serialized_Parser {
 	 */
 	protected function parse_leaf( string $token, bool $is_value ): ?string {
 		if ( 's' === $token ) {
-			return $this->parse_string();
+			return $this->parse_string( $is_value );
 		}
 		if ( 'C' === $token ) {
 			return $this->parse_custom();
@@ -228,14 +235,14 @@ class Serialized_Parser {
 	 * Parse `s:LEN:"<LEN bytes>";` and send its value through the
 	 * replace closure.
 	 *
-	 * Values holding a NUL byte are private or protected property names
-	 * mangled as `\0Class\0prop` or `\0*\0prop`. Replacements `trim` their
-	 * result and NUL is in `trim`'s default charlist, so these are copied
-	 * verbatim instead.
+	 * Names holding a NUL are mangled private or protected properties,
+	 * which `trim` would corrupt, so they are copied verbatim.
+	 *
+	 * @param bool $is_value - Whether the token is a value rather than an array key or property name.
 	 *
 	 * @return string|null
 	 */
-	protected function parse_string(): ?string {
+	protected function parse_string( bool $is_value ): ?string {
 		$length = $this->read_header( 's' );
 		if ( null === $length ) {
 			return null;
@@ -246,12 +253,11 @@ class Serialized_Parser {
 		}
 		++ $this->position;
 
-		if ( \str_contains( $value, "\0" ) ) {
-			return 's:' . $length . ':"' . $value . '";';
+		if ( ! $is_value && \str_contains( $value, "\0" ) ) {
+			return $this->write_string( $value );
 		}
-		$replaced = ( $this->replacer )( $value );
 
-		return 's:' . \strlen( $replaced ) . ':"' . $replaced . '";';
+		return $this->write_string( ( $this->replacer )( $value ) );
 	}
 
 
@@ -280,12 +286,7 @@ class Serialized_Parser {
 	 * @return int|null - Number of property/value pairs the object holds.
 	 */
 	protected function read_object_header(): ?int {
-		$name_length = $this->read_header( 'O' );
-		if ( null === $name_length || null === $this->read_quoted( $name_length ) || ':' !== $this->byte() ) {
-			return null;
-		}
-		++ $this->position;
-		$count = $this->read_digits();
+		$count = $this->read_class_header( 'O' );
 		if ( null === $count || '{' !== $this->byte() ) {
 			return null;
 		}
@@ -306,12 +307,7 @@ class Serialized_Parser {
 	 */
 	protected function parse_custom(): ?string {
 		$start = $this->position;
-		$name_length = $this->read_header( 'C' );
-		if ( null === $name_length || null === $this->read_quoted( $name_length ) || ':' !== $this->byte() ) {
-			return null;
-		}
-		++ $this->position;
-		$body_length = $this->read_digits();
+		$body_length = $this->read_class_header( 'C' );
 		if ( null === $body_length || '{' !== $this->byte() || \strlen( $this->data ) < $this->position + $body_length + 2 ) {
 			return null;
 		}
@@ -418,7 +414,19 @@ class Serialized_Parser {
 			return $token . ':' . $replaced . ';';
 		}
 
-		return 's:' . \strlen( $replaced ) . ':"' . $replaced . '";';
+		return $this->write_string( $replaced );
+	}
+
+
+	/**
+	 * Write a value as an `s:` token.
+	 *
+	 * @param string $value - Value to write.
+	 *
+	 * @return string
+	 */
+	protected function write_string( string $value ): string {
+		return 's:' . \strlen( $value ) . ':"' . $value . '";';
 	}
 
 
@@ -460,6 +468,24 @@ class Serialized_Parser {
 
 
 	/**
+	 * Read the `<token>:LEN:"<class>":N:` shared by `O:` and `C:`.
+	 *
+	 * @param string $token - `O` or `C`.
+	 *
+	 * @return int|null - The `N` which follows the class name.
+	 */
+	protected function read_class_header( string $token ): ?int {
+		$name_length = $this->read_header( $token );
+		if ( null === $name_length || null === $this->read_quoted( $name_length ) || ':' !== $this->byte() ) {
+			return null;
+		}
+		++ $this->position;
+
+		return $this->read_digits();
+	}
+
+
+	/**
 	 * Read `<digits>:` from the current position.
 	 *
 	 * @return int|null
@@ -470,7 +496,7 @@ class Serialized_Parser {
 			return null;
 		}
 		$digits = \substr( $this->data, $this->position, $end - $this->position );
-		if ( ! \ctype_digit( $digits ) ) {
+		if ( ! \ctype_digit( $digits ) || self::MAX_DIGITS < \strlen( $digits ) ) {
 			return null;
 		}
 		$this->position = $end + 1;

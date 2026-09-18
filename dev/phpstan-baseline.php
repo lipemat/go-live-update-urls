@@ -38,28 +38,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:replace_tree\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:replace_tree\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:set_dry_run\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
-	'identifier' => 'empty.notAllowed',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Skip_Rows.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property Go_Live_Update_Urls\\\\Skip_Rows\\:\\:\\$primary_keys type has no value type specified in iterable type array\\.$#',

@@ -246,27 +246,36 @@ class Serialized {
 	 */
 	protected function skip_current_row( string $reason ): void {
 		$this->row_skipped = true;
-		$skip_rows = Skip_Rows::instance();
-		if ( $skip_rows->is_current_skipped() ) {
-			return;
-		}
-		$skip_rows->skip_current();
-		$skip_rows->log_unsupported( $reason );
+		Skip_Rows::instance()->skip_current_once( $reason );
 	}
 
 
 	/**
 	 * Replaces all the occurrences of a string in a multidimensional array or Object
 	 *
-	 * @noinspection OffsetOperationsInspection
+	 * @since      5.2.0
+	 * @deprecated 7.1.0 Will be removed in version 8.
 	 *
-	 * @since        5.2.0
+	 * @param object|array<int|string, mixed>|string|int|float|bool|null $data - Data to change.
 	 *
-	 * @param object|array|string|int|float|null $data - Data to change.
-	 *
-	 * @return object|array|string|int|float|null
+	 * @return object|array<int|string, mixed>|string|int|float|bool|null
 	 */
 	public function replace_tree( $data ) {
+		_deprecated_function( __METHOD__, '7.1.0' );
+		return $this->replace_decoded( $data );
+	}
+
+
+	/**
+	 * Replaces all the occurrences of a string in decoded data.
+	 *
+	 * @noinspection OffsetOperationsInspection
+	 *
+	 * @param object|array<int|string, mixed>|string|int|float|bool|null $data - Data to change.
+	 *
+	 * @return object|array<int|string, mixed>|string|int|float|bool|null
+	 */
+	protected function replace_decoded( $data ) {
 		if ( null === $data ) {
 			return null;
 		}
@@ -282,7 +291,6 @@ class Serialized {
 			return $this->replace( $data );
 		}
 
-		// @phpstan-ignore-next-line -- Sanity check.
 		if ( ! \is_array( $data ) && ! \is_object( $data ) ) {
 			return $data;
 		}
@@ -296,16 +304,16 @@ class Serialized {
 			// The key was updated.
 			if ( '' !== $updated_key && $updated_key !== $key ) {
 				if ( \is_array( $data ) ) {
-					$data[ $updated_key ] = $this->replace_tree( $item );
+					$data[ $updated_key ] = $this->replace_decoded( $item );
 					unset( $data[ $key ] );
 				} else {
-					$data->{$updated_key} = $this->replace_tree( $item );
+					$data->{$updated_key} = $this->replace_decoded( $item );
 					unset( $data->{$key} );
 				}
 			} elseif ( \is_array( $data ) ) {
-				$data[ $key ] = $this->replace_tree( $item );
+				$data[ $key ] = $this->replace_decoded( $item );
 			} else {
-				$data->{$key} = $this->replace_tree( $item );
+				$data->{$key} = $this->replace_decoded( $item );
 			}
 		}
 
