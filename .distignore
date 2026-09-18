@@ -12,6 +12,7 @@
 ############################
 
 # Project specific
+/AGENTS.md
 /config
 /js/src
 /js/jest
