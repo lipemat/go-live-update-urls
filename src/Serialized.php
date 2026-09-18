@@ -1,10 +1,4 @@
 <?php
-/* @noinspection UnserializeExploitsInspection */
-
-//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-//phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
-//phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 namespace Go_Live_Update_Urls;
 
@@ -14,10 +8,27 @@ use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 /**
  * Serialized data handling.
  *
+ * Serialized strings are rewritten by `Serialized_Parser` and never
+ * decoded, so objects stored in the database are never instantiated.
+ *
  * @author OnPoint Plugins
  * @since  6.0.0
  */
 class Serialized {
+	/**
+	 * Logged when a row can't be parsed.
+	 *
+	 * @var string
+	 */
+	protected const UNPARSEABLE = 'it could not be parsed as serialized data';
+
+	/**
+	 * Logged when a row holds a `C:` body, which is opaque.
+	 *
+	 * @var string
+	 */
+	protected const LEGACY = 'it contains a legacy `Serializable` object which cannot be updated safely';
+
 	/**
 	 * New URL
 	 *
@@ -50,6 +61,15 @@ class Serialized {
 	 * @var bool
 	 */
 	protected $dry_run = false;
+
+	/**
+	 * Did the value being rewritten hit a token we can't update safely?
+	 *
+	 * Tracked per value, because `Skip_Rows` spans every column of a row.
+	 *
+	 * @var bool
+	 */
+	protected bool $row_skipped = false;
 
 
 	/**
@@ -103,37 +123,59 @@ class Serialized {
 	protected function update_table( string $table, string $column ): int {
 		global $wpdb;
 		$this->count = 0;
+		if ( ! $wpdb instanceof \wpdb ) {
+			return $this->count;
+		}
+
 		$column = esc_sql( $column );
 		$table = esc_sql( $table );
-		$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . "` WHERE Key_name = 'PRIMARY'" );
-		if ( empty( $pk[0] ) ) {
-			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
-			if ( empty( $pk[0] ) ) {
-				return 0;    // Fail.
+		$pk = $wpdb->get_results( $wpdb->prepare( "SHOW KEYS FROM %i WHERE Key_name = 'PRIMARY'", $table ) );
+		if ( ! isset( $pk[0]->Column_name ) || '' === $pk[0]->Column_name ) {
+			$pk = $wpdb->get_results( $wpdb->prepare( 'SHOW KEYS FROM %i', $table ) );
+			if ( ! isset( $pk[0]->Column_name ) || '' === $pk[0]->Column_name ) {
+				return $this->count; // failed.
 			}
 		}
 		$primary_key_column = $pk[0]->Column_name;
 		Skip_Rows::instance()->set_current_table( $table, $primary_key_column );
 
 		// Get all serialized rows.
-		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%' OR `{$column}` LIKE 's:%';" );
+		$rows = $wpdb->get_results( $wpdb->prepare(
+			'SELECT %i, %i FROM %i WHERE %i LIKE %s OR %i LIKE %s OR %i LIKE %s;',
+			$primary_key_column, $column, $table, $column, 'a:%', $column, 'O:%', $column, 's:%'
+		) );
+		if ( ! \is_array( $rows ) || [] === $rows ) {
+			return $this->count; // failed.
+		}
 
 		foreach ( $rows as $row ) {
-			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
+			if ( ! isset( $row->{$primary_key_column}, $row->{$column} ) ) {
 				continue;
 			}
-
 			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
-			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
-			if ( empty( $clean ) ) {
+			$value = $row->{$column};
+			if ( ! $this->has_data_to_update( $value ) ) {
 				continue;
 			}
 
-			if ( ! $this->dry_run ) {
-				$clean = @serialize( $clean );
-				if ( '' !== $clean ) {
-					$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
+			$count = $this->count;
+			$this->row_skipped = false;
+			$clean = $this->rewrite( $value );
+			if ( $this->row_skipped ) {
+				// Nothing in a skipped row is written.
+				$this->count = $count;
+				continue;
+			}
+
+			if ( ! $this->dry_run && $clean !== $value ) {
+				$query = $wpdb->prepare(
+					'UPDATE %i SET %i=%s WHERE %i = %s',
+					$table, $column, $clean, $primary_key_column, $row->{$primary_key_column}
+				);
+				if ( null === $query ) {
+					continue; // failed.
 				}
+				$wpdb->query( $query );
 			}
 		}
 
@@ -142,11 +184,83 @@ class Serialized {
 
 
 	/**
+	 * Rewrite a serialized string without decoding it.
+	 *
+	 * Skips the current row and returns the value unchanged when it
+	 * can't be parsed or holds a legacy `C:` body.
+	 *
+	 * @phpstan-impure
+	 *
+	 * @param string $serialized - Raw serialized value.
+	 *
+	 * @return string
+	 */
+	protected function rewrite( string $serialized ): string {
+		$number_replacer = null;
+		if ( \is_numeric( $this->old ) ) {
+			$number_replacer = function( string $number ): string {
+				return $this->replace_number( $number );
+			};
+		}
+		$parser = Serialized_Parser::factory( function( string $value ): string {
+			return $this->replace( $value );
+		}, $number_replacer );
+
+		$result = $parser->rewrite( $serialized );
+		if ( null === $result ) {
+			$this->skip_current_row( self::UNPARSEABLE );
+			return $serialized;
+		}
+		if ( $parser->has_unsupported() ) {
+			$this->skip_current_row( self::LEGACY );
+			return $serialized;
+		}
+
+		return $result;
+	}
+
+
+	/**
+	 * Replace a number only when its whole value is the old value.
+	 *
+	 * @param string $number - Number as text.
+	 *
+	 * @return string
+	 */
+	protected function replace_number( string $number ): string {
+		if ( $this->old === $number ) {
+			++ $this->count;
+			return $this->new;
+		}
+		return $number;
+	}
+
+
+	/**
+	 * Skip and log the current row once, no matter how many
+	 * of its values can't be updated.
+	 *
+	 * @param string $reason - Completes "because ..." in the log.
+	 *
+	 * @return void
+	 */
+	protected function skip_current_row( string $reason ): void {
+		$this->row_skipped = true;
+		$skip_rows = Skip_Rows::instance();
+		if ( $skip_rows->is_current_skipped() ) {
+			return;
+		}
+		$skip_rows->skip_current();
+		$skip_rows->log_unsupported( $reason );
+	}
+
+
+	/**
 	 * Replaces all the occurrences of a string in a multidimensional array or Object
 	 *
 	 * @noinspection OffsetOperationsInspection
 	 *
-	 * @since 5.2.0
+	 * @since        5.2.0
 	 *
 	 * @param object|array|string|int|float|null $data - Data to change.
 	 *
@@ -166,11 +280,6 @@ class Serialized {
 
 		if ( \is_string( $data ) ) {
 			return $this->replace( $data );
-		}
-
-		if ( $this->has_missing_classes( $data ) ) {
-			Skip_Rows::instance()->skip_current();
-			return $data;
 		}
 
 		// @phpstan-ignore-next-line -- Sanity check.
@@ -211,6 +320,8 @@ class Serialized {
 	 * Also replace occurrences of an old url formatted using
 	 * all available updaters
 	 *
+	 * A value no replacement changed is returned byte for byte.
+	 *
 	 * @param string $mysql_value - Original value from the database.
 	 *
 	 * @return string
@@ -221,28 +332,30 @@ class Serialized {
 		 * serialized item when calling functions like `add_option`.
 		 */
 		if ( is_serialized( $mysql_value ) ) {
-			$result = @unserialize( $mysql_value );
-			if ( false === $result ) {
-				return $mysql_value;
+			if ( $this->has_data_to_update( $mysql_value ) ) {
+				return $this->rewrite( $mysql_value );
 			}
-			return @serialize( $this->replace_tree( $result ) );
+			return $mysql_value;
 		}
 
-		$mysql_value = \str_replace( $this->old, $this->new, $mysql_value, $count );
+		$replaced = \str_replace( $this->old, $this->new, $mysql_value, $count );
 		$this->count += $count;
 
 		foreach ( Repo::instance()->get_updaters() as $updater ) {
 			/* @var Updaters_Abstract $updater - Updater class instance. */
 			$formatted = $updater::get_formatted( $this->old, $this->new );
 			if ( $formatted['old'] !== $this->old ) {
-				$mysql_value = \str_replace( $formatted['old'], $formatted['new'], $mysql_value, $updater_count );
+				$replaced = \str_replace( $formatted['old'], $formatted['new'], $replaced, $updater_count );
 				if ( ! $updater::is_appending_update( $this->old, $this->new ) ) {
 					$this->count += $updater_count;
 				}
 			}
 		}
 
-		return \trim( $mysql_value );
+		if ( $replaced === $mysql_value ) {
+			return $mysql_value;
+		}
+		return \trim( $replaced );
 	}
 
 
@@ -273,36 +386,6 @@ class Serialized {
 			}
 		}
 
-		return false;
-	}
-
-
-	/**
-	 * Wrapper around `unserialize` to support gracefully
-	 * failing to unserialize a value due to a missing class.
-	 *
-	 * If a class is not available when `unserialize` is called
-	 * PHP automatically converts the result to `__PHP_Incomplete_Class`.
-	 *
-	 * @ticket #10723
-	 *
-	 * @since 6.5.0
-	 *
-	 * @param object|array $data - Value from the database column.
-	 *
-	 * @return bool
-	 */
-	protected function has_missing_classes( $data ) {
-		if ( ! \is_array( $data ) && is_a( $data, \__PHP_Incomplete_Class::class ) ) {
-			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
-			foreach ( (array) $data as $key => $name ) {
-				if ( '__PHP_Incomplete_Class_Name' === $key ) {
-					Skip_Rows::instance()->log_error( $name );
-					return true;
-				}
-			}
-			return true;
-		}
 		return false;
 	}
 

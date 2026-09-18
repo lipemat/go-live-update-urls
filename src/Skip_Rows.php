@@ -9,7 +9,7 @@ use Go_Live_Update_Urls\Traits\Singleton;
  * database update.
  *
  * Used primarily to handle serialized data, which
- * didn't update because a saved PHP class is missing.
+ * can't be updated safely.
  *
  * @since  6.5.0
  */
@@ -93,6 +93,18 @@ class Skip_Rows {
 
 
 	/**
+	 * Has the current row in the current table been skipped?
+	 *
+	 * @since 7.1.0
+	 *
+	 * @return bool
+	 */
+	public function is_current_skipped(): bool {
+		return isset( $this->skip[ $this->table ] ) && \in_array( $this->row_id, $this->skip[ $this->table ], true );
+	}
+
+
+	/**
 	 * Get any db ids to be skipped for a table.
 	 *
 	 * @param string $table - Database table.
@@ -132,11 +144,26 @@ class Skip_Rows {
 	 * @return void
 	 */
 	public function log_error( string $class_name ): void {
+		$this->log_unsupported( \sprintf( 'it contains an unavailable PHP class named `%s`', $class_name ) );
+	}
+
+
+	/**
+	 * Log information to the PHP Error log about a row skipped
+	 * because its serialized data can't be updated safely.
+	 *
+	 * @since 7.1.0
+	 *
+	 * @param string $reason - Completes "because ..." in the message.
+	 *
+	 * @return void
+	 */
+	public function log_unsupported( string $reason ): void {
 		//phpcs:ignore -- We want to use the PHP error log.
-		\error_log( \vsprintf( 'Go Live skipped row `%s` in the table `%s` because it contains an unavailable PHP class named `%s`.', [
+		\error_log( \vsprintf( 'Go Live skipped row `%s` in the table `%s` because %s.', [
 			$this->row_id,
 			$this->table,
-			$class_name,
+			$reason,
 		] ) );
 	}
 }

@@ -6,7 +6,8 @@ namespace Go_Live_Update_Urls;
  * Rewrite the URLs inside a raw serialized string without decoding it.
  *
  * Walks the serialized bytes and passes only the values of `s:` tokens
- * through the replacement closure, recalculating their lengths. Every other
+ * through the replacement closure, recalculating their lengths. When given
+ * a number closure, `i:` and `d:` values pass through it too. Every other
  * byte is copied verbatim, so references, floats, enums, deep nesting,
  * and UTF-8 all survive byte for byte.
  *
@@ -41,6 +42,13 @@ class Serialized_Parser {
 	];
 
 	/**
+	 * `d:` bodies which `(float)` reads as `0`.
+	 *
+	 * @var string[]
+	 */
+	protected const NON_FINITE = [ 'INF', '-INF', 'NAN' ];
+
+	/**
 	 * Receives an `s:` token's value and returns its replacement.
 	 *
 	 * @phpstan-var \Closure(string):string
@@ -48,6 +56,15 @@ class Serialized_Parser {
 	 * @var \Closure
 	 */
 	protected \Closure $replacer;
+
+	/**
+	 * Receives an `i:` or `d:` value as text and returns its replacement.
+	 *
+	 * @phpstan-var (\Closure(string):string)|null
+	 *
+	 * @var \Closure|null
+	 */
+	protected ?\Closure $number_replacer;
 
 	/**
 	 * Serialized string currently being rewritten.
@@ -74,12 +91,15 @@ class Serialized_Parser {
 	/**
 	 * Serialized_Parser constructor.
 	 *
-	 * @phpstan-param \Closure(string):string $replacer
+	 * @phpstan-param \Closure(string):string        $replacer
+	 * @phpstan-param (\Closure(string):string)|null $number_replacer
 	 *
-	 * @param \Closure                        $replacer - Called with each `s:` token's value.
+	 * @param \Closure                               $replacer        - Called with each `s:` token's value.
+	 * @param \Closure|null                          $number_replacer - Called with each `i:` or `d:` value.
 	 */
-	final protected function __construct( \Closure $replacer ) {
+	final protected function __construct( \Closure $replacer, ?\Closure $number_replacer ) {
 		$this->replacer = $replacer;
+		$this->number_replacer = $number_replacer;
 	}
 
 
@@ -123,6 +143,8 @@ class Serialized_Parser {
 	 * in order, so the stack need only count the values each open `a:` or
 	 * `O:` still expects. The bottom entry is the lone top level value.
 	 *
+	 * Keys and values alternate, so an odd count means a value is next.
+	 *
 	 * @return string|null
 	 */
 	protected function parse(): ?string {
@@ -158,7 +180,7 @@ class Serialized_Parser {
 				continue;
 			}
 
-			$value = $this->parse_leaf( $token );
+			$value = $this->parse_leaf( $token, 1 === $remaining[ $level ] % 2 );
 			if ( null === $value ) {
 				return null;
 			}
@@ -173,11 +195,12 @@ class Serialized_Parser {
 	/**
 	 * Parse a token which can't hold other values.
 	 *
-	 * @param string $token - Single character token at the current position.
+	 * @param string $token    - Single character token at the current position.
+	 * @param bool   $is_value - Whether the token is a value rather than an array key or property name.
 	 *
 	 * @return string|null
 	 */
-	protected function parse_leaf( string $token ): ?string {
+	protected function parse_leaf( string $token, bool $is_value ): ?string {
 		if ( 's' === $token ) {
 			return $this->parse_string();
 		}
@@ -189,6 +212,9 @@ class Serialized_Parser {
 		}
 		if ( 'N' === $token ) {
 			return $this->parse_null();
+		}
+		if ( $is_value && $this->number_replacer instanceof \Closure && ( 'i' === $token || 'd' === $token ) ) {
+			return $this->parse_number( $token, $this->number_replacer );
 		}
 		if ( isset( self::SCALAR_PATTERNS[ $token ] ) ) {
 			return $this->parse_scalar();
@@ -359,6 +385,64 @@ class Serialized_Parser {
 
 
 	/**
+	 * Parse an `i:` or `d:` value and send its text through the number
+	 * closure.
+	 *
+	 * The text matches the `(string)` cast of the decoded number. A number
+	 * the closure leaves alone keeps its original bytes. A changed number
+	 * keeps its token while the result is still valid for it, otherwise it
+	 * becomes an `s:`.
+	 *
+	 * @phpstan-param \Closure(string):string $number_replacer
+	 *
+	 * @param string                          $token           - `i` or `d`.
+	 * @param \Closure                        $number_replacer - Called with the number's text.
+	 *
+	 * @return string|null
+	 */
+	protected function parse_number( string $token, \Closure $number_replacer ): ?string {
+		$scalar = $this->parse_scalar();
+		if ( null === $scalar ) {
+			return null;
+		}
+		$number = \substr( $scalar, 2, - 1 );
+		if ( 'd' === $token && ! \in_array( $number, self::NON_FINITE, true ) ) {
+			$number = (string) (float) $number;
+		}
+
+		$replaced = $number_replacer( $number );
+		if ( $replaced === $number ) {
+			return $scalar;
+		}
+		if ( $this->is_valid_number( $token, $replaced ) ) {
+			return $token . ':' . $replaced . ';';
+		}
+
+		return 's:' . \strlen( $replaced ) . ':"' . $replaced . '";';
+	}
+
+
+	/**
+	 * Can the text be written as the body of an `i:` or `d:` token?
+	 *
+	 * An `i:` body must be exactly how PHP writes an integer it can hold,
+	 * which rejects overflow, leading zeros, `+8` and `-0`.
+	 *
+	 * @param string $token  - `i` or `d`.
+	 * @param string $number - Text to check.
+	 *
+	 * @return bool
+	 */
+	protected function is_valid_number( string $token, string $number ): bool {
+		if ( 'd' === $token ) {
+			return 1 === \preg_match( self::SCALAR_PATTERNS['d'], $number );
+		}
+		$int = \filter_var( $number, \FILTER_VALIDATE_INT );
+		return \is_int( $int ) && (string) $int === $number;
+	}
+
+
+	/**
 	 * Read a `<token>:<digits>:` header.
 	 *
 	 * @param string $token - Single character token the header must start with.
@@ -432,15 +516,19 @@ class Serialized_Parser {
 
 
 	/**
-	 * Create a new instance of the parser with the given replace closure.
+	 * Create a new instance of the parser with the given replace closures.
 	 *
-	 * @phpstan-param \Closure(string):string $replacer
+	 * Without a number closure, `i:` and `d:` tokens are copied verbatim.
 	 *
-	 * @param \Closure                        $replacer - Called with each `s:` token's value.
+	 * @phpstan-param \Closure(string):string        $replacer
+	 * @phpstan-param (\Closure(string):string)|null $number_replacer
+	 *
+	 * @param \Closure                               $replacer        - Called with each `s:` token's value.
+	 * @param \Closure|null                          $number_replacer - Called with each `i:` or `d:` value.
 	 *
 	 * @return static
 	 */
-	public static function factory( \Closure $replacer ): Serialized_Parser {
-		return new static( $replacer );
+	public static function factory( \Closure $replacer, ?\Closure $number_replacer = null ): Serialized_Parser {
+		return new static( $replacer, $number_replacer );
 	}
 }

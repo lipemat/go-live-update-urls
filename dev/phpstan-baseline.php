@@ -38,54 +38,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../src/Database.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Accessing `Column_name` property on unknown `\\$pk\\[0\\]` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownProperty',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Accessing `column` property on unknown `\\$row` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownProperty',
-	'count' => 2,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Accessing `primary_key_column` property on unknown `\\$row` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownProperty',
-	'count' => 2,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Calling `get_results` method on unknown `\\$wpdb` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownMethodCaller',
-	'count' => 3,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Calling `prepare` method on unknown `\\$wpdb` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownMethodCaller',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Calling `query` method on unknown `\\$wpdb` can skip important errors\\. Make sure the type is known\\.$#',
-	'identifier' => 'lipemat.noUnknownMethodCaller',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#',
-	'identifier' => 'empty.notAllowed',
-	'count' => 3,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:has_missing_classes\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/Serialized.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Go_Live_Update_Urls\\\\Serialized\\:\\:replace_tree\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
