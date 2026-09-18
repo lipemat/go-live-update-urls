@@ -23,6 +23,7 @@ use Go_Live_Update_Urls\Admin;
 use Go_Live_Update_Urls\Core;
 use Go_Live_Update_Urls\Database;
 use Go_Live_Update_Urls\Serialized;
+use Go_Live_Update_Urls\Serialized_Parser;
 use Go_Live_Update_Urls\Skip_Rows;
 use Go_Live_Update_Urls\Traits\Singleton;
 use Go_Live_Update_Urls\Updaters\Repo;
@@ -66,6 +67,7 @@ function go_live_update_urls_autoload( $class_name ) {
 		Database::class          => 'Database.php',
 		Repo::class              => 'Updaters/Repo.php',
 		Serialized::class        => 'Serialized.php',
+		Serialized_Parser::class => 'Serialized_Parser.php',
 		Singleton::class         => 'Traits/Singleton.php',
 		Skip_Rows::class         => 'Skip_Rows.php',
 		Updates::class           => 'Updates.php',
