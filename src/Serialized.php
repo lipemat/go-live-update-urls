@@ -3,13 +3,18 @@
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Updaters\Repo;
-use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Serialized data handling.
  *
  * Serialized strings are rewritten by `Serialized_Parser` and never
  * decoded, so objects stored in the database are never instantiated.
+ *
+ * @phpstan-type REPLACEMENT array{
+ *     old: list<string>,
+ *     new: list<string>,
+ *     counted: bool
+ * }
  *
  * @author OnPoint Plugins
  * @since  6.0.0
@@ -71,6 +76,21 @@ class Serialized {
 	 */
 	protected bool $row_skipped = false;
 
+	/**
+	 * Search and replace URLs, computed once per run.
+	 *
+	 * @phpstan-var non-empty-list<REPLACEMENT>|null
+	 * @var array<int, array<string, string[]|bool>>|null
+	 */
+	protected ?array $replacements = null;
+
+	/**
+	 * Rewrites every serialized string, nested ones included.
+	 *
+	 * @var Serialized_Parser
+	 */
+	protected Serialized_Parser $parser;
+
 
 	/**
 	 * Serialized constructor.
@@ -81,6 +101,12 @@ class Serialized {
 	public function __construct( $old_url, $new_url ) {
 		$this->new = $new_url;
 		$this->old = $old_url;
+
+		$number_replacer = null;
+		if ( \is_numeric( $old_url ) ) {
+			$number_replacer = \Closure::fromCallable( [ $this, 'replace_number' ] );
+		}
+		$this->parser = Serialized_Parser::factory( \Closure::fromCallable( [ $this, 'replace' ] ), $number_replacer );
 	}
 
 
@@ -211,22 +237,12 @@ class Serialized {
 	 * @return string
 	 */
 	protected function rewrite( string $serialized ): string {
-		$number_replacer = null;
-		if ( \is_numeric( $this->old ) ) {
-			$number_replacer = function( string $number ): string {
-				return $this->replace_number( $number );
-			};
-		}
-		$parser = Serialized_Parser::factory( function( string $value ): string {
-			return $this->replace( $value );
-		}, $number_replacer );
-
-		$result = $parser->rewrite( $serialized );
+		$result = $this->parser->rewrite( $serialized, $this->get_old_urls() );
 		if ( null === $result ) {
 			$this->skip_current_row( self::UNPARSEABLE );
 			return $serialized;
 		}
-		if ( $parser->has_unsupported() ) {
+		if ( $this->parser->has_unsupported() ) {
 			$this->skip_current_row( self::LEGACY );
 			return $serialized;
 		}
@@ -361,17 +377,13 @@ class Serialized {
 			return $mysql_value;
 		}
 
-		$replaced = \str_replace( $this->old, $this->new, $mysql_value, $count );
-		$this->count += $count;
-
-		foreach ( Repo::instance()->get_updaters() as $updater ) {
-			/* @var Updaters_Abstract $updater - Updater class instance. */
-			$formatted = $updater::get_formatted( $this->old, $this->new );
-			if ( $formatted['old'] !== $this->old ) {
-				$replaced = \str_replace( $formatted['old'], $formatted['new'], $replaced, $updater_count );
-				if ( ! $updater::is_appending_update( $this->old, $this->new ) ) {
-					$this->count += $updater_count;
-				}
+		$replaced = $mysql_value;
+		// Runs for every matching value, so a filled cache is read without a call.
+		$replacements = $this->replacements ?? $this->get_replacements();
+		foreach ( $replacements as $replacement ) {
+			$replaced = \str_replace( $replacement['old'], $replacement['new'], $replaced, $count );
+			if ( $replacement['counted'] ) {
+				$this->count += $count;
 			}
 		}
 
@@ -397,19 +409,82 @@ class Serialized {
 			return false;
 		}
 
-		if ( false !== strpos( $mysql_value, $this->old ) ) {
-			return true;
-		}
-
-		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			/* @var Updaters_Abstract $_updater - Updater class instance. */
-			$formatted = $_updater::get_formatted( $this->old, $this->new );
-			if ( false !== strpos( $mysql_value, $formatted['old'] ) ) {
-				return true;
+		foreach ( $this->get_replacements() as $replacement ) {
+			foreach ( $replacement['old'] as $old ) {
+				if ( false !== \strpos( $mysql_value, $old ) ) {
+					return true;
+				}
 			}
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Get the old URL as is and as formatted by each updater.
+	 *
+	 * @return string[]
+	 */
+	protected function get_old_urls(): array {
+		return \array_merge( ...\array_column( $this->get_replacements(), 'old' ) );
+	}
+
+
+	/**
+	 * Get the old URL as is, then as formatted by each updater, paired
+	 * with the new URL, computed once per run.
+	 *
+	 * `str_replace` runs a group's pairs in order, so consecutive pairs
+	 * which are counted alike share a group.
+	 *
+	 * Updaters which leave the old URL as it is are left out, because
+	 * replacing the old URL as is already covers them.
+	 *
+	 * @phpstan-return non-empty-list<REPLACEMENT>
+	 * @return array<int, array<string, string[]|bool>>
+	 */
+	protected function get_replacements(): array {
+		if ( \is_array( $this->replacements ) ) {
+			return $this->replacements;
+		}
+		$replacements = [
+			[
+				'old'     => [ $this->old ],
+				'new'     => [ $this->new ],
+				'counted' => true,
+			],
+		];
+		foreach ( Repo::instance()->get_updaters() as $updater ) {
+			$formatted = $updater::get_formatted( $this->old, $this->new );
+			if ( $formatted['old'] !== $this->old ) {
+				$counted = ! $updater::is_appending_update( $this->old, $this->new );
+				$last = \count( $replacements ) - 1;
+				if ( $counted === $replacements[ $last ]['counted'] ) {
+					$replacements[ $last ]['old'][] = $formatted['old'];
+					$replacements[ $last ]['new'][] = $formatted['new'];
+				} else {
+					$replacements[] = [
+						'old'     => [ $formatted['old'] ],
+						'new'     => [ $formatted['new'] ],
+						'counted' => $counted,
+					];
+				}
+			}
+		}
+		$this->replacements = $replacements;
+
+		return $this->replacements;
+	}
+
+
+	/**
+	 * Read the updaters again on the next replacement.
+	 *
+	 * @return void
+	 */
+	public function reset_updater_urls(): void {
+		$this->replacements = null;
 	}
 
 

@@ -31,22 +31,26 @@ class Serialized_Parser {
 	/**
 	 * Most digits a count or length may have, so it always fits in an integer.
 	 *
+	 * Digits past these are left unread, so the byte after fails its check.
+	 *
 	 * @var int
 	 */
 	protected const MAX_DIGITS = 18;
 
 	/**
-	 * Patterns each scalar token's body must match to be valid.
+	 * Most unchanged bytes copied at once, so a long span never doubles
+	 * the memory a rewrite holds.
 	 *
-	 * @var array<string, string>
+	 * @var int
 	 */
-	protected const SCALAR_PATTERNS = [
-		'b' => '/^[01]$/',
-		'd' => '/^(?:-?INF|NAN|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)$/',
-		'i' => '/^-?\d+$/',
-		'r' => '/^\d+$/',
-		'R' => '/^\d+$/',
-	];
+	protected const CHUNK = 8192;
+
+	/**
+	 * Pattern a `d:` token's body must match to be valid.
+	 *
+	 * @var string
+	 */
+	protected const FLOAT_PATTERN = '/^(?:-?INF|NAN|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)$/D';
 
 	/**
 	 * `d:` bodies which `(float)` reads as `0`.
@@ -74,21 +78,7 @@ class Serialized_Parser {
 	protected ?\Closure $number_replacer;
 
 	/**
-	 * Serialized string currently being rewritten.
-	 *
-	 * @var string
-	 */
-	protected string $data = '';
-
-	/**
-	 * Byte offset of the next unread character within `$data`.
-	 *
-	 * @var int
-	 */
-	protected int $position = 0;
-
-	/**
-	 * Did the current rewrite run across a token we can't support?
+	 * Did the last rewrite run across a token we can't support?
 	 *
 	 * @var bool
 	 */
@@ -113,19 +103,18 @@ class Serialized_Parser {
 	/**
 	 * Rewrite a serialized string in place.
 	 *
-	 * @param string $serialized - Raw serialized value from a database column.
+	 * The replace closures may rewrite another string with this parser
+	 * before the first rewrite returns.
+	 *
+	 * @param string        $serialized - Raw serialized value from a database column.
+	 * @param string[]|null $needles    - Only `s:` values holding one of these reach the replace closure. `null` for every value.
 	 *
 	 * @return string|null - `null` when the value can't be parsed.
 	 */
-	public function rewrite( string $serialized ): ?string {
-		$this->data = $serialized;
-		$this->position = 0;
-		$this->unsupported = false;
-
-		$result = $this->parse();
-		if ( null === $result || \strlen( $this->data ) !== $this->position ) {
-			return null;
-		}
+	public function rewrite( string $serialized, ?array $needles = null ): ?string {
+		$unsupported = false;
+		$result = $this->parse( $serialized, $needles, $unsupported );
+		$this->unsupported = $unsupported;
 
 		return $result;
 	}
@@ -143,88 +132,233 @@ class Serialized_Parser {
 
 
 	/**
-	 * Walk every token of a single value.
+	 * Walk every token of a single value in one loop.
 	 *
 	 * Nesting is tracked on an explicit stack instead of by recursion, so
-	 * deep data can't exhaust the call stack. Output is only ever appended
-	 * in order, so the stack need only count the values each open `a:` or
-	 * `O:` still expects. The bottom entry is the lone top level value.
+	 * deep data can't exhaust the call stack. `$left` counts the keys and
+	 * values the innermost open `a:` or `O:` still expects, and the stack
+	 * holds the counts of the surrounding containers.
 	 *
-	 * Keys and values alternate, so an odd count means a value is next.
+	 * Unchanged bytes are only copied when a later token changes. Helpers
+	 * never take a loop variable by reference, which would slow every
+	 * later use of it.
+	 *
+	 * @param string        $data        - Raw serialized value.
+	 * @param string[]|null $needles     - Only `s:` values holding one of these reach the replace closure.
+	 * @param bool          $unsupported - Set to `true` when a token can't be rewritten safely.
 	 *
 	 * @return string|null
 	 */
-	protected function parse(): ?string {
+	protected function parse( string $data, ?array $needles, bool &$unsupported ): ?string {
+		$filtered = \is_array( $needles );
+		// Offset of each needle's next match, and of the nearest one. Needles missing from the data are dropped.
+		$found = [];
+		$next = [];
+		$nearest = - 1;
+		if ( $filtered ) {
+			$nearest = \PHP_INT_MAX;
+			foreach ( $needles as $needle ) {
+				$match = \strpos( $data, $needle );
+				if ( \is_int( $match ) ) {
+					$found[] = $needle;
+					$next[] = $match;
+					$nearest = \min( $nearest, $match );
+				}
+			}
+		}
+		$holds = false;
+
+		$replacer = $this->replacer;
+		$number_replacer = $this->number_replacer;
+		$bytes = \strlen( $data );
 		$output = '';
-		$remaining = [ 1 ];
-		while ( [] !== $remaining ) {
-			$level = \count( $remaining ) - 1;
-			if ( 0 === $remaining[ $level ] ) {
-				\array_pop( $remaining );
-				if ( 0 < $level ) {
-					if ( '}' !== $this->byte() ) {
+		$copied = 0;
+		$position = 0;
+		$stack = [];
+		$level = 0;
+		$left = 1;
+		while ( true ) {
+			if ( 0 === $left ) {
+				if ( 0 === $level ) {
+					break;
+				}
+				if ( $bytes <= $position || '}' !== $data[ $position ] ) {
+					return null;
+				}
+				++ $position;
+				-- $level;
+				$left = $stack[ $level ];
+				continue;
+			}
+
+			$start = $position;
+			$head = \substr( $data, $position, 2 );
+			$position += 2;
+			// Keys and values alternate, so an even count left means this token is a value.
+			-- $left;
+			if ( 's:' === $head ) {
+				$digits = \strspn( $data, '0123456789', $position, self::MAX_DIGITS );
+				if ( 0 === $digits ) {
+					return null;
+				}
+				$from = $position + $digits + 2;
+				$close = $from + (int) \substr( $data, $position, $digits );
+				if ( ':"' !== \substr( $data, $from - 2, 2 ) || '";' !== \substr( $data, $close, 2 ) ) {
+					return null;
+				}
+				$position = $close + 2;
+
+				// No needle starts inside the value.
+				if ( $close <= $nearest ) {
+					continue;
+				}
+				if ( $filtered ) {
+					$nearest = $this->advance_needles( $data, $from, $close, $found, $next, $holds );
+					if ( ! $holds ) {
+						continue;
+					}
+				}
+
+				$value = \substr( $data, $from, $close - $from );
+				// Names holding a NUL are mangled private or protected properties, which `trim` would corrupt.
+				if ( 0 === ( $left & 1 ) || ! \str_contains( $value, "\0" ) ) {
+					$replaced = $replacer( $value );
+					if ( $replaced !== $value ) {
+						// A short span needs no chunks.
+						if ( $start - $copied <= self::CHUNK ) {
+							$output .= \substr( $data, $copied, $start - $copied );
+						} else {
+							$this->copy( $output, $data, $copied, $start );
+						}
+						$output .= 's:' . \strlen( $replaced ) . ':"' . $replaced . '";';
+						$copied = $position;
+					}
+				}
+			} elseif ( 'i:' === $head || 'd:' === $head ) {
+				// Integer keys are too common to leave to a helper.
+				if ( 'i:' === $head ) {
+					$from = $position;
+					if ( $position < $bytes && '-' === $data[ $position ] ) {
+						++ $from;
+					}
+					$end = $from + \strspn( $data, '0123456789', $from );
+					if ( $from === $end || $bytes <= $end || ';' !== $data[ $end ] ) {
 						return null;
 					}
-					++ $this->position;
-					$output .= '}';
-					-- $remaining[ $level - 1 ];
+				} else {
+					$end = $this->find_float_end( $data, $position );
+					if ( null === $end ) {
+						return null;
+					}
 				}
-				continue;
-			}
-
-			$token = $this->byte();
-			if ( 'a' === $token || 'O' === $token ) {
-				if ( self::MAX_DEPTH <= $level ) {
+				if ( 0 === ( $left & 1 ) && $number_replacer instanceof \Closure ) {
+					$replaced = $this->replace_number( $head[0], \substr( $data, $position, $end - $position ), $number_replacer );
+					if ( \is_string( $replaced ) ) {
+						$this->copy( $output, $data, $copied, $start );
+						$output .= $replaced;
+						$copied = $end + 1;
+					}
+				}
+				$position = $end + 1;
+			} elseif ( 'a:' === $head || 'O:' === $head ) {
+				if ( 'O:' === $head ) {
+					$end = $this->skip_quoted( $data, $position, '":' );
+					if ( null === $end ) {
+						return null;
+					}
+					$position = $end;
+				}
+				$digits = \strspn( $data, '0123456789', $position, self::MAX_DIGITS );
+				if ( 0 === $digits || self::MAX_DEPTH <= $level || ':{' !== \substr( $data, $position + $digits, 2 ) ) {
 					return null;
 				}
-				$start = $this->position;
-				$count = 'a' === $token ? $this->read_array_header() : $this->read_object_header();
-				if ( null === $count ) {
+				$stack[ $level ] = $left;
+				++ $level;
+				$left = 2 * (int) \substr( $data, $position, $digits );
+				$position += $digits + 2;
+			} elseif ( 'N;' === $head ) {
+				continue;
+			} elseif ( 'C:' === $head ) {
+				// A legacy `Serializable` body is opaque, so it is copied verbatim.
+				$end = $this->skip_serializable( $data, $position );
+				if ( null === $end ) {
 					return null;
 				}
-				$output .= \substr( $this->data, $start, $this->position - $start );
-				$remaining[] = $count * 2;
-				continue;
+				$position = $end;
+				$unsupported = true;
+			} else {
+				$end = $this->skip_token( $head, $data, $position );
+				if ( null === $end ) {
+					return null;
+				}
+				$position = $end;
 			}
-
-			$value = $this->parse_leaf( $token, 1 === $remaining[ $level ] % 2 );
-			if ( null === $value ) {
-				return null;
-			}
-			$output .= $value;
-			-- $remaining[ $level ];
 		}
+
+		if ( $bytes !== $position ) {
+			return null;
+		}
+		if ( 0 === $copied ) {
+			return $data;
+		}
+		$this->copy( $output, $data, $copied, $position );
 
 		return $output;
 	}
 
 
 	/**
-	 * Parse a token which can't hold other values.
+	 * Move each needle's next match past an `s:` value.
 	 *
-	 * @param string $token    - Single character token at the current position.
-	 * @param bool   $is_value - Whether the token is a value rather than an array key or property name.
+	 * @phpstan-param list<string> $found
+	 * @phpstan-param list<int>    $next
 	 *
-	 * @return string|null
+	 * @param string               $data  - Raw serialized value.
+	 * @param int                  $from  - Offset of the value's first byte.
+	 * @param int                  $close - Offset after the value's last byte.
+	 * @param string[]             $found - Needles the data holds.
+	 * @param int[]                $next  - Offset of each needle's next match.
+	 * @param bool                 $holds - Set to whether a needle lies wholly inside the value.
+	 *
+	 * @return int - Offset of the nearest match left.
 	 */
-	protected function parse_leaf( string $token, bool $is_value ): ?string {
-		if ( 's' === $token ) {
-			return $this->parse_string( $is_value );
+	protected function advance_needles( string $data, int $from, int $close, array $found, array &$next, bool &$holds ): int {
+		$holds = false;
+		$nearest = \PHP_INT_MAX;
+		foreach ( $found as $i => $needle ) {
+			if ( $next[ $i ] < $from ) {
+				$match = \strpos( $data, $needle, $from );
+				$next[ $i ] = false === $match ? \PHP_INT_MAX : $match;
+			}
+			if ( $next[ $i ] < $close ) {
+				if ( $next[ $i ] <= $close - \strlen( $needle ) ) {
+					$holds = true;
+				}
+				// Only a match past this value can be inside a later one.
+				$match = \strpos( $data, $needle, $close );
+				$next[ $i ] = false === $match ? \PHP_INT_MAX : $match;
+			}
+			if ( $next[ $i ] < $nearest ) {
+				$nearest = $next[ $i ];
+			}
 		}
-		if ( 'C' === $token ) {
-			return $this->parse_custom();
-		}
-		if ( 'E' === $token ) {
-			return $this->parse_enum();
-		}
-		if ( 'N' === $token ) {
-			return $this->parse_null();
-		}
-		if ( $is_value && $this->number_replacer instanceof \Closure && ( 'i' === $token || 'd' === $token ) ) {
-			return $this->parse_number( $token, $this->number_replacer );
-		}
-		if ( isset( self::SCALAR_PATTERNS[ $token ] ) ) {
-			return $this->parse_scalar();
+
+		return $nearest;
+	}
+
+
+	/**
+	 * Find the `;` which closes a `d:` token.
+	 *
+	 * @param string $data     - Raw serialized value.
+	 * @param int    $position - Offset after the `d:`.
+	 *
+	 * @return int|null - `null` when the body isn't a float.
+	 */
+	protected function find_float_end( string $data, int $position ): ?int {
+		$end = \strpos( $data, ';', $position );
+		if ( \is_int( $end ) && 1 === \preg_match( self::FLOAT_PATTERN, \substr( $data, $position, $end - $position ) ) ) {
+			return $end;
 		}
 
 		return null;
@@ -232,201 +366,127 @@ class Serialized_Parser {
 
 
 	/**
-	 * Parse `s:LEN:"<LEN bytes>";` and send its value through the
-	 * replace closure.
+	 * Skip a `b:`, `r:`, `R:` or `E:` token, none of which can hold a URL.
 	 *
-	 * Names holding a NUL are mangled private or protected properties,
-	 * which `trim` would corrupt, so they are copied verbatim.
+	 * @param string $head     - First two bytes of the token.
+	 * @param string $data     - Raw serialized value.
+	 * @param int    $position - Offset after the head.
 	 *
-	 * @param bool $is_value - Whether the token is a value rather than an array key or property name.
-	 *
-	 * @return string|null
+	 * @return int|null - Offset after the token, or `null` when it isn't valid.
 	 */
-	protected function parse_string( bool $is_value ): ?string {
-		$length = $this->read_header( 's' );
-		if ( null === $length ) {
-			return null;
+	protected function skip_token( string $head, string $data, int $position ): ?int {
+		if ( 'b:' === $head ) {
+			$body = \substr( $data, $position, 2 );
+			if ( '0;' === $body || '1;' === $body ) {
+				return $position + 2;
+			}
+		} elseif ( 'r:' === $head || 'R:' === $head ) {
+			$end = $position + \strspn( $data, '0123456789', $position );
+			if ( $position < $end && $end < \strlen( $data ) && ';' === $data[ $end ] ) {
+				return $end + 1;
+			}
+		} elseif ( 'E:' === $head ) {
+			return $this->skip_quoted( $data, $position, '";' );
 		}
-		$value = $this->read_quoted( $length );
-		if ( null === $value || ';' !== $this->byte() ) {
-			return null;
-		}
-		++ $this->position;
 
-		if ( ! $is_value && \str_contains( $value, "\0" ) ) {
-			return $this->write_string( $value );
-		}
-
-		return $this->write_string( ( $this->replacer )( $value ) );
+		return null;
 	}
 
 
 	/**
-	 * Read the `a:N:{` which opens an array.
+	 * Skip the `LEN:"<class>":N:{<N bytes>}` which follows a `C:`.
 	 *
-	 * @return int|null - Number of key/value pairs the array holds.
+	 * @param string $data     - Raw serialized value.
+	 * @param int    $position - Offset after the `C:`.
+	 *
+	 * @return int|null - Offset after the `}`, or `null` when it isn't valid.
 	 */
-	protected function read_array_header(): ?int {
-		$count = $this->read_header( 'a' );
-		if ( null === $count || '{' !== $this->byte() ) {
+	protected function skip_serializable( string $data, int $position ): ?int {
+		$size = $this->skip_quoted( $data, $position, '":' );
+		if ( null === $size ) {
 			return null;
 		}
-		++ $this->position;
+		$digits = \strspn( $data, '0123456789', $size, self::MAX_DIGITS );
+		$close = $size + $digits + 2 + (int) \substr( $data, $size, $digits );
+		if ( 0 < $digits && ':{' === \substr( $data, $size + $digits, 2 ) && $close < \strlen( $data ) && '}' === $data[ $close ] ) {
+			return $close + 1;
+		}
 
-		return $count;
+		return null;
 	}
 
 
 	/**
-	 * Read the `O:LEN:"<class>":N:{` which opens an object.
+	 * Skip `LEN:"<LEN bytes>"` and the byte which must follow it.
 	 *
-	 * `N` counts properties rather than bytes, so rewriting a string
-	 * inside the body never invalidates the header.
+	 * Byte counts only. `mb_*` would read the declared length as
+	 * characters and walk off the end of the token.
 	 *
-	 * @return int|null - Number of property/value pairs the object holds.
+	 * @param string $data     - Raw serialized value.
+	 * @param int    $position - Offset of `LEN`.
+	 * @param string $closer   - Closing quote and the byte which must follow it.
+	 *
+	 * @return int|null - Offset after the closer, or `null` when it isn't valid.
 	 */
-	protected function read_object_header(): ?int {
-		$count = $this->read_class_header( 'O' );
-		if ( null === $count || '{' !== $this->byte() ) {
-			return null;
+	protected function skip_quoted( string $data, int $position, string $closer ): ?int {
+		$digits = \strspn( $data, '0123456789', $position, self::MAX_DIGITS );
+		$from = $position + $digits + 2;
+		$close = $from + (int) \substr( $data, $position, $digits );
+		if ( 0 < $digits && ':"' === \substr( $data, $from - 2, 2 ) && \substr( $data, $close, 2 ) === $closer ) {
+			return $close + 2;
 		}
-		++ $this->position;
 
-		return $count;
+		return null;
 	}
 
 
 	/**
-	 * Parse the legacy `C:LEN:"<class>":BODY:{<BODY bytes>}` written by
-	 * classes implementing `Serializable`.
+	 * Append the unchanged bytes between two offsets.
 	 *
-	 * The body is opaque, so it is copied verbatim and the row is
-	 * reported as unsupported.
+	 * @param string $output - Rewritten value so far.
+	 * @param string $data   - Raw serialized value.
+	 * @param int    $from   - Offset of the first byte to copy.
+	 * @param int    $to     - Offset after the last byte to copy.
 	 *
-	 * @return string|null
+	 * @return void
 	 */
-	protected function parse_custom(): ?string {
-		$start = $this->position;
-		$body_length = $this->read_class_header( 'C' );
-		if ( null === $body_length || '{' !== $this->byte() || \strlen( $this->data ) < $this->position + $body_length + 2 ) {
-			return null;
+	protected function copy( string &$output, string $data, int $from, int $to ): void {
+		for ( ; $from < $to; $from += self::CHUNK ) {
+			$output .= \substr( $data, $from, \min( self::CHUNK, $to - $from ) );
 		}
-		$this->position += $body_length + 2;
-		if ( '}' !== $this->byte( - 1 ) ) {
-			return null;
-		}
-		$this->unsupported = true;
-
-		return \substr( $this->data, $start, $this->position - $start );
 	}
 
 
 	/**
-	 * Parse `E:LEN:"<enum>:<case>";` verbatim.
+	 * Send an `i:` or `d:` value's text through the number closure.
 	 *
-	 * @return string|null
-	 */
-	protected function parse_enum(): ?string {
-		$start = $this->position;
-		$length = $this->read_header( 'E' );
-		if ( null === $length || null === $this->read_quoted( $length ) || ';' !== $this->byte() ) {
-			return null;
-		}
-		++ $this->position;
-
-		return \substr( $this->data, $start, $this->position - $start );
-	}
-
-
-	/**
-	 * Parse `N;` verbatim.
-	 *
-	 * @return string|null
-	 */
-	protected function parse_null(): ?string {
-		if ( 'N;' !== \substr( $this->data, $this->position, 2 ) ) {
-			return null;
-		}
-		$this->position += 2;
-
-		return 'N;';
-	}
-
-
-	/**
-	 * Parse `b:`, `d:`, `i:`, `r:`, or `R:` verbatim.
-	 *
-	 * None of these may hold a `;`, so the token ends at the first one.
-	 *
-	 * @return string|null
-	 */
-	protected function parse_scalar(): ?string {
-		$start = $this->position;
-		$token = $this->byte();
-		if ( ':' !== $this->byte( 1 ) ) {
-			return null;
-		}
-		$end = \strpos( $this->data, ';', $this->position + 2 );
-		if ( false === $end ) {
-			return null;
-		}
-		$body = \substr( $this->data, $this->position + 2, $end - $this->position - 2 );
-		if ( 1 !== \preg_match( self::SCALAR_PATTERNS[ $token ], $body ) ) {
-			return null;
-		}
-		$this->position = $end + 1;
-
-		return \substr( $this->data, $start, $this->position - $start );
-	}
-
-
-	/**
-	 * Parse an `i:` or `d:` value and send its text through the number
-	 * closure.
-	 *
-	 * The text matches the `(string)` cast of the decoded number. A number
-	 * the closure leaves alone keeps its original bytes. A changed number
-	 * keeps its token while the result is still valid for it, otherwise it
-	 * becomes an `s:`.
+	 * The text matches the `(string)` cast of the decoded number. A changed
+	 * number keeps its token while the result is still valid for it,
+	 * otherwise it becomes an `s:`.
 	 *
 	 * @phpstan-param \Closure(string):string $number_replacer
 	 *
 	 * @param string                          $token           - `i` or `d`.
+	 * @param string                          $body            - Bytes between the `:` and the `;`.
 	 * @param \Closure                        $number_replacer - Called with the number's text.
 	 *
-	 * @return string|null
+	 * @return string|null - Replacement token, or `null` when the number is unchanged.
 	 */
-	protected function parse_number( string $token, \Closure $number_replacer ): ?string {
-		$scalar = $this->parse_scalar();
-		if ( null === $scalar ) {
-			return null;
-		}
-		$number = \substr( $scalar, 2, - 1 );
-		if ( 'd' === $token && ! \in_array( $number, self::NON_FINITE, true ) ) {
-			$number = (string) (float) $number;
+	protected function replace_number( string $token, string $body, \Closure $number_replacer ): ?string {
+		$number = $body;
+		if ( 'd' === $token && ! \in_array( $body, self::NON_FINITE, true ) ) {
+			$number = (string) (float) $body;
 		}
 
 		$replaced = $number_replacer( $number );
 		if ( $replaced === $number ) {
-			return $scalar;
+			return null;
 		}
 		if ( $this->is_valid_number( $token, $replaced ) ) {
 			return $token . ':' . $replaced . ';';
 		}
 
-		return $this->write_string( $replaced );
-	}
-
-
-	/**
-	 * Write a value as an `s:` token.
-	 *
-	 * @param string $value - Value to write.
-	 *
-	 * @return string
-	 */
-	protected function write_string( string $value ): string {
-		return 's:' . \strlen( $value ) . ':"' . $value . '";';
+		return 's:' . \strlen( $replaced ) . ':"' . $replaced . '";';
 	}
 
 
@@ -443,101 +503,10 @@ class Serialized_Parser {
 	 */
 	protected function is_valid_number( string $token, string $number ): bool {
 		if ( 'd' === $token ) {
-			return 1 === \preg_match( self::SCALAR_PATTERNS['d'], $number );
+			return 1 === \preg_match( self::FLOAT_PATTERN, $number );
 		}
 		$int = \filter_var( $number, \FILTER_VALIDATE_INT );
 		return \is_int( $int ) && (string) $int === $number;
-	}
-
-
-	/**
-	 * Read a `<token>:<digits>:` header.
-	 *
-	 * @param string $token - Single character token the header must start with.
-	 *
-	 * @return int|null
-	 */
-	protected function read_header( string $token ): ?int {
-		if ( $token !== $this->byte() || ':' !== $this->byte( 1 ) ) {
-			return null;
-		}
-		$this->position += 2;
-
-		return $this->read_digits();
-	}
-
-
-	/**
-	 * Read the `<token>:LEN:"<class>":N:` shared by `O:` and `C:`.
-	 *
-	 * @param string $token - `O` or `C`.
-	 *
-	 * @return int|null - The `N` which follows the class name.
-	 */
-	protected function read_class_header( string $token ): ?int {
-		$name_length = $this->read_header( $token );
-		if ( null === $name_length || null === $this->read_quoted( $name_length ) || ':' !== $this->byte() ) {
-			return null;
-		}
-		++ $this->position;
-
-		return $this->read_digits();
-	}
-
-
-	/**
-	 * Read `<digits>:` from the current position.
-	 *
-	 * @return int|null
-	 */
-	protected function read_digits(): ?int {
-		$end = \strpos( $this->data, ':', $this->position );
-		if ( false === $end ) {
-			return null;
-		}
-		$digits = \substr( $this->data, $this->position, $end - $this->position );
-		if ( ! \ctype_digit( $digits ) || self::MAX_DIGITS < \strlen( $digits ) ) {
-			return null;
-		}
-		$this->position = $end + 1;
-
-		return (int) $digits;
-	}
-
-
-	/**
-	 * Read `"<length bytes>"` from the current position.
-	 *
-	 * Byte counts only. `mb_*` would read the declared length as
-	 * characters and walk off the end of the token.
-	 *
-	 * @param int $length - Number of bytes declared between the quotes.
-	 *
-	 * @return string|null
-	 */
-	protected function read_quoted( int $length ): ?string {
-		if ( '"' !== $this->byte() ) {
-			return null;
-		}
-		$value = \substr( $this->data, $this->position + 1, $length );
-		if ( \strlen( $value ) !== $length || '"' !== $this->byte( $length + 1 ) ) {
-			return null;
-		}
-		$this->position += $length + 2;
-
-		return $value;
-	}
-
-
-	/**
-	 * Get a single byte relative to the current position.
-	 *
-	 * @param int $offset - Bytes past the current position.
-	 *
-	 * @return string - Empty when the offset falls outside the data.
-	 */
-	protected function byte( int $offset = 0 ): string {
-		return $this->data[ $this->position + $offset ] ?? '';
 	}
 
 
