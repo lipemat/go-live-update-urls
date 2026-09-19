@@ -1,23 +1,39 @@
 <?php
-/* @noinspection UnserializeExploitsInspection */
-
-//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-//phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-//phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
-//phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 namespace Go_Live_Update_Urls;
 
 use Go_Live_Update_Urls\Updaters\Repo;
-use Go_Live_Update_Urls\Updaters\Updaters_Abstract;
 
 /**
  * Serialized data handling.
+ *
+ * Serialized strings are rewritten by `Serialized_Parser` and never
+ * decoded, so objects stored in the database are never instantiated.
+ *
+ * @phpstan-type REPLACEMENT array{
+ *     old: list<string>,
+ *     new: list<string>,
+ *     counted: bool
+ * }
  *
  * @author OnPoint Plugins
  * @since  6.0.0
  */
 class Serialized {
+	/**
+	 * Logged when a row can't be parsed.
+	 *
+	 * @var string
+	 */
+	protected const UNPARSEABLE = 'it could not be parsed as serialized data';
+
+	/**
+	 * Logged when a row holds a `C:` body, which is opaque.
+	 *
+	 * @var string
+	 */
+	protected const LEGACY = 'it contains a legacy `Serializable` object which cannot be updated safely';
+
 	/**
 	 * New URL
 	 *
@@ -51,6 +67,30 @@ class Serialized {
 	 */
 	protected $dry_run = false;
 
+	/**
+	 * Did the value being rewritten hit a token we can't update safely?
+	 *
+	 * Tracked per value, because `Skip_Rows` spans every column of a row.
+	 *
+	 * @var bool
+	 */
+	protected bool $row_skipped = false;
+
+	/**
+	 * Search and replace URLs, computed once per run.
+	 *
+	 * @phpstan-var non-empty-list<REPLACEMENT>|null
+	 * @var array<int, array<string, string[]|bool>>|null
+	 */
+	protected ?array $replacements = null;
+
+	/**
+	 * Rewrites every serialized string, nested ones included.
+	 *
+	 * @var Serialized_Parser
+	 */
+	protected Serialized_Parser $parser;
+
 
 	/**
 	 * Serialized constructor.
@@ -61,6 +101,12 @@ class Serialized {
 	public function __construct( $old_url, $new_url ) {
 		$this->new = $new_url;
 		$this->old = $old_url;
+
+		$number_replacer = null;
+		if ( \is_numeric( $old_url ) ) {
+			$number_replacer = \Closure::fromCallable( [ $this, 'replace_number' ] );
+		}
+		$this->parser = Serialized_Parser::factory( \Closure::fromCallable( [ $this, 'replace' ] ), $number_replacer );
 	}
 
 
@@ -103,37 +149,46 @@ class Serialized {
 	protected function update_table( string $table, string $column ): int {
 		global $wpdb;
 		$this->count = 0;
+		if ( ! $wpdb instanceof \wpdb ) {
+			return $this->count;
+		}
+
 		$column = esc_sql( $column );
 		$table = esc_sql( $table );
-		$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . "` WHERE Key_name = 'PRIMARY'" );
-		if ( empty( $pk[0] ) ) {
-			$pk = $wpdb->get_results( 'SHOW KEYS FROM `' . $table . '`' );
-			if ( empty( $pk[0] ) ) {
-				return 0;    // Fail.
+		$pk = $wpdb->get_results( $wpdb->prepare( "SHOW KEYS FROM %i WHERE Key_name = 'PRIMARY'", $table ) );
+		if ( ! isset( $pk[0]->Column_name ) || '' === $pk[0]->Column_name ) {
+			$pk = $wpdb->get_results( $wpdb->prepare( 'SHOW KEYS FROM %i', $table ) );
+			if ( ! isset( $pk[0]->Column_name ) || '' === $pk[0]->Column_name ) {
+				return $this->count; // failed.
 			}
 		}
 		$primary_key_column = $pk[0]->Column_name;
 		Skip_Rows::instance()->set_current_table( $table, $primary_key_column );
 
 		// Get all serialized rows.
-		$rows = $wpdb->get_results( "SELECT `$primary_key_column`, `{$column}` FROM `{$table}` WHERE `{$column}` LIKE 'a:%' OR `{$column}` LIKE 'O:%' OR `{$column}` LIKE 's:%';" );
+		$rows = $wpdb->get_results( $wpdb->prepare(
+			'SELECT %i, %i FROM %i WHERE %i LIKE %s OR %i LIKE %s OR %i LIKE %s;',
+			$primary_key_column, $column, $table, $column, 'a:%', $column, 'O:%', $column, 's:%'
+		) );
+		if ( ! \is_array( $rows ) || [] === $rows ) {
+			return $this->count; // failed.
+		}
 
 		foreach ( $rows as $row ) {
-			if ( ! $this->has_data_to_update( $row->{$column} ) ) {
+			if ( ! isset( $row->{$primary_key_column}, $row->{$column} ) ) {
 				continue;
 			}
-
 			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
-			$clean = $this->replace_tree( @unserialize( $row->{$column} ) );
-			if ( empty( $clean ) ) {
-				continue;
-			}
-
-			if ( ! $this->dry_run ) {
-				$clean = @serialize( $clean );
-				if ( '' !== $clean ) {
-					$wpdb->query( $wpdb->prepare( "UPDATE `{$table}` SET `{$column}`=%s WHERE `{$primary_key_column}` = %s", $clean, $row->{$primary_key_column} ) );
+			$clean = $this->rewrite_row( $row->{$column} );
+			if ( \is_string( $clean ) && ! $this->dry_run ) {
+				$query = $wpdb->prepare(
+					'UPDATE %i SET %i=%s WHERE %i = %s',
+					$table, $column, $clean, $primary_key_column, $row->{$primary_key_column}
+				);
+				if ( null === $query ) {
+					continue; // failed.
 				}
+				$wpdb->query( $query );
 			}
 		}
 
@@ -142,17 +197,116 @@ class Serialized {
 
 
 	/**
+	 * Rewrite a single database row's value.
+	 *
+	 * @param string $value - Raw value from the database column.
+	 *
+	 * @return string|null - `null` when the row has nothing to write.
+	 */
+	protected function rewrite_row( string $value ): ?string {
+		if ( ! $this->has_data_to_update( $value ) ) {
+			return null;
+		}
+
+		$count = $this->count;
+		$this->row_skipped = false;
+		$clean = $this->rewrite( $value );
+		if ( $this->row_skipped ) {
+			// Nothing in a skipped row is written.
+			$this->count = $count;
+			return null;
+		}
+		if ( $clean === $value ) {
+			return null;
+		}
+
+		return $clean;
+	}
+
+
+	/**
+	 * Rewrite a serialized string without decoding it.
+	 *
+	 * Skips the current row and returns the value unchanged when it
+	 * can't be parsed or holds a legacy `C:` body.
+	 *
+	 * @phpstan-impure
+	 *
+	 * @param string $serialized - Raw serialized value.
+	 *
+	 * @return string
+	 */
+	protected function rewrite( string $serialized ): string {
+		$result = $this->parser->rewrite( $serialized, $this->get_old_urls() );
+		if ( null === $result ) {
+			$this->skip_current_row( self::UNPARSEABLE );
+			return $serialized;
+		}
+		if ( $this->parser->has_unsupported() ) {
+			$this->skip_current_row( self::LEGACY );
+			return $serialized;
+		}
+
+		return $result;
+	}
+
+
+	/**
+	 * Replace a number only when its whole value is the old value.
+	 *
+	 * @param string $number - Number as text.
+	 *
+	 * @return string
+	 */
+	protected function replace_number( string $number ): string {
+		if ( $this->old === $number ) {
+			++ $this->count;
+			return $this->new;
+		}
+		return $number;
+	}
+
+
+	/**
+	 * Skip and log the current row once, no matter how many
+	 * of its values can't be updated.
+	 *
+	 * @param string $reason - Completes "because ..." in the log.
+	 *
+	 * @return void
+	 */
+	protected function skip_current_row( string $reason ): void {
+		$this->row_skipped = true;
+		Skip_Rows::instance()->skip_current_once( $reason );
+	}
+
+
+	/**
 	 * Replaces all the occurrences of a string in a multidimensional array or Object
+	 *
+	 * @since      5.2.0
+	 * @deprecated 7.1.0 Will be removed in version 8.
+	 *
+	 * @param object|array<int|string, mixed>|string|int|float|bool|null $data - Data to change.
+	 *
+	 * @return object|array<int|string, mixed>|string|int|float|bool|null
+	 */
+	public function replace_tree( $data ) {
+		_deprecated_function( __METHOD__, '7.1.0' );
+		return $this->replace_decoded( $data );
+	}
+
+
+	/**
+	 * Replaces all the occurrences of a string in decoded data.
 	 *
 	 * @noinspection OffsetOperationsInspection
 	 *
-	 * @since 5.2.0
+	 * @param object|array<int|string, mixed>|string|int|float|bool|null $data - Data to change.
 	 *
-	 * @param object|array|string|int|float|null $data - Data to change.
-	 *
-	 * @return object|array|string|int|float|null
+	 * @return object|array<int|string, mixed>|string|int|float|bool|null
 	 */
-	public function replace_tree( $data ) {
+	protected function replace_decoded( $data ) {
 		if ( null === $data ) {
 			return null;
 		}
@@ -168,12 +322,6 @@ class Serialized {
 			return $this->replace( $data );
 		}
 
-		if ( $this->has_missing_classes( $data ) ) {
-			Skip_Rows::instance()->skip_current();
-			return $data;
-		}
-
-		// @phpstan-ignore-next-line -- Sanity check.
 		if ( ! \is_array( $data ) && ! \is_object( $data ) ) {
 			return $data;
 		}
@@ -187,16 +335,16 @@ class Serialized {
 			// The key was updated.
 			if ( '' !== $updated_key && $updated_key !== $key ) {
 				if ( \is_array( $data ) ) {
-					$data[ $updated_key ] = $this->replace_tree( $item );
+					$data[ $updated_key ] = $this->replace_decoded( $item );
 					unset( $data[ $key ] );
 				} else {
-					$data->{$updated_key} = $this->replace_tree( $item );
+					$data->{$updated_key} = $this->replace_decoded( $item );
 					unset( $data->{$key} );
 				}
 			} elseif ( \is_array( $data ) ) {
-				$data[ $key ] = $this->replace_tree( $item );
+				$data[ $key ] = $this->replace_decoded( $item );
 			} else {
-				$data->{$key} = $this->replace_tree( $item );
+				$data->{$key} = $this->replace_decoded( $item );
 			}
 		}
 
@@ -211,6 +359,8 @@ class Serialized {
 	 * Also replace occurrences of an old url formatted using
 	 * all available updaters
 	 *
+	 * A value no replacement changed is returned byte for byte.
+	 *
 	 * @param string $mysql_value - Original value from the database.
 	 *
 	 * @return string
@@ -221,28 +371,26 @@ class Serialized {
 		 * serialized item when calling functions like `add_option`.
 		 */
 		if ( is_serialized( $mysql_value ) ) {
-			$result = @unserialize( $mysql_value );
-			if ( false === $result ) {
-				return $mysql_value;
+			if ( $this->has_data_to_update( $mysql_value ) ) {
+				return $this->rewrite( $mysql_value );
 			}
-			return @serialize( $this->replace_tree( $result ) );
+			return $mysql_value;
 		}
 
-		$mysql_value = \str_replace( $this->old, $this->new, $mysql_value, $count );
-		$this->count += $count;
-
-		foreach ( Repo::instance()->get_updaters() as $updater ) {
-			/* @var Updaters_Abstract $updater - Updater class instance. */
-			$formatted = $updater::get_formatted( $this->old, $this->new );
-			if ( $formatted['old'] !== $this->old ) {
-				$mysql_value = \str_replace( $formatted['old'], $formatted['new'], $mysql_value, $updater_count );
-				if ( ! $updater::is_appending_update( $this->old, $this->new ) ) {
-					$this->count += $updater_count;
-				}
+		$replaced = $mysql_value;
+		// Runs for every matching value, so a filled cache is read without a call.
+		$replacements = $this->replacements ?? $this->get_replacements();
+		foreach ( $replacements as $replacement ) {
+			$replaced = \str_replace( $replacement['old'], $replacement['new'], $replaced, $count );
+			if ( $replacement['counted'] ) {
+				$this->count += $count;
 			}
 		}
 
-		return \trim( $mysql_value );
+		if ( $replaced === $mysql_value ) {
+			return $mysql_value;
+		}
+		return \trim( $replaced );
 	}
 
 
@@ -261,15 +409,11 @@ class Serialized {
 			return false;
 		}
 
-		if ( false !== strpos( $mysql_value, $this->old ) ) {
-			return true;
-		}
-
-		foreach ( Repo::instance()->get_updaters() as $_updater ) {
-			/* @var Updaters_Abstract $_updater - Updater class instance. */
-			$formatted = $_updater::get_formatted( $this->old, $this->new );
-			if ( false !== strpos( $mysql_value, $formatted['old'] ) ) {
-				return true;
+		foreach ( $this->get_replacements() as $replacement ) {
+			foreach ( $replacement['old'] as $old ) {
+				if ( false !== \strpos( $mysql_value, $old ) ) {
+					return true;
+				}
 			}
 		}
 
@@ -278,32 +422,69 @@ class Serialized {
 
 
 	/**
-	 * Wrapper around `unserialize` to support gracefully
-	 * failing to unserialize a value due to a missing class.
+	 * Get the old URL as is and as formatted by each updater.
 	 *
-	 * If a class is not available when `unserialize` is called
-	 * PHP automatically converts the result to `__PHP_Incomplete_Class`.
-	 *
-	 * @ticket #10723
-	 *
-	 * @since 6.5.0
-	 *
-	 * @param object|array $data - Value from the database column.
-	 *
-	 * @return bool
+	 * @return string[]
 	 */
-	protected function has_missing_classes( $data ) {
-		if ( ! \is_array( $data ) && is_a( $data, \__PHP_Incomplete_Class::class ) ) {
-			// Hack to get the name of the class from __PHP_Incomplete_Class without `Error`.
-			foreach ( (array) $data as $key => $name ) {
-				if ( '__PHP_Incomplete_Class_Name' === $key ) {
-					Skip_Rows::instance()->log_error( $name );
-					return true;
+	protected function get_old_urls(): array {
+		return \array_merge( ...\array_column( $this->get_replacements(), 'old' ) );
+	}
+
+
+	/**
+	 * Get the old URL as is, then as formatted by each updater, paired
+	 * with the new URL, computed once per run.
+	 *
+	 * `str_replace` runs a group's pairs in order, so consecutive pairs
+	 * which are counted alike share a group.
+	 *
+	 * Updaters which leave the old URL as it is are left out, because
+	 * replacing the old URL as is already covers them.
+	 *
+	 * @phpstan-return non-empty-list<REPLACEMENT>
+	 * @return array<int, array<string, string[]|bool>>
+	 */
+	protected function get_replacements(): array {
+		if ( \is_array( $this->replacements ) ) {
+			return $this->replacements;
+		}
+		$replacements = [
+			[
+				'old'     => [ $this->old ],
+				'new'     => [ $this->new ],
+				'counted' => true,
+			],
+		];
+		foreach ( Repo::instance()->get_updaters() as $updater ) {
+			$formatted = $updater::get_formatted( $this->old, $this->new );
+			if ( $formatted['old'] !== $this->old ) {
+				$counted = ! $updater::is_appending_update( $this->old, $this->new );
+				$last = \count( $replacements ) - 1;
+				if ( $counted === $replacements[ $last ]['counted'] ) {
+					$replacements[ $last ]['old'][] = $formatted['old'];
+					$replacements[ $last ]['new'][] = $formatted['new'];
+				} else {
+					$replacements[] = [
+						'old'     => [ $formatted['old'] ],
+						'new'     => [ $formatted['new'] ],
+						'counted' => $counted,
+					];
 				}
 			}
-			return true;
 		}
-		return false;
+		$this->replacements = $replacements;
+
+		return $this->replacements;
+	}
+
+
+	/**
+	 * Read the updaters again on the next replacement.
+	 *
+	 * @return void
+	 */
+	public function reset_updater_urls(): void {
+		$this->replacements = null;
 	}
 
 
