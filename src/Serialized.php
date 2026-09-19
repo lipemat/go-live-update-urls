@@ -153,21 +153,8 @@ class Serialized {
 				continue;
 			}
 			Skip_Rows::instance()->set_current_row_id( $row->{$primary_key_column} );
-			$value = $row->{$column};
-			if ( ! $this->has_data_to_update( $value ) ) {
-				continue;
-			}
-
-			$count = $this->count;
-			$this->row_skipped = false;
-			$clean = $this->rewrite( $value );
-			if ( $this->row_skipped ) {
-				// Nothing in a skipped row is written.
-				$this->count = $count;
-				continue;
-			}
-
-			if ( ! $this->dry_run && $clean !== $value ) {
+			$clean = $this->rewrite_row( $row->{$column} );
+			if ( \is_string( $clean ) && ! $this->dry_run ) {
 				$query = $wpdb->prepare(
 					'UPDATE %i SET %i=%s WHERE %i = %s',
 					$table, $column, $clean, $primary_key_column, $row->{$primary_key_column}
@@ -180,6 +167,34 @@ class Serialized {
 		}
 
 		return $this->count;
+	}
+
+
+	/**
+	 * Rewrite a single database row's value.
+	 *
+	 * @param string $value - Raw value from the database column.
+	 *
+	 * @return string|null - `null` when the row has nothing to write.
+	 */
+	protected function rewrite_row( string $value ): ?string {
+		if ( ! $this->has_data_to_update( $value ) ) {
+			return null;
+		}
+
+		$count = $this->count;
+		$this->row_skipped = false;
+		$clean = $this->rewrite( $value );
+		if ( $this->row_skipped ) {
+			// Nothing in a skipped row is written.
+			$this->count = $count;
+			return null;
+		}
+		if ( $clean === $value ) {
+			return null;
+		}
+
+		return $clean;
 	}
 
 
