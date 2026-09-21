@@ -79,7 +79,7 @@ jobs:
             phpstan-version: 3.4.2
             stubs: 6.2.6
           - php: 8.5
-            stubs: 7.0.0
+            stubs: "7.1.0 as 6.9.4"
     uses: lipemat/public-actions/.github/workflows/phpstan-plugin.yml@version/2
     with:
       php: ${{ matrix.combination.php }}
