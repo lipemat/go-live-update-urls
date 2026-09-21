@@ -122,6 +122,9 @@ If you find you are running into issues with custom tables, you may want to chec
 
 == Changelog ==
 = 7.1.0 = 
+
+[Full release notes](https://onpointplugins.com/go-live-update-urls-basic-version-7-1/)
+
 * Improved performance of serialized data updates.
 * Introduced new `Serialized_Parser` class for custom serialized data handling.
 * Fixed far edge case security vulnerability with serialized data updates.
