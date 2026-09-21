@@ -137,9 +137,9 @@ class Database {
 	 *
 	 * @since 5.0.1
 	 *
-	 * @return string[]
+	 * @return list<string>
 	 */
-	public function get_all_table_names() {
+	public function get_all_table_names(): array {
 		$wpdb = $this->get_wpdb();
 		$query = "SELECT TABLE_NAME as TableName FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->esc_like( $wpdb->prefix ) . "%'";
 
@@ -152,7 +152,8 @@ class Database {
 			}
 			$query .= ' AND SUBSTRING(TABLE_NAME,1,4) NOT IN (' . substr( $not_like, 0, - 1 ) . ')';
 		}
-		return $wpdb->get_col( $query );
+		$tables = $wpdb->get_col( $query );
+		return \array_values( \array_filter( $tables, fn( $val ) => \is_string( $val ) ) );
 	}
 
 
