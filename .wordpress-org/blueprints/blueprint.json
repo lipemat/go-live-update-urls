@@ -1,37 +1,19 @@
 {
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-  "landingPage": "/wp-admin/admin.php?page=go-live-update-urls-settings",
-  "preferredVersions": {
-    "php": "8.0",
-    "wp": "6.4.3"
-  },
-  "phpExtensionBundles": [
-    "kitchen-sink"
-  ],
-  "features": {
-    "networking": true
-  },
-  "steps": [
-    {
-      "step": "login",
-      "username": "admin",
-      "password": "password"
-    },
-    {
-      "step": "installPlugin",
-      "pluginZipFile": {
-        "resource": "wordpress.org/plugins",
-        "slug": "go-live-update-urls"
-      },
-      "options": {
-        "activate": true
-      }
-    },
-    {
-      "step": "setSiteOptions",
-      "options": {
-        "blogname": "Go Live Update Urls - Demo"
-      }
+  "version": 2,
+  "wordpressVersion": "7.1.1",
+  "phpVersion": "8.0",
+  "applicationOptions": {
+    "wordpress-playground": {
+      "landingPage": "/wp-admin/admin.php?page=go-live-update-urls-settings",
+      "login": true,
+      "networkAccess": true
     }
-  ]
+  },
+  "plugins": [
+    "go-live-update-urls"
+  ],
+  "siteOptions": {
+    "blogname": "Go Live Update Urls - Demo"
+  }
 }
