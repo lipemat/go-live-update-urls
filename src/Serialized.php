@@ -68,13 +68,13 @@ class Serialized {
 	protected $dry_run = false;
 
 	/**
-	 * Did the value being rewritten hit a token we can't update safely?
+	 * Did the value being rewritten hit a token which leaves the whole row unwritable?
 	 *
 	 * Tracked per value, because `Skip_Rows` spans every column of a row.
 	 *
 	 * @var bool
 	 */
-	protected bool $row_skipped = false;
+	protected bool $row_discarded = false;
 
 	/**
 	 * Search and replace URLs, computed once per run.
@@ -167,8 +167,8 @@ class Serialized {
 
 		// Get all serialized rows.
 		$rows = $wpdb->get_results( $wpdb->prepare(
-			'SELECT %i, %i FROM %i WHERE %i LIKE %s OR %i LIKE %s OR %i LIKE %s;',
-			$primary_key_column, $column, $table, $column, 'a:%', $column, 'O:%', $column, 's:%'
+			'SELECT %i, %i FROM %i WHERE %i LIKE %s OR %i LIKE %s OR %i LIKE %s OR %i LIKE %s;',
+			$primary_key_column, $column, $table, $column, 'a:%', $column, 'O:%', $column, 's:%', $column, 'C:%'
 		) );
 		if ( ! \is_array( $rows ) || [] === $rows ) {
 			return $this->count; // failed.
@@ -209,10 +209,10 @@ class Serialized {
 		}
 
 		$count = $this->count;
-		$this->row_skipped = false;
+		$this->row_discarded = false;
 		$clean = $this->rewrite( $value );
-		if ( $this->row_skipped ) {
-			// Nothing in a skipped row is written.
+		if ( $this->row_discarded ) {
+			// Nothing in a discarded row is written.
 			$this->count = $count;
 			return null;
 		}
@@ -227,8 +227,8 @@ class Serialized {
 	/**
 	 * Rewrite a serialized string without decoding it.
 	 *
-	 * Skips the current row and returns the value unchanged when it
-	 * can't be parsed or holds a legacy `C:` body.
+	 * Routes the row around the raw SQL replace when it can't be parsed or
+	 * holds a legacy `C:` body, and returns an unparseable value unchanged.
 	 *
 	 * @phpstan-impure
 	 *
@@ -239,12 +239,13 @@ class Serialized {
 	protected function rewrite( string $serialized ): string {
 		$result = $this->parser->rewrite( $serialized, $this->get_old_urls() );
 		if ( null === $result ) {
-			$this->skip_current_row( self::UNPARSEABLE );
+			$this->row_discarded = true;
+			Skip_Rows::instance()->skip_current_once( self::UNPARSEABLE );
 			return $serialized;
 		}
 		if ( $this->parser->has_unsupported() ) {
-			$this->skip_current_row( self::LEGACY );
-			return $serialized;
+			// A `C:` body is copied verbatim, so everything around it is still written.
+			Skip_Rows::instance()->skip_current_once( self::LEGACY );
 		}
 
 		return $result;
@@ -264,20 +265,6 @@ class Serialized {
 			return $this->new;
 		}
 		return $number;
-	}
-
-
-	/**
-	 * Skip and log the current row once, no matter how many
-	 * of its values can't be updated.
-	 *
-	 * @param string $reason - Completes "because ..." in the log.
-	 *
-	 * @return void
-	 */
-	protected function skip_current_row( string $reason ): void {
-		$this->row_skipped = true;
-		Skip_Rows::instance()->skip_current_once( $reason );
 	}
 
 
@@ -370,7 +357,7 @@ class Serialized {
 		 * `maybe_serialize` wraps the data in a string if passing an already
 		 * serialized item when calling functions like `add_option`.
 		 */
-		if ( is_serialized( $mysql_value ) ) {
+		if ( $this->is_serialized( $mysql_value ) ) {
 			if ( $this->has_data_to_update( $mysql_value ) ) {
 				return $this->rewrite( $mysql_value );
 			}
@@ -405,7 +392,7 @@ class Serialized {
 	 * @return bool
 	 */
 	protected function has_data_to_update( $mysql_value ): bool {
-		if ( ! is_serialized( $mysql_value ) ) {
+		if ( ! $this->is_serialized( $mysql_value ) ) {
 			return false;
 		}
 
@@ -418,6 +405,26 @@ class Serialized {
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Is the value serialized?
+	 *
+	 * - Check with `is_serialized` first.
+	 * - Check for legacy `C:` bodies which are `Serializable` objects.
+	 *
+	 * @param string $value - Value which may be serialized.
+	 *
+	 * @return bool
+	 */
+	protected function is_serialized( string $value ): bool {
+		if ( is_serialized( $value ) ) {
+			return true;
+		}
+
+		$trimmed = \trim( $value );
+		return \str_starts_with( $trimmed, 'C:' ) && \str_ends_with( $trimmed, '}' ) && 1 === \preg_match( '/^C:\d+:"/', $trimmed );
 	}
 
 
