@@ -27,7 +27,7 @@ class Skip_Rows {
 	 * Holds the primary keys for tables,
 	 * so we can reference during our update queries.
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	protected $primary_keys = [];
 

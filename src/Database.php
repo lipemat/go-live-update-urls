@@ -77,6 +77,7 @@ class Database {
 		$tables = [
 			$wpdb->posts,
 			$wpdb->comments,
+			$wpdb->links,
 			$wpdb->options,
 			$wpdb->postmeta,
 			$wpdb->terms,
@@ -87,10 +88,6 @@ class Database {
 			$wpdb->users,
 			$wpdb->usermeta,
 		];
-
-		if ( isset( $wpdb->links ) ) {
-			$tables[] = $wpdb->links;
-		}
 
 		if ( is_multisite() ) {
 			$tables[] = $wpdb->blogs;
@@ -141,12 +138,13 @@ class Database {
 	 */
 	public function get_all_table_names(): array {
 		$wpdb = $this->get_wpdb();
-		$query = "SELECT TABLE_NAME as TableName FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $wpdb->dbname . "' AND TABLE_NAME LIKE '" . $wpdb->esc_like( $wpdb->prefix ) . "%'";
+		$database = $wpdb->__get( 'dbname' );
+		$query = "SELECT TABLE_NAME as TableName FROM information_schema.TABLES WHERE TABLE_SCHEMA='" . $database . "' AND TABLE_NAME LIKE '" . $wpdb->esc_like( $wpdb->prefix ) . "%'";
 
 		// Site 1's 'LIKE wp_%' will return all tables in the database,
 		// so we exclude all possible sub sites (e.g., wp_2, wp_3 up to 9).
 		$not_like = '';
-		if ( 1 === (int) $wpdb->blogid && is_multisite() ) {
+		if ( 1 === get_current_blog_id() && is_multisite() ) {
 			for ( $i = 1; $i <= 9; $i ++ ) {
 				$not_like .= $wpdb->prepare( '%s,', $wpdb->prefix . $i );
 			}
@@ -234,15 +232,24 @@ class Database {
 		$wpdb = $this->get_wpdb();
 
 		$count = $this->count_column_urls( $table, $column, $old_url );
-		$update_query = 'UPDATE ' . $table . ' SET `' . $column . '` = replace(`' . $column . '`, %s, %s)';
+		$update_query = 'UPDATE %i SET %i = replace(%i, %s, %s)';
+		$args = [ $table, $column, $column, $old_url, $new_url ];
 
 		if ( $this->supports_skipping( $table ) ) {
-			$skip = esc_sql( implode( ',', (array) Skip_Rows::instance()->get_skipped( $table ) ) );
-			$primary = esc_sql( (string) Skip_Rows::instance()->get_primary_key( $table ) );
-			$update_query .= " WHERE `{$primary}` NOT IN ({$skip})";
+			$args[] = (string) Skip_Rows::instance()->get_primary_key( $table );
+			$placeholders = '';
+			foreach ( (array) Skip_Rows::instance()->get_skipped( $table ) as $_id ) {
+				$placeholders .= '' === $placeholders ? '%d' : ',%d';
+				$args[] = $_id;
+			}
+			$update_query .= ' WHERE %i NOT IN (' . $placeholders . ')';
 		}
 
-		$wpdb->query( $wpdb->prepare( $update_query, [ $old_url, $new_url ] ) );
+		$prepared = $wpdb->prepare( $update_query, $args );
+		if ( null === $prepared ) {
+			return $count; // failed.
+		}
+		$wpdb->query( $prepared );
 		return $count;
 	}
 
@@ -267,9 +274,9 @@ class Database {
 	public function count_column_urls( $table, $column, $old_url ): int {
 		$wpdb = $this->get_wpdb();
 
-		$query = "SELECT SUM( ROUND( ( LENGTH( `{$column}` ) - LENGTH( REPLACE( `{$column}`, %s, '' ) ) ) / LENGTH( %s ) ) ) from `{$table}`";
+		$query = "SELECT SUM( ROUND( ( LENGTH( %i ) - LENGTH( REPLACE( %i, %s, '' ) ) ) / LENGTH( %s ) ) ) from %i";
 
-		return (int) $wpdb->get_var( $wpdb->prepare( $query, [ $old_url, $old_url ] ) );
+		return (int) $wpdb->get_var( $wpdb->prepare( $query, [ $column, $column, $old_url, $old_url, $table ] ) );
 	}
 
 
@@ -295,7 +302,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	protected function supports_skipping( $table ) {
+	protected function supports_skipping( $table ): bool {
 		if ( null === Skip_Rows::instance()->get_skipped( $table ) || null === Skip_Rows::instance()->get_primary_key( $table ) ) {
 			return false;
 		}

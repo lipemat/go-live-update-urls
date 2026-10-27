@@ -516,7 +516,7 @@ class Serialized {
 	 *
 	 * @param bool $dry_run - Is this a dry run or not.
 	 */
-	public function set_dry_run( $dry_run ) {
+	public function set_dry_run( bool $dry_run ): void {
 		$this->dry_run = $dry_run;
 	}
 }

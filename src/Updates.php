@@ -121,7 +121,7 @@ class Updates {
 	protected function update_email_addresses( $table, $column ) {
 		$url = wp_parse_url( $this->old_url );
 		$doubled = $this->get_doubled_up_subdomain();
-		if ( null === $doubled || ! empty( $url['scheme'] ) ) {
+		if ( null === $doubled || isset( $url['scheme'] ) ) {
 			return 0;
 		}
 		return Database::instance()->update_column( $table, $column, '@' . $this->new_url, '@' . $this->old_url );
@@ -258,7 +258,7 @@ class Updates {
 		$wpdb = Database::instance()->get_wpdb();
 		$supported_types = Database::instance()->get_column_types();
 
-		$all = $wpdb->get_results( $wpdb->prepare( "SELECT COLUMN_NAME as name, COLUMN_TYPE as type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{$wpdb->dbname}' AND TABLE_NAME=%s", $table ) );
+		$all = $wpdb->get_results( $wpdb->prepare( 'SELECT COLUMN_NAME as name, COLUMN_TYPE as type FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s', $table ) );
 		if ( ! \is_array( $all ) ) {
 			return [];
 		}

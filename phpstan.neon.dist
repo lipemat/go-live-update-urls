@@ -1,8 +1,6 @@
 includes:
     # Include the lipemat phpstan rules.
     - %rootDir%/../../../rules.neon
-    # Baseline file full of @todo
-    - dev/phpstan-baseline.php
     # PHP version specific ignores.
     - dev/phpstan-phpVersion-ignores.php
 
