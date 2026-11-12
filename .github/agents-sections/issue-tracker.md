@@ -27,32 +27,32 @@ Moving an item to a state means removing the state label it currently holds and 
 
 Create a GitHub issue in `lipemat/go-live-update-urls-pro`.
 
+## When a skill says "link the branch to the issue"
+
+GitHub's API can only link a branch while creating it (`createLinkedBranch`), so create the remote branch through the issue: `gh issue develop <number> --repo lipemat/go-live-update-urls-pro --name <branch> --base develop`. The local branch of the same name then pushes onto it.
+
 ## When a skill says "fetch the relevant ticket"
 
 Run `gh issue view <number> --repo lipemat/go-live-update-urls-pro`. When the ticket is a sub-issue, fetch its parent the same way.
 
 ## GitHub Project
 
-Issue status is managed in a GitHub project. Any time an issue's lifecycle state changes, update both its label and its status in the project.
-
-The ids of the project and the status field:
-
-| Key | Value |
-| --- | --- |
-| Owner | `lipemat` |
-| Project ID | `PVT_kwHOABnCdc4Bj17w` |
-| Project Number | `10` |
-| Status field ID | `PVTSSF_lAHOABnCdc4Bj17wzhioxpU` |
+Issue status is managed in GitHub project **10** (owner `lipemat`), in its `Status` field. Any time an issue's lifecycle state changes, update both its label and its status in the project.
 
 Each lifecycle state maps to one status option:
 
-| Lifecycle state | Project status | Option ID |
-| --- | --- | --- |
-| `ready` | Ready | `61e4505c` |
-| `in-progress` | In progress | `47fc9ee4` |
-| `pending-qa` | Pending QA | `8922e42f` |
+| Lifecycle state | Project status |
+| --- | --- |
+| `ready` | Ready |
+| `in-progress` | In progress |
+| `pending-qa` | Pending QA |
+
+The project's other statuses (Backlog, Pending release, Done) are managed by hand; no skill sets them.
 
 ### Updating the status of an issue
 
-1. Find the item's `<task-id>` via `gh project item-list 10 --owner lipemat --limit 500 --format json --jq '.items[] | select(.content.number==<issue number> and .content.repository=="lipemat/go-live-update-urls-pro") | .id'`.
-2. Run `gh project item-edit --id <task-id> --project-id PVT_kwHOABnCdc4Bj17w --field-id PVTSSF_lAHOABnCdc4Bj17wzhioxpU --single-select-option-id <option id>`, with "Option ID" from the lifecycle table above. No `tail` or the output will be blank.
+```bash
+gh project item-edit 10 --owner lipemat --url <issue url> --field Status --value "<project status>"
+```
+
+Success prints nothing and exits 0; trust it, no need to re-check. Any failure prints an error and exits 1. An issue not yet in the project fails; add it with `gh project item-add` and retry.
